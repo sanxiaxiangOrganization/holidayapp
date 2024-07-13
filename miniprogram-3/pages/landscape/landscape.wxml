@@ -1,0 +1,12 @@
+<!--pages/landscape/landscape.wxml-->
+<view class="bigblock">
+  <view class="swiperblock">
+    <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" circular="true">
+      <block wx:for="{{background}}" wx:key="*this" class="bblock">
+        <swiper-item>
+          <image class="imageblock" src="{{item}}"></image>
+        </swiper-item>
+      </block>
+    </swiper>
+  </view>
+</view>
