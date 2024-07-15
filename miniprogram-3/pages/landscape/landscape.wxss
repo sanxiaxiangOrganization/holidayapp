@@ -1,23 +1,6 @@
 /* pages/landscape/landscape.wxss */
-
-.bigblock {
-  background-color: black;
-  height: 100%;
-  width: 100%;
-}
-
-.swiperblock {
-  /*  */
-  height: 100%;
-  width: 100%;
-}
-
-.imageblock {
-  height: 100%;
-  width: 100%;
-}
-
-.bblock {
-  width: 100%;
-  height: 100%;
+.landscape_card{
+  border: 3rpx solid red;
+  width: 749rpx;
+  
 }

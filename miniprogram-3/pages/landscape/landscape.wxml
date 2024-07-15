@@ -1,12 +1,40 @@
 <!--pages/landscape/landscape.wxml-->
-<view class="bigblock">
-  <view class="swiperblock">
-    <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" circular="true">
-      <block wx:for="{{background}}" wx:key="*this" class="bblock">
-        <swiper-item>
-          <image class="imageblock" src="{{item}}"></image>
-        </swiper-item>
-      </block>
-    </swiper>
-  </view>
+<view class="landscape_view">
+
+  <scroll-view
+  scroll-y="true"
+  enable-passive="true"
+  class="landscape_scroll_view">
+    <view>
+      推荐路线
+      <image></image>
+    </view>
+
+    <view class="landscape_card">
+      <image src="/images/A (1).jpg"
+      mode="aspectFit"
+      class="landscape_image"></image>
+      <view>朝晖姐</view>
+    </view>
+    <view class="landscape_card">
+      <image src="/images/A (1).jpg"
+      mode="aspectFit"
+      class="landscape_image"></image>
+      <view>朝晖姐</view>
+    </view>
+    <view class="landscape_card">
+      <image src="/images/A (1).jpg"
+      mode="aspectFit"
+      class="landscape_image"></image>
+      <view>朝晖姐</view>
+    </view>
+    <view class="landscape_card">
+      <image src="/images/A (1).jpg"
+      mode="aspectFit"
+      class="landscape_image"></image>
+      <view>朝晖姐</view>
+    </view>
+  </scroll-view>
+  
+  
 </view>

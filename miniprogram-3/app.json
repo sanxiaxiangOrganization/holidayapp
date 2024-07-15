@@ -1,31 +1,44 @@
 {
   "pages": [
+    
     "pages/landscape/landscape",
+    "pages/landscape_detail/landscape_detail",
     "pages/logs/logs",
     "pages/cover/cover",
     "pages/mine/mine"
+    
+    
   ],
   "window": {
-    "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "Weixin",
-    "navigationBarBackgroundColor": "#ffffff"
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "大湖长风",
+    "navigationBarBackgroundColor": "#ff0000",
+    "enablePullDownRefresh": false,
+    "backgroundColor": "#efefef",
+    "backgroundTextStyle": "dark"
   },
   "tabBar": {
-    "list":[
+    "list": [
       {
         "pagePath": "pages/landscape/landscape",
-        "text":"景点",
+        "text": "景点",
         "iconPath": "/images/landscape.png",
         "selectedIconPath": "/images/landscape_active.png"
       },
-      {"pagePath": "pages/mine/mine",
-        "text":"我的",
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的",
         "iconPath": "/images/mine.png",
-        "selectedIconPath": "/images/mine_active.png"}
+        "selectedIconPath": "/images/mine_active.png"
+      }
     ]
   },
   "style": "v2",
   "componentFramework": "glass-easel",
   "sitemapLocation": "sitemap.json",
-  "lazyCodeLoading": "requiredComponents"
+  "lazyCodeLoading": "requiredComponents",
+  "useExtendedLib": {
+    "kbone": true,
+    "weui": true
+  }
 }
