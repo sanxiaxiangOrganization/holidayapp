@@ -1,13 +1,11 @@
 {
   "pages": [
-    
     "pages/landscape/landscape",
     "pages/landscape_detail/landscape_detail",
     "pages/logs/logs",
     "pages/cover/cover",
-    "pages/mine/mine"
-    
-    
+    "pages/mine/mine",
+    "pages/community/community"
   ],
   "window": {
     "navigationBarTextStyle": "white",
@@ -24,6 +22,12 @@
         "text": "景点",
         "iconPath": "/images/landscape.png",
         "selectedIconPath": "/images/landscape_active.png"
+      },
+      {
+        "pagePath":"pages/community/community",
+        "text":"社区",
+        "iconPath":"images/community.png",
+        "selectedIconPath":"images/community_active.png"
       },
       {
         "pagePath": "pages/mine/mine",

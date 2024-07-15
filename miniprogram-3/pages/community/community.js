@@ -1,45 +1,13 @@
-// pages/landscape/landscape.js
+// pages/community/community.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    background: ['/images/A (1).jpg', '/images/A (2).jpg', '/images/A (3).jpg'],
-    indicatorDots: true,
-    vertical: false,
-    autoplay: true,
-    interval: 2000,
-    duration: 500
-  },
-  changeIndicatorDots() {
-    this.setData({
-      indicatorDots: !this.data.indicatorDots
-    })
-  },
-  navigateToDetail(){
-    wx.navigateTo({
-      url: '/pages/landscape_detail/landscape_detail',
-    })
-    console.log("导航点击");
-  },
-  changeAutoplay() {
-    this.setData({
-      autoplay: !this.data.autoplay
-    })
+
   },
 
-  intervalChange(e) {
-    this.setData({
-      interval: e.detail.value
-    })
-  },
-
-  durationChange(e) {
-    this.setData({
-      duration: e.detail.value
-    })
-  },
   /**
    * 生命周期函数--监听页面加载
    */

@@ -10,25 +10,29 @@
       <image></image>
     </view>
 
-    <view class="landscape_card">
+    <view class="landscape_card" 
+    bind:tap="navigateToDetail">
       <image src="/images/A (1).jpg"
       mode="aspectFit"
       class="landscape_image"></image>
       <view>朝晖姐</view>
     </view>
-    <view class="landscape_card">
+    <view class="landscape_card"  
+    bind:tap="navigateToDetail">
       <image src="/images/A (1).jpg"
       mode="aspectFit"
       class="landscape_image"></image>
       <view>朝晖姐</view>
     </view>
-    <view class="landscape_card">
+    <view class="landscape_card"  
+    bind:tap="navigateToDetail">
       <image src="/images/A (1).jpg"
       mode="aspectFit"
       class="landscape_image"></image>
       <view>朝晖姐</view>
     </view>
-    <view class="landscape_card">
+    <view class="landscape_card"  
+    bind:tap="navigateToDetail">
       <image src="/images/A (1).jpg"
       mode="aspectFit"
       class="landscape_image"></image>
