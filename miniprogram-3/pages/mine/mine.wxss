@@ -1,1 +1,100 @@
 /* pages/mine/mine.wxss */
+
+/*将页面的背景颜色设置为灰色*/
+.hblock{
+  margin-top: 30rpx;
+  display: flex;
+  height: 200rpx;
+  align-items: center;
+  border-bottom: 8rpx solid lightgray;
+  background-color: white;/*将view设置成白色，∵我此时将页面的背景色设置成了灰色*/
+}
+/*头像的样式*/
+.head{
+  width: 150rpx;
+  height: 150rpx;
+  margin-left: 30rpx;
+  border-style: solid;
+  border-color:  lightgray;
+  border-width: 0.5rpx;
+}
+.name{
+  margin-left: 25rpx;
+  font: medium;
+}
+.eblock{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width:75%;
+}
+.tblock{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 200rpx;
+  width: 60%;
+}
+.text{
+  margin-left: 25rpx;
+  color: #9c9898;
+}
+/*编辑资料的按钮*/
+.button{
+color: #9c9898;
+font-size: 25rpx;
+}
+
+
+/*重新定义block的样式*/
+.familyblock,.helpblock,.directoryblock,.messageblock{
+  position: relative;
+  width: 100%;
+  height: 100rpx;
+  display: flex;
+  align-items: center;
+  border-bottom: 8rpx solid lightgray;
+}
+
+/*图标的样式*/
+.message,.family,.lock,.help{
+  position: absolute; 
+  width: 50rpx;
+  height: 50rpx;
+  left: 30rpx;
+}
+
+/*内容的样式*/
+.message2,.family2,.lock2,.help2{
+  position: absolute; 
+  left: 130rpx;
+  font-size:35rpx; 
+}
+
+/*右边组件的样式*/
+.arrow1,.arrow2,.arrow6{
+  position: absolute; 
+  right: 50rpx;
+  font-size:45rpx; 
+}
+.arrow5{
+  position: absolute; 
+  right: 25rpx;
+
+}
+
+/*退出登录的样式*/
+.exitbtn{
+  position: relative; 
+  font-size:35rpx; 
+  width: 100%;
+  height:100rpx;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  border-bottom: 8rpx solid lightgray;
+}
+
+
+

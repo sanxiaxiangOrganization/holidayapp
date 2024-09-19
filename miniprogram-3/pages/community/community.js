@@ -1,66 +1,71 @@
 // pages/community/community.js
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
+    comments: [
+      { id: 1, text: "这是第一条评论这是第一条评论这是第一条评论这是第一条评论", author: "用户A", timestamp: "2024-07-27T10:00:00Z" },
+      { id: 2, text: "这是第二条评论这是第二条评论这是第二条评论这是第二条评论", author: "用户B", timestamp: "2024-07-27T11:00:00Z" }
+    ],
+    commentText: '',
+    isUserLogged: false, // 初始未登录
+    author: '' // 作者名称，登录后获取
+  },
+  onLoad: function() {
+    this.checkLoginStatus();
+  },
+  handleInput: function(e) {
+    if (this.data.isUserLogged) {
+      this.setData({
+        commentText: e.detail.value
+      });
+    }
+    else{
+      this.setData({
+        commentText: e.detail.value
+      });
+    }
 
   },
+  checkLoginAndPublish: function() {
+    if (!this.data.isUserLogged) {
+      this.login();
+      return;
+    }
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad(options) {
-
+    const newComment = {
+      text: this.data.commentText,
+      author: this.data.author,
+      timestamp: new Date().toISOString() // 使用当前时间戳
+    };
+    this.setData({
+      comments: [newComment, ...this.data.comments], // 添加新评论
+      commentText: '' // 清空输入框
+    });
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {
-
+  login: function() {
+    wx.getUserProfile({
+      desc: '用于完善会员资料',
+      success: (res) => {
+        this.setData({
+          isUserLogged: true,
+          author: res.userInfo.nickName
+        });
+        wx.showToast({
+          title: '登录成功',
+          icon: 'success'
+        });
+      },
+      fail: () => {
+        wx.showToast({
+          title: '登录失败',
+          icon: 'none'
+        });
+      }
+    });
   },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload() {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage() {
-
+  checkLoginStatus: function() {
+    // 这里可以模拟检查登录状态，实际开发中应从后端获取
+    this.setData({
+      isUserLogged: false // 模拟未登录状态
+    });
   }
-})
+});

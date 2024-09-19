@@ -1,1 +1,19 @@
 /* pages/cover/cover.wxss */
+.cover {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 1219rpx; /* 使根容器充满整个屏幕 */
+  background-color: #f5f5f5; /* 背景色 */
+}
+
+.startbutton {
+  background-color: #3cc51f; /* 按钮背景色 */
+  color: white; /* 按钮文字颜色 */
+  border-radius: 50rpx; /* 按钮边框圆角 */
+  padding: 10px 20px; /* 按钮内边距 */
+  font-size: 16px; /* 按钮文字大小 */
+  border: none; /* 无边框 */
+  
+}

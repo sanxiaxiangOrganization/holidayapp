@@ -1,16 +1,16 @@
 {
   "pages": [
+    "pages/cover/cover",
     "pages/landscape/landscape",
     "pages/landscape_detail/landscape_detail",
     "pages/logs/logs",
-    "pages/cover/cover",
     "pages/mine/mine",
     "pages/community/community"
   ],
   "window": {
-    "navigationBarTextStyle": "white",
+    "navigationBarTextStyle": "black",
     "navigationBarTitleText": "大湖长风",
-    "navigationBarBackgroundColor": "#ff0000",
+    "navigationBarBackgroundColor": "#ffffff",
     "enablePullDownRefresh": false,
     "backgroundColor": "#efefef",
     "backgroundTextStyle": "dark"
@@ -20,20 +20,20 @@
       {
         "pagePath": "pages/landscape/landscape",
         "text": "景点",
-        "iconPath": "/images/landscape.png",
-        "selectedIconPath": "/images/landscape_active.png"
+        "iconPath": "/images/icon/landscape.png",
+        "selectedIconPath": "/images/icon/landscape_active.png"
       },
       {
         "pagePath":"pages/community/community",
         "text":"社区",
-        "iconPath":"images/community.png",
-        "selectedIconPath":"images/community_active.png"
+        "iconPath":"images/icon/community.png",
+        "selectedIconPath":"images/icon/community_active.png"
       },
       {
         "pagePath": "pages/mine/mine",
         "text": "我的",
-        "iconPath": "/images/mine.png",
-        "selectedIconPath": "/images/mine_active.png"
+        "iconPath": "/images/icon/mine.png",
+        "selectedIconPath": "/images/icon/mine_active.png"
       }
     ]
   },

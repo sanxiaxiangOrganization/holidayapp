@@ -7,7 +7,13 @@ Page({
   data: {
 
   },
-
+  navigateToLandscape(){
+    wx.switchTab({
+      url: '/pages/landscape/landscape',
+    })
+    console.log("风景点击");
+   
+  },
   /**
    * 生命周期函数--监听页面加载
    */

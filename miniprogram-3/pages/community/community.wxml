@@ -1,2 +1,13 @@
-<!--pages/community/community.wxml-->
-<text>pages/community/community.wxml</text>
+<!-- pages/community/community.wxml -->
+<view class="container">
+  <view class="comments-list">
+    <view class="comment" wx:for="{{comments}}" wx:key="index">
+      <text class="comment-content">{{item.text}}</text>
+      <text class="comment-info">{{item.author}} ({{item.timestamp}})</text>
+    </view>
+  </view>
+  <view class="input-area">
+    <input class="input-text" placeholder="请输入您的评论" bindinput="handleInput" />
+    <button class="publish-button" bindtap="checkLoginAndPublish">发布</button>
+  </view>
+</view>

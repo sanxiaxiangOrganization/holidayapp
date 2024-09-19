@@ -1,5 +1,6 @@
 <!--pages/cover/cover.wxml-->
-<view>
-  <text>pages/cover/cover.wxml</text>
-  
+<view class="cover" style="background-image: url('/images/cover/cover.jpg'); background-size: cover; background-position: center;">
+  <button class="startbutton" bindtap="navigateToLandscape">
+    开启大湖之旅
+  </button>
 </view>
