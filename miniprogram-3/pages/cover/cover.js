@@ -9,7 +9,7 @@ Page({
   },
   navigateToLandscape(){
     wx.switchTab({
-      url: '/pages/landscape/landscape',
+      url: '../landscape/landscape',
     })
     console.log("风景点击");
    

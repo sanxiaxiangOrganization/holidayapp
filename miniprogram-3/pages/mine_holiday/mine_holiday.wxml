@@ -1,0 +1,43 @@
+<!--pages/mine/mine.wxml-->
+
+<!--头像和昵称-->
+<view class="hblock">
+  <image class="head" src="{{userPic}}"></image>
+
+  <!--用户名和个性签名-->
+  <view class="name">{{userName}}</view>  
+  
+</view>
+
+<view class="editblock"  bindtap='editHandler'>
+<!--编辑资料-->
+   <image class="edit"   src="/images/edit.png" />
+   <view class="edit2"  >编辑资料</view>
+   <view class="arrow1" >></view>
+</view>
+
+<view class="assessmentblock"  bindtap='arrowHandler2'>
+<!--之前做出过的评价-->
+   <image class="assessment"   src="/images/assessment.png" />
+   <view class="assessment2"  >我的评价</view>
+   <view class="arrow2" >></view>
+</view>
+
+
+  <!--我的订单-->
+<view class="orderblock"  bindtap='arrowHandler3'>
+  <image class="order" src="/images/order.png" />
+   <view class="order2">我的订单</view>
+   <view class="arrow3" >></view>
+</view>
+
+  <!--帮助反馈-->
+<view class="feedbackblock" bindtap="feedbackHandler">
+  <image class="feedback" src="/images/feedback.png" />
+   <view class="feedback2" >帮助反馈</view>
+   <view class="arrow5" >></view>
+</view>
+
+<!--退出登录-->
+   <view class='exitbtn' bindtap='exitHandler'>退出登录</view>
+

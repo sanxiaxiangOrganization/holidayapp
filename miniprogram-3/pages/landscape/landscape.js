@@ -10,7 +10,16 @@ Page({
     vertical: false,
     autoplay: true,
     interval: 2000,
-    duration: 500
+    duration: 500,
+
+
+    landscapeList:[
+      {picture:'/images/A (1).jpg',name:'县工委旧址'},
+      {picture:'/images/dhz/4.jpg',name:'大湖寨'},
+      {picture:'/images/hxw/1.jpg',name:'何新屋'},
+      {picture:'/images/hxw/1.jpg',name:'何新屋'},
+      {picture:'/images/hxw/1.jpg',name:'何新屋'}
+    ],
   },
   changeIndicatorDots() {
     this.setData({
@@ -19,7 +28,7 @@ Page({
   },
   navigateToDetail(){
     wx.navigateTo({
-      url: '/pages/landscape_detail/landscape_detail',
+      url: '../landscape_detail/landscape_detail',
     })
     console.log("导航点击");
   },

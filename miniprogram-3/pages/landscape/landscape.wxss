@@ -1,14 +1,66 @@
 /* pages/landscape/landscape.wxss */
+.container{
+  height: 100%;
+  width: 100%;
+  padding: 0%;
+  box-sizing: border-box;
+}
+/*最顶上那一条*/
+.notification_bar{
+  display: flex;
+  width: 100%;
+  align-items: center;
+  padding: 0;
+  height: 25%;
+  overflow: hidden;
+  border: 1rpx solid black;
+}
+.notification_bar_left {
+  display: flex;
+  width: 80%;
+  align-items: center;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  border-right: 1rpx solid black;
+}
+/*左边图片的大小*/
+.bar_left {
+  margin-left: 10rpx;
+  width: 55rpx;
+  height: 60rpx;
+}
+/*文字大小和颜色，距离图片多少像素显示*/
+.bar_text {
+  margin-left: 20rpx;
+  font-size: 18px;
+  color: #43c74c;
+}
+/*右边推荐路线*/
+.bar_right{
+  display: flex;
+  justify-content: center;
+  width: 20%;
+  align-items: center;
+  padding: 0;
+  height:100%;
+}
 
-
-
+/*
+.landscapeblock{
+  position: absolute;
+  width: 100%;
+  padding: 0;
+  box-sizing: border-box; /* padding不会撑开容器 
+  margin:0;
+}
 .landscape_card{
   border: 3rpx solid red;
-  width: 749rpx;
+  width: 100%;
   height:400rpx;
 }
 
-/* 动画效果 */
+/* 动画效果 
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -22,16 +74,75 @@
   }
 }
 .landscape_text{
-  color: white; /* 字体颜色为白色 */
+  color: white; /* 字体颜色为白色 
   font-size: 80rpx;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   text-shadow: 2rpx 2rpx 4rpx rgba(0,0,0,0.5);
   font-weight: bold;
   animation: fadeIn 1s ease-in-out;
-  /* 增加文字特色：倾斜效果 */
+  /* 增加文字特色：倾斜效果
   transform: rotate(-10deg);
   overflow: hidden;
   white-space: nowrap;
+}
+*/
+
+
+/*滑动框——景点详细介绍*/
+.landscapeBlock{
+  width: 100%;
+  height: 75%;
+  padding: 0%;
+  margin: 0%;
+}
+.landscape-item{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0rpx;
+  margin:0;
+  box-sizing: border-box; /* padding不会撑开容器 */
+  border-bottom: 1rpx solid black; 
+  margin-bottom: 0;
+}
+/*景点代表图片*/
+.pictureBlock{
+  height: 100%;
+  border-right: 1rpx solid black;
+  display: flex;
+  justify-content: center;
+}
+.picture{
+  width: 400rpx;
+  height: 300rpx;
+  margin-bottom: 0;
+}
+/*景点的详细信息（除图片外的）*/
+.profileBlock{
+  padding: 10rpx;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 10rpx;
+}
+.name{
+  font-size: 40rpx;
+  font-weight: bold;
+  margin-bottom: 20rpx;
+}
+/*查看详情的按钮*/
+.checkDetail{
+  margin-top: 20rpx;
+  width: 140rpx;
+  height: 30rpx;
+  padding: 10rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1rpx solid gray;
+  border-radius: 8rpx; /* 边框圆角 */
+  color: gray;
 }
 
 

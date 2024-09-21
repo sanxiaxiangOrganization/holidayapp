@@ -1,0 +1,40 @@
+<!--pages/information/information.wxml-->
+<!--头像-->
+<view class="hblock">
+  <image class="head" src="{{userPic}}" bindtap="headHandler"></image>
+</view>
+<view class="container">
+<!--昵称-->
+  <view class="line">
+    <view class="name" >昵称</view>
+    <view class="nicheng" >{{userName}}</view>
+    <view class="imageblock">
+      <image class="image" src="/images/pencil.png" bindtap='pencilHandler1' onclick="openInput" ></image>
+    </view>
+   </view>
+
+  <!--手机号-->
+  <view class="line">
+    <view class="phoneNumber" >手机号</view>
+    <view class="gexing" >{{phoneNumber}}</view>
+    <view class="imageblock">
+        <image class="image" src="/images/pencil.png"bindtap='pencilHandler2' />
+      </view>
+   </view>
+
+</view>
+ <!--下面是点击小铅笔后才会显现出来的模块-->
+   <view class="bigBlock" wx:if="{{clickPencil1||clickPencil2}}">
+    <view class="background"></view>
+     <!--修改的模块-->
+    <view class="modifyName">
+      <view class="text_style" wx:if="{{clickPencil1}}">请输入新的昵称：</view>
+      <view class="text_style" wx:else>请输入新的手机号：</view>
+      <input class="modify_input" bind:input="inputHandler" type="text"/>
+      <!--取消和确认按钮-->
+      <view class="block2">
+        <view class="cancel" bindtap="cancelHandler" >取消</view>
+        <view class="confirm" bindtap="confirmHandler">确认</view>
+      </view>
+    </view>
+  </view>
