@@ -1,1 +1,16 @@
 /* pages/landscape/landscape_detail/landscape_detail.wxss */
+page {
+  height: 100%;
+}
+.swiperBlock {
+  width: 100%;
+  height: 40%;
+}
+.slide-image {
+  width: 100%;
+  height: 100%;
+}
+.T1{
+  font-size: xx-large;
+  font-weight: bolder;
+}

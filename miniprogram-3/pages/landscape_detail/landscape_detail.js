@@ -5,14 +5,30 @@ Page({
    * 页面的初始数据
    */
   data: {
-    swiperList:[]
+    //哪个景点
+    myLandscapeName:"大湖寨",
+    /*景点的照片*/
+    dhzList: [
+      '/images/dhz/1.jpg',
+      '/images/dhz/2.jpg',
+      '/images/dhz/3.jpg',
+      '/images/dhz/4.jpg'
+    ],
+
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-
+    var that=this
+   //进入该页面时传过来的参数指明了用户想要看哪个景点
+    that.setData({
+      myLandscapeName:options
+    }, function() {
+      // 在 setData 完成后执行
+      console.log("此时myLandscapeName的值为", that.data.myLandscapeName);
+    });
   },
 
   getSwiperList(){
