@@ -1,13 +1,32 @@
 <!--pages/landscape/landscape.wxml-->
+<view class="container">
+  <!--滚动通知栏-->
+  <view class="notification_bar">
+    <view class="notification_bar_left">
+      <image class="bar_left" src="/images/notice.png"/>
+      <view class="bar_text">7月份会有荷花节</view>
+    </view>
+    <view class="bar_right" bind:tap="routeRecommend">推荐路线</view>
+  </view>
+
+  <!--渲染景点详细信息-->
+  <scroll-view class="landscapeBlock" scroll-y="true"  bindscrolltoupper="upper" bindscrolltolower="lower" bindscroll="scroll" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
+    <view class="landscape-item" wx:for="{{landscapeList}}" wx:key="index">
+        <view class="pictureBlock">
+          <image class="picture" src="{{item.picture}}"></image>
+        </view>
+        <view class="profileBlock">
+          <view class="name">{{item.name}}</view>  
+          <view>推荐指数：4.8分</view>
+          <view class="checkDetail" bind:tap="navigateToDetail">查看详情</view>
+        </view>
+    </view>
+  </scroll-view>
+</view>
+<!--
 <view class="landscape_view">
 
-  <scroll-view scroll-y="true" enable-passive="true" class="landscape_scroll_view">
-    <view>
-      推荐路线
-      <image></image>
-    </view>
-
-    <view class="landscape_card" bind:tap="navigateToDetail" style="background-image: url('/images/A (1).jpg'); background-size: 80%; background-position: center;object-fit: cover;">
+      <view class="landscape_card" bind:tap="navigateToDetail" style="background-image: url('/images/A (1).jpg'); background-size: 80%; background-position: center;object-fit: cover;">
       <view class="landscape_text">县工委旧址</view>
     </view>
 
@@ -28,3 +47,4 @@
     </view>
   </scroll-view>
 </view>
+-->

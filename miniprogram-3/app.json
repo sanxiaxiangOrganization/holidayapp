@@ -1,10 +1,12 @@
 {
   "pages": [
-    "pages/cover/cover",
     "pages/landscape/landscape",
+    "pages/cover/cover",
+    
     "pages/landscape_detail/landscape_detail",
     "pages/logs/logs",
-    "pages/mine/mine",
+    "pages/mine_holiday/mine_holiday",
+    "pages/edit_information/edit_information",
     "pages/community/community"
   ],
   "window": {
@@ -30,7 +32,7 @@
         "selectedIconPath":"images/icon/community_active.png"
       },
       {
-        "pagePath": "pages/mine/mine",
+        "pagePath": "pages/mine_holiday/mine_holiday",
         "text": "我的",
         "iconPath": "/images/icon/mine.png",
         "selectedIconPath": "/images/icon/mine_active.png"

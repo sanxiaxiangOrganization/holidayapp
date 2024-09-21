@@ -1,0 +1,130 @@
+/* pages/information/information.wxss */
+.hblock{
+  width: 100%;
+  height: 250rpx;
+  align-items: center;
+  display: flex;
+  justify-content: space-around;
+  
+  }
+  .head{
+    width: 200rpx;
+    height: 200rpx;
+    border-style: solid;
+  border-color:  lightgray;
+  border-width: 0.5rpx;
+  }
+  
+  .container {
+   
+    width: 100%; /* 宽度占整个页面的90% */
+    height:200rpx;
+    display: flex;
+    flex-direction: column;
+    border-top: 5px solid rgba(58, 57, 57, 0.1); /* 设置上边界颜色，较浅色 */
+    border-bottom:5px solid rgba(58, 57, 57, 0.1) ;
+    /*box-shadow: 0 4px 2px -2px #e6e6e6; /* 添加阴影效果，只有底边有 */
+    border-radius: 8rpx; /* 边框圆角 */
+    padding: 0rpx;
+    box-sizing: border-box; /* padding不会撑开容器 */
+    position: relative;
+    background-color: white;/*将view设置成白色，∵我此时将页面的背景色设置成了灰色*/
+  }
+  
+  .line{
+    height: 100rpx;
+    width: 100%;
+    border-bottom: 0.5rpx solid lightgray;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  .birthline{
+    height: 100rpx;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  /*内容的样式*/
+  .name,.phoneNumber{
+    position: absolute;
+    left: 50rpx;
+    font-size:32rpx; 
+  }
+  
+  .nicheng,.gexing{
+    position: absolute;
+    left: 300rpx;
+    font-size:32rpx; 
+  }
+
+  
+  /*右边组件的样式*/
+  .image{
+    width: 50rpx;
+    height: 50rpx;
+  }
+  .imageblock{
+    position: absolute;
+    right: 50rpx;
+    font-size:32rpx; 
+  }
+  /*修改模块的样式*/
+  .modifyName{
+    position: absolute;  
+    height: 20%;
+    width: 50%;
+    top: 50%;  
+    left: 50%;  
+    transform: translate(-50%, -50%); /* 使模块居中 */  
+    background-color: white; /* 模块背景 */  
+    padding: 20px;  
+    border-radius: 10px;  
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* 模块阴影 */
+  }
+  .bigBlock{
+    width: 100%;
+    height: 100%;
+  
+  }
+  .background {  
+    position: absolute;  
+    top: 0;  
+    left: 0;  
+    width: 100%;  
+    height: 100%;  
+    background-color: rgba(0, 0, 0, 0.5); /* 黑色半透明背景 */  
+  }  
+  .modify_input{
+    margin-top: 20rpx;
+    border-bottom: black 1rpx solid;
+    height: 80rpx;
+    box-shadow: 0 4px 2px -2px #e6e6e6; /* 添加阴影效果，只有底边有 */
+  }
+
+  /*确认和取消的按钮*/
+  .block2{
+    margin-top: 20rpx;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    
+  }
+  .cancel{
+    position: relative;
+    padding: 5px;  
+    border-radius: 10px; 
+    border-bottom: black 1rpx solid;
+  }
+  .confirm{
+    position: relative;
+    padding: 5px;  
+    border-radius: 10px; 
+    border-bottom: black 1rpx solid;
+  }
+  .text_style{
+    font-size: 18px; /* 中等字体大小 */  
+    font-weight: bold; /* 加粗 */  
+  }
