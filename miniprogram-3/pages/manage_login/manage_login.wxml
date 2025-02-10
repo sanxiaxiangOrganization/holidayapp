@@ -1,0 +1,16 @@
+<!--pages/manage_login/manage_login.wxml-->
+<view class="cover" style="background-image: url('/images/cover/cover.jpg'); background-size: cover; background-position: center;">
+  <view class="login-box">   
+    <form bindsubmit="onSubmit">  
+      <view class="form-item">  
+        <text class="label">管理员名</text>  
+        <input class="input" type="text" name="username" placeholder="请输入用户名" required />  
+      </view>  
+      <view class="form-item">  
+        <text class="label">密码</text>  
+        <input class="input" type="password" name="password" placeholder="请输入密码" required />  
+      </view>  
+      <button class="btn" formType="submit">登录</button>  
+    </form>  
+  </view>  
+</view>

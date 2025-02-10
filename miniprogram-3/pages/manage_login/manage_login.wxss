@@ -1,0 +1,46 @@
+/* pages/manage_login/manage_login.wxss */
+.cover {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 1219rpx; /* 使根容器充满整个屏幕 */
+  background-color: #f5f5f5; /* 背景色 */
+}
+
+
+.login-box {  
+  width: 300px;  
+  padding: 20px;  
+  background-color: white;  
+  border-radius: 5px;  
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);  
+}  
+
+
+.form-item {  
+  margin-bottom: 15px;  
+}  
+
+.label {  
+  display: block;  
+  margin-bottom: 5px;  
+  font-weight: bold;
+}  
+
+.input {  
+  width: 95%;  
+  padding: 10px;  
+  border: 1px solid #ccc;  
+  border-radius: 4px;  
+}  
+
+.btn {  
+  width: 100%;  
+  padding: 10px;  
+  background-color: #3cc51f;  
+  color: white;  
+  border: none;  
+  border-radius: 4px;  
+  font-size: 16px;  
+}
