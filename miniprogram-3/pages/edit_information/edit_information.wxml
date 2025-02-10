@@ -17,9 +17,8 @@
   <view class="line">
     <view class="phoneNumber" >手机号</view>
     <view class="gexing" >{{phoneNumber}}</view>
-    <view class="imageblock">
-        <image class="image" src="/images/pencil.png"bindtap='pencilHandler2' />
-      </view>
+      <button class="phonetext" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">
+        绑定</button>
    </view>
 
 </view>

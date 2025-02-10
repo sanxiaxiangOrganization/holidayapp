@@ -53,34 +53,31 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-
+    var app=getApp()
+    //如果用户是第一次登录，就提示用户绑定手机号
+    if (app.globalData.firstLogin) {
+      wx.showModal({
+        title: '绑定手机号',
+        content: '现在也可以不绑定，后续前往 我的 -> 编辑资料 中绑定手机号',
+        showCancel: true,
+        cancelText: '暂不绑定',
+        confirmText: '去绑定',
+        confirmColor: '#007AFF',
+        success(res) {
+          if (res.confirm) {
+            wx.navigateTo({
+              url: '/pages/edit_information/edit_information' // 去绑定手机号的页面
+            });
+          }
+        }
+      });
+    }
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {
-
-  },
-
-  /**
+   /**
    * 生命周期函数--监听页面显示
    */
   onShow() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload() {
 
   },
 

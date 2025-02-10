@@ -128,3 +128,26 @@
     font-size: 18px; /* 中等字体大小 */  
     font-weight: bold; /* 加粗 */  
   }
+
+  /*绑定手机号的按钮*/
+  .phonetext {
+    position: absolute !important;
+    right: 50rpx !important;
+    font-size: 32rpx !important;
+    width: 100rpx !important;
+    height: 50rpx !important;
+    padding: 10rpx !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    border: 1rpx solid #43c74c !important;
+    border-radius: 8rpx !important; /* 边框圆角 */
+    color: #43c74c !important;
+    background-color: transparent !important; /* 透明背景 */
+    line-height: 30rpx !important; /* 让文本垂直居中 */
+  }
+  
+  .phonetext::after {
+    border: none !important; /* 取消默认点击高亮效果 */
+  }
+  

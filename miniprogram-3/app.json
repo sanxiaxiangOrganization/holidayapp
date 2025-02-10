@@ -1,13 +1,16 @@
 {
   "pages": [
-    "pages/landscape/landscape",
     "pages/cover/cover",
-    
+    "pages/edit_information/edit_information",
+    "pages/landscape/landscape",
+    "pages/mine_holiday/mine_holiday",
+    "pages/manage_login/manage_login",
+       
     "pages/landscape_detail/landscape_detail",
     "pages/logs/logs",
-    "pages/mine_holiday/mine_holiday",
-    "pages/edit_information/edit_information",
+    
     "pages/community/community"
+    
   ],
   "window": {
     "navigationBarTextStyle": "black",
@@ -26,10 +29,10 @@
         "selectedIconPath": "/images/icon/landscape_active.png"
       },
       {
-        "pagePath":"pages/community/community",
-        "text":"社区",
-        "iconPath":"images/icon/community.png",
-        "selectedIconPath":"images/icon/community_active.png"
+        "pagePath": "pages/community/community",
+        "text": "社区",
+        "iconPath": "images/icon/community.png",
+        "selectedIconPath": "images/icon/community_active.png"
       },
       {
         "pagePath": "pages/mine_holiday/mine_holiday",

@@ -5,8 +5,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    userPic:'/images/A (1).jpg',//用户头像wx.getStorageSync('userPic')
-    userName:'昵称',
+    userPic:wx.getStorageSync('userPic'),
+    userName:wx.getStorageSync('nickName')
   },
 //编辑资料处理函数
 editHandler(){
@@ -20,7 +20,7 @@ editHandler(){
     exitHandler(){
       console.log("用户成功退出登录"),
       wx.reLaunch({
-        url: '/pages/login/login'
+        url: '/pages/cover/cover'
       });
     },
   
@@ -63,8 +63,7 @@ editHandler(){
           visibleToFriends:!e.detail.value,
         },
         header: {
-          'Authorization':wx.getStorageSync('token'),
-          'content-type': 'application/x-www-form-urlencoded' // 默认值
+           'content-type': 'application/x-www-form-urlencoded' // 默认值
         },
         success(res) {
           console.log('设置可见性请求成功:', res.data);
@@ -100,14 +99,13 @@ editHandler(){
     onShow: function () {
     
     var app=getApp();
-    app.getUserByOpenid(wx.getStorageSync('openid'));
       wx.hideHomeButton();
       this.setData({
-        userName:wx.getStorageSync('userName'),//wx.getStorageSync('userName'),
+        userName:wx.getStorageSync('nickName'),//wx.getStorageSync('userName'),
         phoneNumber:wx.getStorageSync('phoneNumber'),//wx.getStorage('phoneNumber'),
         userPic:wx.getStorageSync('userPic'),
       })
       console.log("——————————————————————读到的用户的数据————————————————————");
-      console.log(this.data.userName,"\n",this.data.phoneNumber,"\n",this.data.userPic,"\n");
+      console.log("用户名:"+this.data.userName,"\n","手机号:"+this.data.phoneNumber,"\n","头像:"+this.data.userPic,"\n");
     },
   })

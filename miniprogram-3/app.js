@@ -14,6 +14,6 @@ App({
     })
   },
   globalData: {
-    userInfo: null
+    firstLogin:true//判断用户是不是第一次登录，如果是第一次登录，则提示用户绑定手机号
   }
 })

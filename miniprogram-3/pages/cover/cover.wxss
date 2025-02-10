@@ -17,3 +17,28 @@
   border: none; /* 无边框 */
   
 }
+.block{
+  width: auto;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+/*设置字体的格式*/
+.blackText{
+  font-weight: bold;
+  color: lightgray;
+  margin-top: 30rpx;
+}
+/*设置灰色字体的格式*/
+.grayText{
+  font-weight: bold;
+  margin-top: 20rpx;
+  color:lightgray;
+}
+
+/*授权登录的按钮的格式*/
+.button{
+margin-top: 50rpx;
+}

@@ -5,7 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    userName:wx.getStorageSync('userName'),//wx.getStorageSync('userName'),
+    userName:wx.getStorageSync('nickName'),//wx.getStorageSync('userName'),
     phoneNumber:wx.getStorageSync('phoneNumber'),//wx.getStorage('phoneNumber'),
     userPic:wx.getStorageSync('userPic'),//wx.getStorageSync('userPic'),//用户头像
     clickPencil1:false,//如果点击小铅笔1，表示用户要修改昵称，则显示这个模块
@@ -54,17 +54,12 @@ Page({
 
          //调用接口将更新后的用户信息保存到服务器
         wx.request({
-          url: 'http://8.134.128.39:8080/user/updateUser', // 更新用户(头像）的接口地址
+          url: '', // 更新用户(头像）的接口地址？？？？？？？？？？？？？？？？？？？？？？？？？
           method: 'PUT',
           data:{
-            "openid": wx.getStorageSync('openid'), 
             "username":wx.getStorageSync('nickName'), 
             "userPic":userPic, 
-            "visibleToFriends":wx.getStorageSync('visibleToFriends'), 
-            "count": wx.getStorageSync('count'), 
-            "hasFamily":wx.getStorageSync('hasFamily'),
-            "createTime":wx.getStorageSync('createTime'), 
-            "updateTime":wx.getStorageSync('updateTime'),
+           
           },
           header: {
             'Authorization':wx.getStorageSync('token'),
@@ -131,7 +126,8 @@ Page({
       /*检查是否修改成功 */
      console.log("修改后的昵称：",app.globalData.userName);
      //将修改后的昵称保存到本地——快
-     wx.setStorageSync('userName',app.globalData.userName);
+     wx.setStorageSync('nickName',wx.getStorageSync('inputValue'));
+
     }
      /*如果是修改手机号*/
      else{
@@ -141,14 +137,78 @@ Page({
       app.globalData.phoneNumber=wx.getStorageSync('inputValue');
        /*检查是否修改成功 */
      console.log("修改后的手机号：",app.globalData.phoneNumber);
-     wx.setStorageSync('phoneNumber',app.globalData.phoneNumber);
+     wx.setStorageSync('phoneNumber',wx.getStorageSync('inputValue'));
      }
      
+     /*调用更新游客的接口将用户更新的东西放到数据库中*/
+        wx.request({
+          url: 'http://localhost:8080/tourist/update', // 更新游客的接口
+          method: 'PUT',
+          data:{
+            "tourist_id": wx.getStorageSync('tourist_id'), 
+            "tourist_name":wx.getStorageSync('nickName'), 
+            "tourist_password":"123456",//默认123456 
+          },
+          header: {
+            'content-type': 'application/json' // 默认值
+          },
+          success(res) {
+            console.log('更新用户信息成功:', res.data);
+            
+           
+          },
+          fail(err) { 
+            console.error('更新用户信息请求失败:', err);
+          }
+        
+        })
+      
      /*无论是修改什么，最后都应该回到原来的视图，并进行重新渲染 */
      this.setData({
       clickPencil1:false,
       clickPencil2:false
      })
+  },
+  //绑定手机号处理函数
+  getPhoneNumber(e) {
+    console.log("————————————————————————————绑定手机号——————————————————————————");
+    console.log("手机号信息", e);
+    if (e.detail.errMsg === "getPhoneNumber:ok") {
+      // 用户同意授权
+      wx.login({
+        success: (res) => {
+          if (res.code) {
+            console.log("登录成功，code:", res.code);
+
+            // 发送 code、encryptedData、iv 到后端解密
+            wx.request({
+              url: "https://your-backend.com/api/decryptPhoneNumber",
+              method: "POST",
+              data: {
+                code: res.code, // 登录凭证
+                encryptedData: e.detail.encryptedData, // 加密的手机号数据
+                iv: e.detail.iv, // 解密向量
+              },
+              success: (response) => {
+                console.log("手机号解密结果:", response.data);
+                this.setData({
+                  phoneNumber: response.data.phoneNumber, // 绑定手机号
+                });
+                wx.showToast({
+                  title: "手机号绑定成功",
+                  icon: "success",
+                });
+              },
+              fail: (err) => {
+                console.error("手机号解密失败", err);
+              },
+            });
+          }
+        },
+      });
+    } else {
+      console.log("用户拒绝授权手机号", e.detail.errMsg);
+    }
   },
   /**
    * 生命周期函数--监听页面加载
@@ -157,7 +217,7 @@ Page({
     var app=getApp();
     app.getUserByOpenid(wx.getStorageSync('openid'))
     this.setData({
-      userName:wx.getStorageSync('userName'),//wx.getStorageSync('userName'),
+      userName:wx.getStorageSync('nickName'),//wx.getStorageSync('userName'),
       phoneNumber:wx.getStorageSync('phoneNumber'),//wx.getStorage('phoneNumber'),
       userPic:wx.getStorageSync('userPic'),
     })
