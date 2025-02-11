@@ -1,4 +1,13 @@
 <!--pages/landscape_detail/landscape_detail.wxml-->
-<view>
-
-</view>
+<!--轮播图-->
+<swiper class="swiperBlock" autoplay="true" interval="3000" duration="500" indicator-dots="true" circular="true">
+<!--swiper组件中不能放view,所以要用block-->
+  <block wx:if="{{myLandscapeName=='大湖寨'}}">
+    <block wx:for="{{dhzList}}" wx:key="index">
+      <swiper-item>
+        <image src="{{item}}" class="slide-image" />
+      </swiper-item>
+    </block>
+  </block>
+</swiper>
+<view class="T1">{{myLandscapeName}}</view>

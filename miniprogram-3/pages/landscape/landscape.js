@@ -26,11 +26,13 @@ Page({
       indicatorDots: !this.data.indicatorDots
     })
   },
-  navigateToDetail(){
+  navigateToDetail(e){
+    /*将对应景点的名字当参数传给页面*/
+    const name=e.currentTarget.dataset.name
     wx.navigateTo({
-      url: '../landscape_detail/landscape_detail',
+      url: `../landscape_detail/landscape_detail?name=${name}`,
     })
-    console.log("导航点击");
+    console.log("=================用户要查看",name,"的详细信息==============");
   },
   changeAutoplay() {
     this.setData({
