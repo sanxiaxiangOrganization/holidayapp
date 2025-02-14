@@ -1,0 +1,38 @@
+<!--pages/fillComment/fillComment.wxml-->
+<view class="container5">
+  <view class="landName">{{myLandscapeName}}评价</view>
+
+  <!-- 星级评价 -->
+  <view class="rating">
+    <text>评分：</text>
+    <view class="stars">
+      <block wx:for="{{stars}}" wx:key="index">
+        <image class="star" src="{{index < selectedStars ? '/images/star_active.png' : '/images/star.png'}}" data-index="{{index}}" bindtap="setRating"></image>
+      </block>
+    </view>
+  </view>
+
+  <!-- 手写评价 -->
+  <textarea class="review-text" placeholder="请输入您的评价" bindinput="onInput" value="{{reviewText}}"></textarea>
+
+  <!-- 上传图片 -->
+  <view class="cblock" bindtap="chooseImage">
+    <image class="icover" src="/images/camera.png"></image>
+    <text class="text">上传图片</text>
+  </view>
+
+  <!-- 显示上传的图片 -->
+  <view class="image-list">
+    <block wx:for="{{imageList}}" wx:key="index">
+      <view class="image-item">
+        <image class="uploaded-image" src="{{item}}" mode="aspectFill"></image>
+        <image class="delete-icon" src="/images/delete-icon.png" data-index="{{index}}" bindtap="deleteImage"></image>
+      </view>
+    </block>
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="submit">
+    <button bindtap="submitReview">提交评价</button>
+  </view>
+</view>

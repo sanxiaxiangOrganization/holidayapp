@@ -1,0 +1,133 @@
+/* pages/fillComment/fillComment.wxss *//* 页面容器 */
+.container5 {
+  margin:auto;
+  padding: 10rpx;
+  width: 90%;
+  height: 100%;
+}
+/*景点名字*/
+.landName{
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: large;
+  font-weight: bolder;
+  margin-bottom: 50rpx;
+}
+/* 星级评价 */
+.rating {
+  margin-bottom: 20px;
+  margin-left: 10rpx;
+  display: flex;
+  align-items: center;
+}
+
+.stars {
+  display: flex;
+}
+
+.star {
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+/* 评价输入框 */
+.review {
+  margin-bottom: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.review-text {
+  width: 94%;
+  height: 250rpx;
+  padding: 10px;
+  border: 1px solid #4CAF50;
+  border-radius: 5px;
+  font-size: 16px;
+  line-height: 1.5;
+  resize: none;
+}
+
+/* 图片上传区域 */
+.cblock,.icover1{
+  margin-top: 30rpx;
+  height: 150rpx;
+  width: 30%;
+  padding: 10rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #4CAF50;
+  border-radius: 5px;
+}
+/*图标的样式*/
+.icover{
+  width: 80rpx;
+  height: 80rpx;
+}
+.text{
+  color:#515151;
+}
+.hblock{
+  margin-top: 30rpx;
+  display: flex;
+  height: 150rpx;
+  align-items: center;
+}
+/* 上传的图片 */
+.image-list {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.image-item {
+  position: relative;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+.uploaded-image {
+  width: 80px;
+  height: 80px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+.delete-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+
+
+/* 提交按钮 */
+.submit {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
