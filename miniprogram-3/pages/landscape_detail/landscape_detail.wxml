@@ -2,12 +2,99 @@
 <!--轮播图-->
 <swiper class="swiperBlock" autoplay="true" interval="3000" duration="500" indicator-dots="true" circular="true">
 <!--swiper组件中不能放view,所以要用block-->
-  <block wx:if="{{myLandscapeName=='大湖寨'}}">
+ <block wx:if="{{myLandscapeName=='大湖寨'}}">
     <block wx:for="{{dhzList}}" wx:key="index">
       <swiper-item>
         <image src="{{item}}" class="slide-image" />
       </swiper-item>
     </block>
   </block>
+  <swiper-item wx:else>
+        <image src="{{picture}}" class="slide-image" />
+      </swiper-item>
 </swiper>
+
+<!-- 景区名称 -->
 <view class="T1">{{myLandscapeName}}</view>
+
+<!-- 地点信息 + 导航按钮 -->
+<view class="location-container">
+  <view class="location">地点：{{land_detail.location}}</view>
+    <image src="/images/map.png" class="icon-image" bindtap="navigateToLocation"></image>
+</view>
+<!-- 致电景区 -->
+<view class="contact-container">
+  <view class="callBlock">致电景区：{{land_detail.telephone}}</view>
+  <image src="/images/call.png" class="icon-image" bindtap="makePhoneCall"></image>
+</view>
+
+
+<!-- 按钮区 -->
+<view class="button-container">
+  <view class="button-block">
+    <!-- 介绍按钮 -->
+    <view class="custom-button" bindtap="goToIntro" style="color: {{currentPage !== 'introduction'? 'black' : 'green'}}; box-shadow:{{currentPage !== 'introduction'? '0 4px 2px -2px lightgray' : ' 0 4px 2px -2px #c6ddc7'}}">
+      介绍
+    </view>
+    <!-- 评价按钮 -->
+    <view class="custom-button" bindtap="goToComments" style="color: {{currentPage === 'comments' ? 'green' : 'black'}}; box-shadow:{{currentPage === 'comments' ?  ' 0 4px 2px -2px #c6ddc7':'0 4px 2px -2px lightgray' }}">
+      评价
+    </view>
+  </view>
+</view>
+
+<!-- 显示不同的内容 -->
+<scroll-view scroll-y="true" class="content-area">
+  <!-- 介绍内容 -->
+  <view wx:if="{{currentPage !== 'comments'}}" class="introBlock">
+    <view class="content">何新屋，属半圆形客家围龙屋，有300多年的建筑历史，是连平县大湖老区人民解放战争时期的战斗旧址之一。 </view>
+      <view class="content">这座始建于清朝康熙年间的客家围龙屋，占地面积约16000多平方米，始建时为二重抱坪式。后经何新屋何氏家族的开枝散叶，扩建至九围，又因时代更迭，今仅保有最古老的四围。何新屋是人民解放战争时期的战斗旧址，拥有丰富的红色文化、契约文化、客家文化等非物质文化遗产，对研究客家民居、民俗、信仰文化及当地家训文化具有重要价值。
+    </view>
+  </view>
+  
+  <!-- 评价内容 -->
+  <view wx:if="{{currentPage === 'comments'}}">
+    <view class="content">这里是评价的内容</view>
+    <view class="container2">
+ 
+   <!-- 评分区域 -->
+   <view class="rating">
+    <view class="stars">
+      <text>⭐⭐⭐⭐⭐</text>
+    </view>
+    <view class="review-text">
+      <text>非常好的地方，推荐！</text>
+    </view>
+    <view class="review-date">
+      <text>日期：2025年2月13日</text>
+    </view>
+  </view>
+
+  <!-- 用户评论 -->
+  <view class="comments">
+    <view class="comment-item" wx:for="{{comments}}" wx:key="index">
+      <view class="user-info">
+        <text>{{item.username}}</text>
+        <text class="date">{{item.date}}</text>
+      </view>
+      <view class="user-rating">
+        <text>{{item.stars}}</text>
+      </view>
+      <view class="comment-content">
+        <text>{{item.content}}</text>
+      </view>
+    </view>
+  </view>
+  <!-- 底部操作 -->
+  <view class="bottom">
+    <view class="action-btn">查看所有评论</view>
+    <view class="action-btn" bind:tap="navigateToComment">去评论</view>
+  </view>
+</view>
+  </view>
+  
+</scroll-view>
+
+
+
+

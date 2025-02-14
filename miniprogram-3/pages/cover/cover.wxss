@@ -1,4 +1,7 @@
 /* pages/cover/cover.wxss */
+page {
+  height: 100%;
+}
 .cover {
   display: flex;
   flex-direction: column;

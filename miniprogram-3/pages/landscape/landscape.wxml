@@ -10,18 +10,20 @@
   </view>
 
   <!--渲染景点详细信息-->
-  <scroll-view class="landscapeBlock" scroll-y="true"  bindscrolltoupper="upper" bindscrolltolower="lower" bindscroll="scroll" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
+  <scroll-view class="landscapeBlock" scroll-y="true" bindscrolltoupper="upper" bindscrolltolower="lower" bindscroll="scroll" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
     <view class="landscape-item" wx:for="{{landscapeList}}" wx:key="index">
         <view class="pictureBlock">
-          <image class="picture" src="{{item.picture}}"></image>
+            <!-- 如果 pic_url 为空则显示默认图片 -->
+            <image class="picture" src="{{item.pic_url || '/images/dhz/4.jpg'}}"></image>
         </view>
         <view class="profileBlock">
-          <view class="name">{{item.name}}</view>  
-          <view>推荐指数：4.8分</view>
-          <view class="checkDetail" bind:tap="navigateToDetail" data-name="{{item.name}}">查看详情</view>
+            <view class="name">{{item.name}}</view>
+            <view>推荐指数：{{item.score}}</view>
+            <view class="checkDetail" bind:tap="navigateToDetail" data-name="{{item.name}}" data-id="{{item.landscape_id}}"  data-index="{{index}}" data-picture="{{item.pic_url}}">查看详情</view>
         </view>
     </view>
-  </scroll-view>
+</scroll-view>
+
 </view>
 <!--
 <view class="landscape_view">

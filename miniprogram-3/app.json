@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/cover/cover",
+    "pages/fillComment/fillComment",
     "pages/edit_information/edit_information",
     "pages/landscape/landscape",
     "pages/mine_holiday/mine_holiday",
