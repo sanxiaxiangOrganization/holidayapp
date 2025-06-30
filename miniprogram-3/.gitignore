@@ -12,3 +12,55 @@ $RECYCLE.BIN/
 
 # Node.js
 node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE
+.idea/
+.vscode/
+
+# 微信小程序
+project.private.config.json
+.wxapp/
+*.wxapkg
+.wxs.map
+.wxs.js.map
+
+# 开发配置文件（暂时排除）
+jsconfig.json
+typings/
+
+# 日志文件
+logs/
+*.log
+
+# 临时文件
+.tmp/
+temp/
+tmp/
+
+# 构建产物
+dist/
+build/
+out/
+
+# 测试
+coverage/
+*.lcov
+
+# 环境变量
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# 缓存
+.cache/
+.parcel-cache/
+
+# 其他
+*.tgz
+*.tar.gz
+.eslintcache
