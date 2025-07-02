@@ -2,12 +2,37 @@
 <view class="container">
   <view class="comments-list">
     <view class="comment" wx:for="{{comments}}" wx:key="index">
-      <text class="comment-content">{{item.text}}</text>
-      <text class="comment-info">{{item.author}} ({{item.timestamp}})</text>
+      <view class="landscapeBlock">
+        <text class="comment-landscape">对</text>
+        <text class="comment-landscape2">{{item.landscape_id}}</text>
+        <text class="comment-landscape">的评论：</text>
+      </view>
+      
+      <text class="comment-content">{{item.content}}</text>
+      <text class="comment-tourist">评论者：{{item.tourist_name}}</text>
+      <text class="comment-time">评论时间：{{item.time}}</text>
     </view>
   </view>
   <view class="input-area">
-    <input class="input-text" placeholder="请输入您的评论" bindinput="handleInput" />
-    <button class="publish-button" bindtap="checkLoginAndPublish">发布</button>
+    <view class="action-btn" bind:tap="chooseLandscape">去评论</view>
   </view>
 </view>
+ <!--下面是点击“去评论”后才会显现出来的模块-->
+ <view class="bigBlock" wx:if="{{chooseLandscape}}">
+    <view class="background"></view>
+    <view class="page-section">
+      <view class="landText">请选择要评价的景点:</view>
+      <view class="weui-cells weui-cells_after-title">
+        <radio-group bindchange="radioChange">
+          <label class="weui-cell weui-check__label" wx:for="{{items}}" wx:key="index">
+            <view class="everyItem">
+              <view class="weui-cell__hd">
+                <radio value="{{item.name}}" data-id="{{item.landscape_id}}"/>
+              </view>
+              <view class="weui-cell__bd">{{item.name}}</view>
+          </view>
+          </label>
+        </radio-group>
+      </view>
+    </view>
+  </view>

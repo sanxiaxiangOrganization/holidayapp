@@ -47,51 +47,31 @@
 <scroll-view scroll-y="true" class="content-area">
   <!-- 介绍内容 -->
   <view wx:if="{{currentPage !== 'comments'}}" class="introBlock">
-    <view class="content">何新屋，属半圆形客家围龙屋，有300多年的建筑历史，是连平县大湖老区人民解放战争时期的战斗旧址之一。 </view>
-      <view class="content">这座始建于清朝康熙年间的客家围龙屋，占地面积约16000多平方米，始建时为二重抱坪式。后经何新屋何氏家族的开枝散叶，扩建至九围，又因时代更迭，今仅保有最古老的四围。何新屋是人民解放战争时期的战斗旧址，拥有丰富的红色文化、契约文化、客家文化等非物质文化遗产，对研究客家民居、民俗、信仰文化及当地家训文化具有重要价值。
+    <view class="introContent">  大湖寨建于南宋时期，历经元、明、清、民国，是一座典型的客家围屋古建筑 ，已有889年历史，是连平最古老、最具规模的古寨围。 </view>
+      <view class="introContent">大湖寨座南朝北，建筑平面呈半月形，总建筑面积为14000多平方米，有36座大小不一的祠堂，72条巷街，合成了天罡地煞的108之合数。寨前有一呈半月形的池塘，与寨内建筑面积几乎相等，合成一个圆月形。横梁竖柱雕琢精美，壁画、题书众多，明清时的建筑风格突出，且具有唐宋遗风，是一部解读客家古建筑文化的缩影。大湖寨已打造成以客家宴席为主题，融美食节庆活动、文化古村落、客家田园风光、农事体验于一体的旅游点。
     </view>
   </view>
   
   <!-- 评价内容 -->
-  <view wx:if="{{currentPage === 'comments'}}">
-    <view class="content">这里是评价的内容</view>
-    <view class="container2">
- 
-   <!-- 评分区域 -->
-   <view class="rating">
-    <view class="stars">
-      <text>⭐⭐⭐⭐⭐</text>
+    <view class="comments-list" wx:if="{{currentPage === 'comments'}}">
+    <view class="comment" wx:for="{{comments}}" wx:key="index">
+      <view class="landscapeBlock">
+        <text class="comment-landscape">对</text>
+        <text class="comment-landscape2">{{item.landscape_id}}</text>
+        <text class="comment-landscape">的评论：</text>
+      </view>
+      
+      <text class="comment-content">{{item.content}}</text>
+      <text class="comment-tourist">评论者：{{item.tourist_name}}</text>
+      <text class="comment-time">评论时间：{{item.time}}</text>
     </view>
-    <view class="review-text">
-      <text>非常好的地方，推荐！</text>
-    </view>
-    <view class="review-date">
-      <text>日期：2025年2月13日</text>
-    </view>
-  </view>
 
-  <!-- 用户评论 -->
-  <view class="comments">
-    <view class="comment-item" wx:for="{{comments}}" wx:key="index">
-      <view class="user-info">
-        <text>{{item.username}}</text>
-        <text class="date">{{item.date}}</text>
-      </view>
-      <view class="user-rating">
-        <text>{{item.stars}}</text>
-      </view>
-      <view class="comment-content">
-        <text>{{item.content}}</text>
-      </view>
-    </view>
   </view>
-  <!-- 底部操作 -->
-  <view class="bottom">
-    <view class="action-btn">查看所有评论</view>
-    <view class="action-btn" bind:tap="navigateToComment">去评论</view>
-  </view>
-</view>
-  </view>
+  
+      <!-- 底部操作 -->
+      <view class="bottom">
+        <view class="action-btn" bind:tap="navigateToComment">去评论</view>
+      </view>
   
 </scroll-view>
 

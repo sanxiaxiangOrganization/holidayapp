@@ -1,0 +1,32 @@
+<!-- pages/help/help.wxml -->
+<!-- 帮助反馈页面 -->
+<view class="container">
+  
+
+  <!-- 反馈内容输入框 -->
+  <textarea class="feedback-textarea" placeholder="请描述您的问题或建议" bindinput="bindTextAreaInput"></textarea>
+
+  <!-- 上传图片 -->
+  <view class="cblock">
+    <image class="icover" src="/images/camera.png"  bindtap="chooseImage"></image>
+  </view>
+
+  <!-- 图片预览部分，仅在有图片时显示 -->
+  <view class="image-preview" wx:if="{{images.length > 0}}">
+    <block wx:for="{{images}}" wx:key="index">
+      <view class="image-item0">
+        <image class="image-item" src="{{item}}" mode="aspectFill"></image>
+        <image class="delete-icon" src="/images/delete-icon.png" data-index="{{index}}" bindtap="deleteImage"></image>
+        </view>
+    </block>
+  </view>
+
+  <view class="container6">
+    <!-- 提交按钮 -->
+    <button class="submit-btn" bindtap="submitFeedback">提交反馈</button>
+    <!-- 客服按钮 -->
+    <button class="contact-btn" open-type="contact">联系客服</button>
+
+</view>
+
+</view>

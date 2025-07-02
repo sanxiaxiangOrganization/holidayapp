@@ -1,0 +1,18 @@
+<!--pages/manager/manager.wxml-->
+<view class="container">
+  
+<!--渲染景点详细信息-->
+<scroll-view class="landscapeBlock" scroll-y="true" bindscrolltoupper="upper" bindscrolltolower="lower" bindscroll="scroll" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
+  <view class="landscape-item" wx:for="{{landscapeList}}" wx:key="index">
+    
+      <view class="profileBlock">
+          <view class="name">{{item.name}}</view>
+          <view class="edit" bind:tap="editLand" data-name="{{item.name}}" data-id="{{item.landscape_id}}"  data-index="{{index}}" data-picture="{{item.pic_url}}">查看></view>
+      </view>
+  </view>
+</scroll-view>
+<!--新增景点-->
+<view  class="add">
+    <button type="primary" bind:tap="addLand">新增景点</button>
+  </view>
+</view>

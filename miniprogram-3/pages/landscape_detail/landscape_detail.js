@@ -20,6 +20,7 @@ Page({
     currentPage: 'introduction', //用于定位，默认页面为介绍
     land_detail:[],//景点的详细信息
 
+    comments:[],//景区的所有评论
 
     landscapeLocation: '广东省河源市连平县大湖寨',  // 景区地址
     latitude: null,  // 纬度
@@ -43,6 +44,8 @@ Page({
      //获取该景点的信息
      that.getInfo()
       console.log("获取到的景点的图片的地址：",options.picture);
+      //获取该景点的所有评论
+      that.getTheComments()
     });
 
   },
@@ -169,5 +172,47 @@ Page({
         console.log("电话拨打失败");
       }
     });
-  }
+  },
+
+  //获取该景区的所有评论
+  getTheComments(){
+    var that=this
+    var app=getApp()
+    wx.request({
+      url: 'http://localhost:8080/comment/getCommentOfLandscape',//后端获取单个景点的所有评论的接口
+      method: 'GET',
+      data: {
+        landscape_id:that.data.myLandscapeId,
+      },
+      header:{
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+      success: async function (res) {
+        console.log('获取所有景点的所有评论的接口请求成功:', res.data);
+        const comments = res.data;
+        
+        // 为每条评论添加 tourist_name
+        for (let item of comments) {
+          // 等待 getNameById 返回的 Promise 完成
+          item.tourist_name = await app.getNameById(item.tourist_id);
+        }
+
+        // 更新 data 数据
+        that.setData({
+          comments: comments
+        });
+      },
+      fail: function(error) {
+        // 处理登录失败的情况
+        console.log('获取该景点的所有评论失败:', error);
+        wx.showToast({
+            title: '网络错误，请重启小程序',
+            icon: 'none',
+            duration: 2000
+        });
+      }
+    })
+  },
+
+  
 });

@@ -1,0 +1,82 @@
+/* pages/help/help.wxss */
+/* 页面整体容器 */
+.container {
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+/* 输入框样式 */
+textarea {
+  width: 100%;
+  height: 400rpx;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* 图片上传区域 */
+.cblock{
+  width: 100%;
+  padding: 10rpx;
+  display: flex;
+  justify-content: flex-start;
+}
+/*图标的样式*/
+.icover{
+  width: 50rpx;
+  height: 50rpx;
+}
+
+
+/* 图片预览容器 */
+.image-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+
+.image-item0 {
+  position: relative;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+.delete-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 50%;
+  cursor: pointer;
+}
+/* 客服按钮和提交按钮 */
+.contact-btn,
+.submit-btn {
+  margin-bottom: 20rpx;
+  width: 50px;               /* 设置按钮宽度为50rpx */
+  height: 40px;                /* 设置按钮高度 */
+  padding: 20rpx 10rpx;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  flex-shrink: 0;              /* 禁止按钮缩小 */
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.container6 {
+  display: flex;               /* 使用 Flexbox 布局 */
+  flex-direction: column;
+  align-items: center;         /* 垂直居中对齐 */
+  padding: 10px;               /* 为了保证按钮不紧贴边缘，可以适当加入内边距 */
+}

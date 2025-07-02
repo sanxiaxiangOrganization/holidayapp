@@ -1,12 +1,13 @@
 <!--pages/landscape/landscape.wxml-->
 <view class="container">
+
   <!--滚动通知栏-->
   <view class="notification_bar">
     <view class="notification_bar_left">
       <image class="bar_left" src="/images/notice.png"/>
       <view class="bar_text">7月份会有荷花节</view>
     </view>
-    <view class="bar_right" bind:tap="routeRecommend">推荐路线</view>
+    <!--<view class="bar_right" bind:tap="routeRecommend">推荐路线</view>-->
   </view>
 
   <!--渲染景点详细信息-->

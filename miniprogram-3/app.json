@@ -1,12 +1,14 @@
 {
   "pages": [
     "pages/cover/cover",
+    "pages/manager/manager",
     "pages/fillComment/fillComment",
     "pages/edit_information/edit_information",
+    "pages/edit_landscape/edit_landscape",
     "pages/landscape/landscape",
     "pages/mine_holiday/mine_holiday",
     "pages/manage_login/manage_login",
-       
+    "pages/help/help",
     "pages/landscape_detail/landscape_detail",
     "pages/logs/logs",
     

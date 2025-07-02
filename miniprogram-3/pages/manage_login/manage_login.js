@@ -30,7 +30,16 @@ Page({
         duration: 2000
     });
     }
-  }  ,
+  },
+//管理员登录
+  managerLogin(){
+//跳转到管理员端页面
+wx.reLaunch({
+  url: '../manager/manager',
+})
+  },
+
+
   /**
    * 生命周期函数--监听页面加载
    */

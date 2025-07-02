@@ -1,0 +1,45 @@
+<view class="container5">
+  
+  <!-- 景点名称 -->
+  <view class="smallBlock">
+    <view class="location">景点名称：</view>
+    <textarea class="landName-text" bindinput="onInput" data-field="landName" value="{{myLandscapeName}}" auto-height></textarea>
+  </view> 
+  <!-- 地点信息 -->
+  <view class="smallBlock">
+    <view class="location">地点：</view>
+    <textarea class="review-text" bindinput="onInput" data-field="location" value="{{land_detail.location}}" auto-height></textarea>
+  </view> 
+  <!-- 致电景区 -->
+  <view class="smallBlock">
+    <view class="location">电话：</view>
+    <textarea class="review-text" bindinput="onInput" data-field="telephone" value="{{land_detail.telephone}}" auto-height></textarea>
+  </view> 
+  <!-- 介绍 -->
+  <view class="smallBlock">
+    <view class="location">介绍：</view>
+    <textarea class="review-text" bindinput="onInput" data-field="description" value="{{land_detail.description}}" auto-height></textarea>
+  </view> 
+
+
+  
+  <!-- 显示上传的图片 -->
+  <view class="location">图片：</view>
+  <view class="image-list">
+    <block wx:for="{{imageList}}" wx:key="index">
+      <view class="image-item">
+        <image class="uploaded-image" src="{{item}}" mode="aspectFill"></image>
+        <image class="delete-icon" src="/images/delete-icon.png" data-index="{{index}}" bindtap="deleteImage"></image>
+      </view>
+    </block>
+  </view>
+<!-- 上传图片 -->
+<view class="cblock" bindtap="chooseImage">
+    <text class="text">上传图片</text>
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="submit">
+    <button bindtap="submitChange">提交更改</button>
+  </view>
+</view>

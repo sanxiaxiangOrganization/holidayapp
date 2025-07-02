@@ -6,11 +6,12 @@ Page({
    */
   data: {
     isAuthorized: false, // 初始时假设用户未授权
-    isCreated:wx.getStorageSync('tourist_id'),//用于判断用户是否已经创建过
+    isCreated:wx.getStorageSync('isCreated'),//用于判断用户是否已经创建过
   },
   
 //用户第一次登录的处理函数
 onGetUserProfile() {
+  console.log("————————————————————第一次登录————————————————————");
   var that=this;
   setTimeout(function () {
     wx.hideLoading()
@@ -19,7 +20,7 @@ onGetUserProfile() {
     success: (res) => {
       console.log("用户信息", res.userInfo);
       //将用户的昵称和头像保存下来
-      var nickName=wx.setStorageSync('nickName', res.userInfo.nickName)
+      var nickName=wx.setStorageSync('nickName', "测试号（仅测试用")//后面要改？？？？？？？？？？？？？？？？？
       wx.setStorageSync('userPic', res.userInfo.avatarUrl)
 
       //创建用户
@@ -37,6 +38,7 @@ onGetUserProfile() {
 //当用户不是第一次登录小程序的时候点击按钮触发的事件
 loginHandler(){
   console.log("该用户不是第一次登录");
+  console.log("本地存储的用户id：",wx.getStorageSync('tourist_id'));
    let name = wx.getStorageSync('nickName');
   var app=getApp();
   //因为不是第一次，所以就不再提示用户绑定手机号了
@@ -106,8 +108,8 @@ createUser(that,name){
       url: 'http://127.0.0.1:8080/tourist/add', // 增加游客的接口地址
       method: 'POST', 
       data: {
-        tourist_name:"测试",
-        tourist_password:"123456",//默认密码是123456
+        tourist_name:name,
+        tourist_password:"",//默认密码是123456
       },
       header: {
         'content-type': 'application/x-www-form-urlencoded'
@@ -116,7 +118,7 @@ createUser(that,name){
       success:(res)=> {
         console.log('创建用户请求成功:', res.data);
         //将用户的id保存到本地，后面要用
-        wx.setStorageSync('tourist_id', res.data.code)      
+        wx.setStorageSync('tourist_id', res.data.data)      
       },
       fail:(err) =>{ 
         console.error('创建用户请求失败:', err);

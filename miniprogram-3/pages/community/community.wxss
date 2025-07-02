@@ -1,24 +1,45 @@
 /* pages/community/community.wxss */
 .container {
-  display:contents;
-  flex-direction: column;
-  height: 100%;
-  padding-bottom: 60px; /* 为输入区域留出空间 */
+  min-height: 100%; /* 使用 min-height 确保容器的最小高度为 100% */
+  display: contents; /* 使用 flexbox 布局 */
+  padding-bottom: 60px;
   box-sizing: border-box;
-  align-items: flex-start; /* 将评论列表内部元素对齐到最左边 */
+  align-items: flex-start;
 }
 
 .comments-list {
-  padding: 20px;
+  padding: 10rpx;
   box-sizing: border-box;
   align-items: flex-start; /* 将评论列表内部元素对齐到最左边 */
+  flex-grow: 1; /* 让评论列表占据剩余空间 */
 }
 
 .comment {
-  margin-bottom: 20px;
+    margin:30rpx auto 0; /* 距离上一个元素20rpx，水平居中 */
+    width: 96%; 
+    height: auto;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(0, 0, 0, 0.1); /* 设置四条边的边界颜色，较浅色 */
+    box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.5); /* 添加阴影效果，只有底边有 */
+    border-radius: 8rpx; /* 边框圆角 */
+    padding: 10rpx;
+    box-sizing: border-box; /* padding不会撑开容器 */
+  
+}
+/*景点名字部分*/
+.landscapeBlock{
   display: flex;
-  flex-direction: column;
-  align-items: flex-start; /* 将评论内容和信息对齐到最左边 */
+}
+.comment-landscape{
+  font-size: small;
+  color: #666;
+}
+.comment-landscape2{
+  font-weight: bold;
+  font-size: small;
+  color: #666;
 }
 
 .comment-content {
@@ -27,40 +48,71 @@
   white-space: pre-wrap; /* 保留空白符和换行符 */
 }
 
-.comment-info {
+.comment-tourist,.comment-time {
   font-size: 12px;
   color: #666;
   margin-top: 2px; /* 调整作者和时间戳与内容的距离 */
 }
 
 .input-area {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  height: auto;
+  padding: 20rpx;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  background-color: #f9f9f9;
-  border-top: 1px solid #ccc;
-  box-sizing: border-box;
+  justify-content: center;
+  margin-bottom: 10rpx;
 }
 
-.input-text {
-  flex: 1;
-  padding: 10rpx; /* 调整内边距以适应边框 */
-  background-color: #fff; /* 更白的背景色 */
-  border: 1px solid #dcdcdc; /* 添加边框 */
-  border-radius: 2rpx; /* 边框圆角 */
-  margin-right: 10rpx; /* 与发送按钮保持一定间距 */
-}
-
-.publish-button {
+.action-btn {
   padding: 10px 20px;
-  background-color: #1aad19;
-  color: white;
+  width: 200rpx;
+  text-align: center;
+  background-color: #4CAF50;
+  color: #fff;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
+  font-size: 16px;
   cursor: pointer;
+}
+/*去评论模块*/
+/* 修改 .bigBlock 样式 */
+.bigBlock {
+  width: 100%;
+  height: 100%;
+  position: fixed;  /* 使用 fixed，确保覆盖整个屏幕 */
+  top: 0;
+  left: 0;
+  z-index: 1000;  /* 确保它在其他元素之上 */
+}
+
+.landText{
+  font-size: large;
+  margin-bottom: 15rpx;
+}
+
+/* 修改 .page-section 样式 */
+.page-section {
+  width: 70%;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  position: relative; /* 改为 relative，确保在父元素中居中 */
+  margin: auto;  /* 通过 margin auto 来确保居中 */
+  top: 50%;
+  transform: translateY(-50%); /* 垂直居中 */
+}
+
+.background {  
+  position: absolute;  
+  top: 0;  
+  left: 0;  
+  width: 100%;  
+  height: 100%;  
+  background-color: rgba(0, 0, 0, 0.5); /* 黑色半透明背景 */  
+}  
+ 
+.everyItem{
+  height: 80rpx;
+  display: flex;  
+  align-items: center; /* 垂直居中 */  
 }

@@ -1,0 +1,70 @@
+/* pages/manager/manager.wxss */
+.container{
+  height: 100%;
+  width: 100%;
+  padding: 0%;
+  box-sizing: border-box;
+}
+
+/*新增景点的按钮*/
+.add{
+  margin-top: 30rpx;
+  margin-bottom:50rpx;
+}
+
+/*滑动框——景点详细介绍*/
+.landscapeBlock{
+  width: 100%;
+  height: 75%;
+  padding: 0%;
+  margin: auto;
+  margin-top: 50rpx;
+}
+.landscape-item{
+  width: 95%;
+  display: flex;
+  align-items: center;
+  margin:auto;
+  /*border-bottom: 1rpx solid black; */
+  margin-bottom: 20rpx;
+  border: 1px solid rgba(0, 0, 0, 0.1); /* 设置四条边的边界颜色，较浅色 */
+    box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.5); /* 添加阴影效果，只有底边有 */
+    border-radius: 8rpx; /* 边框圆角 */
+    padding: 10rpx;
+    box-sizing: border-box; /* padding不会撑开容器 */
+}
+/*景点代表图片*/
+.pictureBlock{
+  height: 100%;
+  /*border-right: 1rpx solid black;*/
+  display: flex;
+  justify-content: center;
+}
+.picture{
+  width: 400rpx;
+  height: 300rpx;
+  margin-bottom: 0;
+}
+/*景点的详细信息（除图片外的）*/
+.profileBlock{
+  padding: 10rpx;
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-left: 10rpx;
+}
+.name{
+  font-size: 40rpx;
+}
+/*编辑景点的按钮*/
+.edit{
+  position: absolute; 
+  right: 50rpx;
+  font-size:medium;
+  color: gray; 
+}
+
+
+
+

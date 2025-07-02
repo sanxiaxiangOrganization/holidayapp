@@ -10,7 +10,7 @@
         <text class="label">密码</text>  
         <input class="input" type="password" name="password" placeholder="请输入密码" required />  
       </view>  
-      <button class="btn" formType="submit">登录</button>  
+      <button class="btn" bindtap="managerLogin">登录</button>  
     </form>  
   </view>  
 </view>
