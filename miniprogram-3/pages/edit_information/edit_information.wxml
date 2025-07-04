@@ -1,39 +1,88 @@
-<!--pages/information/information.wxml-->
-<!--头像-->
-<view class="hblock">
-  <image class="head" src="{{userPic}}" bindtap="headHandler"></image>
-</view>
 <view class="container">
-<!--昵称-->
-  <view class="line">
-    <view class="name" >昵称</view>
-    <view class="nicheng" >{{userName}}</view>
-    <view class="imageblock">
-      <image class="image" src="/images/pencil.png" bindtap='pencilHandler1' onclick="openInput" ></image>
+  <!-- 头像编辑 -->
+  <view class="avatar-section">
+    <view class="avatar-container" bindtap="headHandler">
+      <image src="{{userPic || '/images/default-avatar.png'}}" class="avatar-image" mode="aspectFill"></image>
+      <view class="avatar-mask">
+        <image src="{{pencilIcon}}" class="edit-icon" mode="aspectFit"></image>
+      </view>
     </view>
-   </view>
+    <text class="avatar-tip">点击更换头像</text>
+  </view>
 
-  <!--手机号-->
-  <view class="line">
-    <view class="phoneNumber" >手机号</view>
-    <view class="gexing" >{{phoneNumber}}</view>
-      <button class="phonetext" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">
-        绑定</button>
-   </view>
+  <!-- 信息编辑列表 -->
+  <view class="info-list">
+    <!-- 用户名编辑 -->
+    <view class="info-item">
+      <text class="info-label">用户名</text>
+      <view class="info-content" bindtap="{{editingName ? '' : 'startEditName'}}">
+        <input
+          wx:if="{{editingName}}"
+          class="info-input"
+          value="{{tempUserName}}"
+          bindinput="onNameInput"
+          placeholder="请输入用户名"
+          focus="{{editingName}}"
+          maxlength="20"
+        />
+        <text wx:else class="info-text">{{userName || '未设置'}}</text>
+        <view class="info-actions">
+          <view wx:if="{{editingName}}" class="action-buttons">
+            <button class="action-btn cancel" bindtap="cancelEdit">取消</button>
+            <button class="action-btn confirm" bindtap="confirmEdit">确定</button>
+          </view>
+          <image wx:else src="{{pencilIcon}}" class="edit-btn" mode="aspectFit"></image>
+        </view>
+      </view>
+    </view>
 
-</view>
- <!--下面是点击小铅笔后才会显现出来的模块-->
-   <view class="bigBlock" wx:if="{{clickPencil1||clickPencil2}}">
-    <view class="background"></view>
-     <!--修改的模块-->
-    <view class="modifyName">
-      <view class="text_style" wx:if="{{clickPencil1}}">请输入新的昵称：</view>
-      <view class="text_style" wx:else>请输入新的手机号：</view>
-      <input class="modify_input" bind:input="inputHandler" type="text"/>
-      <!--取消和确认按钮-->
-      <view class="block2">
-        <view class="cancel" bindtap="cancelHandler" >取消</view>
-        <view class="confirm" bindtap="confirmHandler">确认</view>
+    <!-- 手机号编辑 -->
+    <view class="info-item">
+      <text class="info-label">手机号</text>
+      <view class="info-content">
+        <input
+          wx:if="{{editingPhone}}"
+          class="info-input"
+          value="{{tempPhoneNumber}}"
+          bindinput="onPhoneInput"
+          placeholder="请输入手机号"
+          focus="{{editingPhone}}"
+          type="number"
+          maxlength="11"
+        />
+        <text wx:else class="info-text">{{phoneNumber || '未设置'}}</text>
+        <view class="info-actions">
+          <view wx:if="{{editingPhone}}" class="action-buttons">
+            <button class="action-btn cancel" bindtap="cancelEdit">取消</button>
+            <button class="action-btn confirm" bindtap="confirmEdit">确定</button>
+          </view>
+          <image wx:else src="{{pencilIcon}}" class="edit-btn" bindtap="startEditPhone" mode="aspectFit"></image>
+        </view>
+      </view>
+    </view>
+
+    <!-- 微信授权获取手机号 -->
+    <view class="info-item">
+      <text class="info-label">微信授权</text>
+      <view class="info-content">
+        <button
+          class="wechat-auth-btn"
+          open-type="getPhoneNumber"
+          bindgetphonenumber="getPhoneNumber"
+        >
+          获取微信手机号
+        </button>
       </view>
     </view>
   </view>
+
+  <!-- 头像预览 -->
+  <view wx:if="{{userPic}}" class="preview-section">
+    <button class="preview-btn" bindtap="previewAvatar">预览头像</button>
+  </view>
+
+  <!-- 上传状态提示 -->
+  <view wx:if="{{uploading}}" class="upload-status">
+    <text>正在上传头像...</text>
+  </view>
+</view>

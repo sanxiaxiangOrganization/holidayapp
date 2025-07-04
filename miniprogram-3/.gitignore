@@ -64,3 +64,4 @@ coverage/
 *.tgz
 *.tar.gz
 .eslintcache
+.env.js

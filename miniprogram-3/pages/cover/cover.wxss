@@ -1,47 +1,103 @@
-/* pages/cover/cover.wxss */
-page {
+.container {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.background-swiper {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.background-image {
+  width: 100%;
   height: 100%;
 }
-.cover {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 1219rpx; /* 使根容器充满整个屏幕 */
-  background-color: #f5f5f5; /* 背景色 */
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1;
 }
 
-.startbutton {
-  background-color: #3cc51f; /* 按钮背景色 */
-  color: white; /* 按钮文字颜色 */
-  border-radius: 50rpx; /* 按钮边框圆角 */
-  padding: 10px 20px; /* 按钮内边距 */
-  font-size: 16px; /* 按钮文字大小 */
-  border: none; /* 无边框 */
-  
-}
-.block{
-  width: auto;
-  height: auto;
+.content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-}
-/*设置字体的格式*/
-.blackText{
-  font-weight: bold;
-  color: lightgray;
-  margin-top: 30rpx;
-}
-/*设置灰色字体的格式*/
-.grayText{
-  font-weight: bold;
-  margin-top: 20rpx;
-  color:lightgray;
+  padding: 120rpx 60rpx 150rpx;
+  box-sizing: border-box;
 }
 
-/*授权登录的按钮的格式*/
-.button{
-margin-top: 50rpx;
+.logo-section {
+  text-align: center;
+  color: white;
+}
+
+.app-title {
+  font-size: 72rpx;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 20rpx;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.app-subtitle {
+  font-size: 32rpx;
+  opacity: 0.9;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.login-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 30rpx;
+}
+
+.login-btn {
+  width: 100%;
+  height: 100rpx;
+  border-radius: 50rpx;
+  font-size: 32rpx;
+  font-weight: bold;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.wechat-login {
+  background: #07c160;
+  color: white;
+}
+
+.wechat-login.loading {
+  background: #06a050;
+  opacity: 0.8;
+}
+
+.manager-login {
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+}
+
+.login-btn:active {
+  transform: scale(0.98);
+}
+
+.login-btn[disabled] {
+  opacity: 0.6;
 }

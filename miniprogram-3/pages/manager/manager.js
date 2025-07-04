@@ -1,90 +1,184 @@
+// 引入配置
+const { API_CONFIG, IMAGE_UTILS } = require('../../utils/config');
+
 // pages/manager/manager.js
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-    background: ['/images/A (1).jpg', '/images/A (2).jpg', '/images/A (3).jpg'],
+    background: [],
     indicatorDots: true,
     vertical: false,
     autoplay: true,
     interval: 2000,
     duration: 500,
+    landscapeList: []
+  },
 
+  async onLoad(options) {
+    var that = this;
+    var app = getApp();
 
-    landscapeList:[]
+    // 加载轮播图
+    await this.loadBanners();
+
+    // 获取所有景点
+    that.getAllLand();
+  },
+
+  // 加载轮播图
+  async loadBanners() {
+    try {
+      const banners = await IMAGE_UTILS.getBanners();
+      if (banners && banners.length > 0) {
+        this.setData({
+          background: banners.map(banner => banner.url || banner)
+        });
+      }
+    } catch (error) {
+      console.error('加载轮播图失败:', error);
+    }
   },
 
   /*编辑景点信息*/
-  editLand(e){
-    var that=this
-    console.log("e:",e.currentTarget);
+  editLand(e) {
+    var that = this;
+    console.log("e:", e.currentTarget);
     /*将对应景点的名字当参数传给页面*/
-    const name=e.currentTarget.dataset.name
-    const id=e.currentTarget.dataset.id
-    const picture=e.currentTarget.dataset.picture
-    //跳转到编辑景点的页面
+    const name = e.currentTarget.dataset.name;
+    const id = e.currentTarget.dataset.id;
+    const picture = e.currentTarget.dataset.picture;
+    // 跳转到编辑景点的页面
     wx.navigateTo({
       url: `../edit_landscape/edit_landscape?name=${name}&id=${id}&picture=${picture}`,
-    })
+    });
   },
 
   /*新增景点信息*/
-    addLand(){
-      //跳转到新增景点的页面
-      wx.navigateTo({
-        url: '../edit_landscape/edit_landscape',
-      })
-    },
-
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad(options) {
-    var that=this
-    var app=getApp()
-   
-    //获取所有景点
-   that.getAllLand()
+  addLand() {
+    // 跳转到新增景点的页面
+    wx.navigateTo({
+      url: '../edit_landscape/edit_landscape',
+    });
   },
 
-  //获取所有景点
-  getAllLand(){
-    var that=this
-    // 创建一个 Promise 包装异步请求
-  return new Promise((resolve, reject) => {
-    //获取所有景点的信息
-    wx.request({
-      url: 'http://localhost:8080/landscape/getAll',//后端获取所有景点的接口
-      method: 'GET',
-       header:{
-        'content-type': 'application/x-www-form-urlencoded',
-      },
-      success(res) {
-        console.log('获取所有景点信息的接口请求成功:', res.data.data);
-        that.setData({
-          landscapeList:res.data.data
-        }) 
-        // 请求成功，执行 resolve
-        resolve();
-     },
-      fail(error) {
-        // 处理登录失败的情况
-        console.log('获取所有景点信息失败:', error);
-        wx.showToast({
+  /*删除景点*/
+  deleteLand(e) {
+    var that = this;
+    const id = e.currentTarget.dataset.id;
+    const name = e.currentTarget.dataset.name;
+
+    wx.showModal({
+      title: '确认删除',
+      content: `确定要删除景点"${name}"吗？此操作不可撤销。`,
+      success: function(res) {
+        if (res.confirm) {
+          // 用户点击确定
+          wx.request({
+            url: API_CONFIG.LANDSCAPE.DELETE || 'http://localhost:8080/landscape/delete',
+            method: 'DELETE',
+            data: {
+              landscape_id: id
+            },
+            header: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            success: function(res) {
+              console.log('删除景点响应:', res);
+
+              if (res.statusCode === 200) {
+                // 处理后端统一返回格式
+                if (res.data && res.data.code === 1) {
+                  wx.showToast({
+                    title: '删除成功',
+                    icon: 'success',
+                    duration: 1500
+                  });
+                  // 重新获取景点列表
+                  that.getAllLand();
+                } else {
+                  wx.showToast({
+                    title: res.data.msg || '删除失败',
+                    icon: 'none',
+                    duration: 2000
+                  });
+                }
+              } else {
+                wx.showToast({
+                  title: '删除失败',
+                  icon: 'none',
+                  duration: 2000
+                });
+              }
+            },
+            fail: function(error) {
+              console.error('删除景点失败:', error);
+              wx.showToast({
+                title: '网络错误',
+                icon: 'none',
+                duration: 2000
+              });
+            }
+          });
+        }
+      }
+    });
+  },
+
+  // 获取所有景点
+  getAllLand() {
+    var that = this;
+    return new Promise((resolve, reject) => {
+      wx.request({
+        url: API_CONFIG.LANDSCAPE.ALL,
+        method: 'GET',
+        header: {
+          'content-type': 'application/x-www-form-urlencoded',
+        },
+        success(res) {
+          console.log('获取所有景点信息的接口请求成功:', res);
+
+          if (res.statusCode === 200) {
+            let landscapeData = [];
+
+            // 处理后端统一返回格式
+            if (res.data && res.data.code === 1) {
+              landscapeData = res.data.data || [];
+            } else if (res.data && Array.isArray(res.data)) {
+              landscapeData = res.data;
+            } else {
+              console.error('景点数据格式错误:', res.data);
+              wx.showToast({
+                title: '数据格式错误',
+                icon: 'none',
+                duration: 2000
+              });
+              reject(new Error('数据格式错误'));
+              return;
+            }
+
+            that.setData({
+              landscapeList: landscapeData
+            });
+            resolve();
+          } else {
+            console.error('获取景点失败，状态码:', res.statusCode);
+            wx.showToast({
+              title: '获取景点失败',
+              icon: 'none',
+              duration: 2000
+            });
+            reject(new Error('获取景点失败'));
+          }
+        },
+        fail(error) {
+          console.error('获取所有景点信息失败:', error);
+          wx.showToast({
             title: '网络错误，请重启小程序',
             icon: 'none',
             duration: 2000
-        });
-        // 请求失败，执行 reject
-        reject(error);
-      }
-    })
-  });
-},
-
-  
-  
+          });
+          reject(error);
+        }
+      });
+    });
+  }
 })

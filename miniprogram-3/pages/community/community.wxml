@@ -4,35 +4,43 @@
     <view class="comment" wx:for="{{comments}}" wx:key="index">
       <view class="landscapeBlock">
         <text class="comment-landscape">对</text>
-        <text class="comment-landscape2">{{item.landscape_id}}</text>
+        <text class="comment-landscape2">{{item.landscape_name || item.landscape_id}}</text>
         <text class="comment-landscape">的评论：</text>
       </view>
-      
+
       <text class="comment-content">{{item.content}}</text>
       <text class="comment-tourist">评论者：{{item.tourist_name}}</text>
       <text class="comment-time">评论时间：{{item.time}}</text>
+
+      <!-- 如果是当前用户的评论，显示删除按钮 -->
+      <view wx:if="{{item.tourist_id == tourist_id}}" class="comment-actions">
+        <button class="delete-btn" bindtap="deleteComment" data-tourist-id="{{item.tourist_id}}" data-landscape-id="{{item.landscape_id}}">删除</button>
+      </view>
     </view>
   </view>
+
   <view class="input-area">
     <view class="action-btn" bind:tap="chooseLandscape">去评论</view>
   </view>
 </view>
- <!--下面是点击“去评论”后才会显现出来的模块-->
- <view class="bigBlock" wx:if="{{chooseLandscape}}">
-    <view class="background"></view>
-    <view class="page-section">
-      <view class="landText">请选择要评价的景点:</view>
-      <view class="weui-cells weui-cells_after-title">
-        <radio-group bindchange="radioChange">
-          <label class="weui-cell weui-check__label" wx:for="{{items}}" wx:key="index">
-            <view class="everyItem">
-              <view class="weui-cell__hd">
-                <radio value="{{item.name}}" data-id="{{item.landscape_id}}"/>
-              </view>
-              <view class="weui-cell__bd">{{item.name}}</view>
+
+<!-- 选择景点评论的弹窗 -->
+<view class="bigBlock" wx:if="{{chooseLandscape}}">
+  <view class="background" bindtap="closeLandscapeSelection"></view>
+  <view class="page-section">
+    <view class="landText">请选择要评价的景点:</view>
+    <view class="weui-cells weui-cells_after-title">
+      <radio-group bindchange="radioChange">
+        <label class="weui-cell weui-check__label" wx:for="{{items}}" wx:key="index">
+          <view class="everyItem">
+            <view class="weui-cell__hd">
+              <radio value="{{item.name}}" data-id="{{item.landscape_id}}"/>
+            </view>
+            <view class="weui-cell__bd">{{item.name}}</view>
           </view>
-          </label>
-        </radio-group>
-      </view>
+        </label>
+      </radio-group>
     </view>
+    <view class="close-btn" bindtap="closeLandscapeSelection">取消</view>
   </view>
+</view>

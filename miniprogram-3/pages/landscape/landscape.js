@@ -1,175 +1,444 @@
+// 引入配置
+const { API_CONFIG, IMAGE_UTILS } = require('../../utils/config');
+
 // pages/landscape/landscape.js
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-    background: ['/images/A (1).jpg', '/images/A (2).jpg', '/images/A (3).jpg'],
+    background: [],
     indicatorDots: true,
     vertical: false,
     autoplay: true,
     interval: 2000,
     duration: 500,
-
-
-    landscapeList:[]/*//不要看这个，这不是示例[
-      {pic_url:'/images/A (1).jpg',name:'县工委旧址'},
-      {pic_url:'/images/dhz/4.jpg',name:'大湖寨'},
-      {pic_url:'/images/hxw/1.jpg',name:'何新屋'},
-      {pic_url:'/images/hxw/1.jpg',name:'何新屋'},
-      {pic_url:'/images/hxw/1.jpg',name:'何新屋'}
-    ]*/
+    landscapeList: [],
+    noticeIcon: '',
+    isLoading: true,
+    loadError: false,
+    errorMessage: '',
+    imageLoadStatus: {}
   },
+
+  async onLoad(options) {
+    console.log('========== 景点页面开始加载 ==========');
+
+    try {
+      wx.showLoading({
+        title: '加载中...',
+        mask: true
+      });
+
+      // 先加载景点数据（最重要的）
+      await this.loadLandscapes();
+
+      // 加载评分
+      await this.getAllScore();
+
+      // 等待轮播图和图标加载完成
+      await Promise.allSettled([
+        this.loadBanners(),
+        this.loadIcons()
+      ]);
+
+      console.log('所有资源加载完成');
+
+      this.setData({
+        isLoading: false
+      });
+
+    } catch (error) {
+      console.error('页面加载失败:', error);
+      this.setData({
+        isLoading: false,
+        loadError: true,
+        errorMessage: error.message || '加载失败'
+      });
+    } finally {
+      wx.hideLoading();
+    }
+  },
+
+  // 加载轮播图 - 根据后端方案修改
+  async loadBanners() {
+    try {
+      console.log('开始加载轮播图...');
+
+      // 调用后端推荐的轮播图API
+      const response = await new Promise((resolve, reject) => {
+        wx.request({
+          url: API_CONFIG.IMAGES.BANNERS,
+          method: 'GET',
+          header: {
+            'Accept': 'application/json'
+          },
+          success: resolve,
+          fail: reject
+        });
+      });
+
+      console.log('轮播图API响应:', response);
+
+      if (response.statusCode === 200) {
+        // 适配后端返回格式: {code: 1, msg: "success", data: []}
+        if (response.data && response.data.code === 1 && response.data.data) {
+          const banners = response.data.data;
+          console.log('轮播图原始数据:', banners);
+
+          if (Array.isArray(banners) && banners.length > 0) {
+            // 按 sort_order 排序
+            const sortedBanners = banners.sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
+            console.log('排序后的轮播图:', sortedBanners);
+
+            // 提取URL数组
+            const bannerUrls = sortedBanners.map(banner => banner.url).filter(url => url);
+            console.log('提取的轮播图URLs:', bannerUrls);
+
+            if (bannerUrls.length > 0) {
+              this.setData({
+                background: bannerUrls
+              }, () => {
+                // 设置完成后的回调，强制重新渲染
+                console.log('✅ 轮播图数据设置完成，background.length:', this.data.background.length);
+              });
+              console.log('✅ 轮播图加载成功，共', bannerUrls.length, '张');
+            } else {
+              console.log('⚠️ 轮播图URL为空，使用默认图片');
+              this.setDefaultBanners();
+            }
+          } else {
+            console.log('⚠️ 轮播图数据为空，使用默认图片');
+            this.setDefaultBanners();
+          }
+        } else {
+          console.error('❌ 轮播图API返回格式错误:', response.data);
+          console.log('预期格式: {code: 1, msg: "success", data: [...]}');
+          this.setDefaultBanners();
+        }
+      } else {
+        console.error('❌ 轮播图API请求失败，状态码:', response.statusCode);
+        this.setDefaultBanners();
+      }
+    } catch (error) {
+      console.error('❌ 轮播图加载失败:', error);
+      this.setDefaultBanners();
+    }
+  },
+
+  // 设置默认轮播图
+  setDefaultBanners() {
+    const defaultBanners = [
+      '/images/cover/cover.jpg',
+      '/images/yggyd/1.jpg',
+      '/images/dhz/1.jpg',
+      '/images/byl/1.jpg'
+    ];
+
+    this.setData({
+      background: defaultBanners
+    });
+    console.log('✅ 使用默认轮播图，共', defaultBanners.length, '张');
+  },
+
+  // 加载图标
+  async loadIcons() {
+    try {
+      console.log('开始加载图标...');
+
+      const response = await new Promise((resolve, reject) => {
+        wx.request({
+          url: API_CONFIG.IMAGES.ICONS,
+          method: 'GET',
+          header: {
+            'Accept': 'application/json'
+          },
+          success: resolve,
+          fail: reject
+        });
+      });
+
+      console.log('图标API响应:', response);
+
+      if (response.statusCode === 200) {
+        // 适配多种可能的响应格式
+        let iconData = null;
+        if (response.data && response.data.code === 200 && response.data.data) {
+          iconData = response.data.data;
+        } else if (response.data && response.data.code === 1 && response.data.data) {
+          iconData = response.data.data;
+        }
+
+        if (iconData && Array.isArray(iconData) && iconData.length > 0) {
+          console.log('图标数据:', iconData);
+
+          // 查找通知图标
+          const noticeIcon = iconData.find(icon =>
+            icon.key && (
+              icon.key.toLowerCase().includes('notice') ||
+              icon.key.toLowerCase().includes('message') ||
+              icon.key.toLowerCase().includes('bell') ||
+              icon.key.toLowerCase().includes('notification')
+            )
+          );
+
+          if (noticeIcon && noticeIcon.url) {
+            this.setData({
+              noticeIcon: noticeIcon.url
+            });
+            console.log('✅ 通知图标加载成功:', noticeIcon.url);
+          } else {
+            console.log('⚠️ 未找到通知图标，使用默认图标');
+            this.setData({
+              noticeIcon: '/images/notice.png'
+            });
+          }
+        } else {
+          console.log('⚠️ 图标数据为空，使用默认图标');
+          this.setData({
+            noticeIcon: '/images/notice.png'
+          });
+        }
+      } else {
+        console.error('❌ 图标API请求失败，状态码:', response.statusCode);
+        this.setData({
+          noticeIcon: '/images/notice.png'
+        });
+      }
+    } catch (error) {
+      console.error('❌ 图标加载失败:', error);
+      this.setData({
+        noticeIcon: '/images/notice.png'
+      });
+    }
+  },
+
+  // 加载景点数据
+  async loadLandscapes() {
+    try {
+      console.log('开始加载景点数据...');
+      const landscapes = await this.getAllLandFromAPI();
+
+      // 处理景点数据
+      landscapes.forEach(landscape => {
+        if (landscape.images && Array.isArray(landscape.images) && landscape.images.length > 0) {
+          landscape.pic_url = landscape.images[0];
+          landscape.allImages = landscape.images;
+        } else {
+          landscape.pic_url = '/images/default-landscape.jpg';
+          landscape.allImages = [];
+        }
+      });
+
+      this.setData({
+        landscapeList: landscapes
+      });
+
+      console.log('✅ 景点数据加载完成');
+    } catch (error) {
+      console.error('❌ 景点数据加载失败:', error);
+      throw error;
+    }
+  },
+
+  // 从API获取景点数据
+  getAllLandFromAPI() {
+    return new Promise((resolve, reject) => {
+      wx.request({
+        url: API_CONFIG.LANDSCAPE.ALL,
+        method: 'GET',
+        header: {
+          'Accept': 'application/json'
+        },
+        success: (res) => {
+          if (res.statusCode !== 200) {
+            reject(new Error(`服务器错误: HTTP ${res.statusCode}`));
+            return;
+          }
+
+          let landscapes = [];
+          if (res.data && res.data.code === 1 && res.data.data && Array.isArray(res.data.data)) {
+            landscapes = res.data.data;
+          } else {
+            reject(new Error('服务器返回数据格式错误'));
+            return;
+          }
+
+          if (landscapes.length === 0) {
+            reject(new Error('没有找到景点数据'));
+            return;
+          }
+
+          resolve(landscapes);
+        },
+        fail: (error) => {
+          reject(new Error('网络请求失败，请检查网络连接'));
+        }
+      });
+    });
+  },
+
+  // 获取每个景点的得分
+  async getAllScore() {
+    const app = getApp();
+
+    if (!this.data.landscapeList || this.data.landscapeList.length === 0) {
+      return;
+    }
+
+    try {
+      const scorePromises = this.data.landscapeList.map(async (landscape, index) => {
+        try {
+          const score = await app.getScore(landscape.landscape_id);
+          return { index, score };
+        } catch (error) {
+          return { index, score: 0 };
+        }
+      });
+
+      const scores = await Promise.all(scorePromises);
+      const landscapes = [...this.data.landscapeList];
+
+      scores.forEach(({ index, score }) => {
+        landscapes[index].score = score;
+      });
+
+      this.setData({
+        landscapeList: landscapes
+      });
+
+      console.log('✅ 景点评分加载完成');
+    } catch (error) {
+      console.error('❌ 获取景点评分失败:', error);
+    }
+  },
+
+  // 测试轮播图API（调试用）
+  async testBannerAPI() {
+    console.log('========== 测试轮播图API ==========');
+
+    try {
+      const response = await new Promise((resolve, reject) => {
+        wx.request({
+          url: API_CONFIG.IMAGES.BANNERS,
+          method: 'GET',
+          header: {
+            'Accept': 'application/json'
+          },
+          success: resolve,
+          fail: reject
+        });
+      });
+
+      console.log('轮播图API测试响应:', response);
+      console.log('状态码:', response.statusCode);
+      console.log('响应数据:', response.data);
+
+      if (response.data && response.data.data) {
+        console.log('轮播图数据:', response.data.data);
+        response.data.data.forEach((banner, index) => {
+          console.log(`轮播图 ${index + 1}:`, {
+            id: banner.id,
+            key: banner.key,
+            url: banner.url,
+            description: banner.description,
+            sort_order: banner.sort_order
+          });
+        });
+      }
+    } catch (error) {
+      console.error('轮播图API测试失败:', error);
+    }
+
+    console.log('========== 轮播图API测试结束 ==========');
+  },
+
+  // 图片加载事件
+  onImageLoad(e) {
+    const index = e.currentTarget.dataset.index;
+    const landscapeName = e.currentTarget.dataset.name;
+    console.log(`✅ 图片加载成功 - 景点: ${landscapeName}`);
+
+    this.setData({
+      [`imageLoadStatus[${index}]`]: 'loaded'
+    });
+  },
+
+  onImageError(e) {
+    const index = e.currentTarget.dataset.index;
+    const landscapeName = e.currentTarget.dataset.name;
+    console.error(`❌ 图片加载失败 - 景点: ${landscapeName}`);
+
+    this.setData({
+      [`imageLoadStatus[${index}]`]: 'error'
+    });
+  },
+
+  // 导航到详情页
+  navigateToDetail(e) {
+    const dataset = e.currentTarget.dataset;
+    const landscapeId = dataset.id;
+    const landscapeName = dataset.name;
+
+    if (landscapeId && landscapeName) {
+      wx.navigateTo({
+        url: `/pages/landscape_detail/landscape_detail?id=${landscapeId}&name=${encodeURIComponent(landscapeName)}`
+      });
+    }
+  },
+
+  // 重新加载数据
+  reloadData() {
+    this.setData({
+      isLoading: true,
+      loadError: false,
+      errorMessage: '',
+      imageLoadStatus: {}
+    });
+    this.onLoad();
+  },
+
+  // 其他事件处理
   changeIndicatorDots() {
     this.setData({
       indicatorDots: !this.data.indicatorDots
-    })
+    });
   },
-  navigateToDetail(e){
-    var that=this
-    console.log("e:",e.currentTarget);
-    /*将对应景点的名字当参数传给页面*/
-    const name=e.currentTarget.dataset.name
-    const id=e.currentTarget.dataset.id
-    const picture=e.currentTarget.dataset.picture
-    wx.navigateTo({
-      url: `../landscape_detail/landscape_detail?name=${name}&id=${id}&score=${that.data.landscapeList[e.currentTarget.dataset.index].score}&picture=${picture}`,
-    })
-    console.log("——————————————————————————————用户要查看",name,"的详细信息————————————————————————————");
-  },
+
   changeAutoplay() {
     this.setData({
       autoplay: !this.data.autoplay
-    })
+    });
   },
 
   intervalChange(e) {
     this.setData({
       interval: e.detail.value
-    })
+    });
   },
 
   durationChange(e) {
     this.setData({
       duration: e.detail.value
-    })
-  },
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad(options) {
-    var that=this
-    var app=getApp()
-    //如果用户是第一次登录，就提示用户绑定手机号
-    if (app.globalData.firstLogin) {
-      wx.showModal({
-        title: '绑定手机号',
-        content: '现在也可以不绑定，后续前往 我的 -> 编辑资料 中绑定手机号',
-        showCancel: true,
-        cancelText: '暂不绑定',
-        confirmText: '去绑定',
-        confirmColor: '#43c74c',
-        success(res) {
-          if (res.confirm) {
-            wx.navigateTo({
-              url: '/pages/edit_information/edit_information' // 去绑定手机号的页面
-            });
-          }
-        }
-      });
-    }
-    //获取所有景点
-   that.getAllLand().then(() => {
-    // 获取到景点数据后，再获取分数
-    that.getAllScore();
-  }).catch((error) => {
-    console.error("获取景点数据失败:", error);
-  });
-  },
-
-  //获取所有景点
-  getAllLand(){
-    var that=this
-    // 创建一个 Promise 包装异步请求
-  return new Promise((resolve, reject) => {
-    //获取所有景点的信息
-    wx.request({
-      url: 'http://localhost:8080/landscape/getAll',//后端获取所有景点的接口
-      method: 'GET',
-       header:{
-        'content-type': 'application/x-www-form-urlencoded',
-      },
-      success(res) {
-        console.log('获取所有景点信息的接口请求成功:', res.data.data);
-        that.setData({
-          landscapeList:res.data.data
-        }) 
-        // 请求成功，执行 resolve
-        resolve();
-     },
-      fail(error) {
-        // 处理登录失败的情况
-        console.log('获取所有景点信息失败:', error);
-        wx.showToast({
-            title: '网络错误，请重启小程序',
-            icon: 'none',
-            duration: 2000
-        });
-        // 请求失败，执行 reject
-        reject(error);
-      }
-    })
-  });
-},
-
-  //获取每个景点的得分
-  getAllScore(){
-    var that=this
-    const app=getApp()
-    console.log("————————————————————————获取每个景点的分数————————————————————");
-    //继而获取每个景点的分数
-    for (let i = 0; i < that.data.landscapeList.length; i++) {  
-     // 为每个景点添加 score 属性并赋值
-     console.log("第",i+1,"个景点的名字是：",that.data.landscapeList[i].name);
-     app.getScore(that.data.landscapeList[i].landscape_id).then(score => {
-      const landscapes = that.data.landscapeList; // 获取当前页面的数组数据
-      landscapes[i].score = score; // 将评分赋值给第 i 个景点对象的 score 字段
-
-      that.setData({
-        landscapeList: landscapes, // 更新数组数据，页面会重新渲染
-      });
-    }).catch(error => {
-      console.log('请求失败:', error);
     });
-  }
-  },
-  
-   /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow() {
-
   },
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
   onReachBottom() {
-
+    console.log('触底事件');
   },
 
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage() {
+  onPullDownRefresh() {
+    this.reloadData();
+    setTimeout(() => {
+      wx.stopPullDownRefresh();
+    }, 1000);
+  },
 
+  onShow() {},
+
+  onShareAppMessage() {
+    return {
+      title: '发现美丽景点',
+      path: '/pages/landscape/landscape',
+      imageUrl: this.data.background.length > 0 ? this.data.background[0] : ''
+    };
   }
-})
+
+});

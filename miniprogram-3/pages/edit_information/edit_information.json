@@ -1,6 +1,7 @@
 {
-  "usingComponents": {},
-  "navigationBarBackgroundColor": "#ffffff", 
-  "navigationBarTitleText":"修改个人信息",
-  "navigationBarTextStyle": "black"
+  "navigationBarTitleText": "编辑资料",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "backgroundTextStyle": "light",
+  "enablePullDownRefresh": false
 }

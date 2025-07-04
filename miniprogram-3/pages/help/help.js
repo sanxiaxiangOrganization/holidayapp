@@ -1,7 +1,32 @@
+// 引入配置
+const { IMAGE_UTILS } = require('../../utils/config');
+
 Page({
   data: {
     images: [], // 用于存储选中的图片路径
-    feedbackText:""//用户反馈文本内容
+    feedbackText: "", // 用户反馈文本内容
+    // 图标资源
+    cameraIcon: '',
+    deleteIcon: ''
+  },
+
+  async onLoad() {
+    // 加载图标
+    await this.loadIcons();
+  },
+
+  // 加载图标
+  async loadIcons() {
+    try {
+      const icons = await IMAGE_UTILS.getIcons();
+      this.setData({
+        cameraIcon: icons.CAMERA || icons.camera,
+        deleteIcon: icons.DELETE || icons.delete
+      });
+    } catch (error) {
+      console.error('加载图标失败:', error);
+      throw error;
+    }
   },
 
   // 监听输入框的变化
@@ -45,7 +70,7 @@ Page({
 
   // 删除图片
   deleteImage(e) {
-    const index = e.currentTarget.dataset.index;  // 获取点击删除的图片索引
+    const index = e.currentTarget.dataset.index; // 获取点击删除的图片索引
     const that = this;
 
     // 通过索引删除图片

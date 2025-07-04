@@ -1,153 +1,165 @@
-/* pages/information/information.wxss */
-.hblock{
+.container {
+  padding: 20rpx;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+.avatar-section {
+  background: white;
+  border-radius: 20rpx;
+  padding: 40rpx;
+  margin-bottom: 20rpx;
+  text-align: center;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+}
+
+.avatar-container {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 80rpx;
+  overflow: hidden;
+  position: relative;
+  margin: 0 auto 20rpx;
+}
+
+.avatar-image {
   width: 100%;
-  height: 250rpx;
-  align-items: center;
+  height: 100%;
+}
+
+.avatar-mask {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50rpx;
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
-  justify-content: space-around;
-  
-  }
-  .head{
-    width: 200rpx;
-    height: 200rpx;
-    border-style: solid;
-  border-color:  lightgray;
-  border-width: 0.5rpx;
-  }
-  
-  .container {
-   
-    width: 100%; /* 宽度占整个页面的90% */
-    height:200rpx;
-    display: flex;
-    flex-direction: column;
-    border-top: 5px solid rgba(58, 57, 57, 0.1); /* 设置上边界颜色，较浅色 */
-    border-bottom:5px solid rgba(58, 57, 57, 0.1) ;
-    /*box-shadow: 0 4px 2px -2px #e6e6e6; /* 添加阴影效果，只有底边有 */
-    border-radius: 8rpx; /* 边框圆角 */
-    padding: 0rpx;
-    box-sizing: border-box; /* padding不会撑开容器 */
-    position: relative;
-    background-color: white;/*将view设置成白色，∵我此时将页面的背景色设置成了灰色*/
-  }
-  
-  .line{
-    height: 100rpx;
-    width: 100%;
-    border-bottom: 0.5rpx solid lightgray;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-  }
-  .birthline{
-    height: 100rpx;
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-  }
-  /*内容的样式*/
-  .name,.phoneNumber{
-    position: absolute;
-    left: 50rpx;
-    font-size:32rpx; 
-  }
-  
-  .nicheng,.gexing{
-    position: absolute;
-    left: 300rpx;
-    font-size:32rpx; 
-  }
+  align-items: center;
+  justify-content: center;
+}
 
-  
-  /*右边组件的样式*/
-  .image{
-    width: 50rpx;
-    height: 50rpx;
-  }
-  .imageblock{
-    position: absolute;
-    right: 50rpx;
-    font-size:32rpx; 
-  }
-  /*修改模块的样式*/
-  .modifyName{
-    position: absolute;  
-    height: 20%;
-    width: 50%;
-    top: 50%;  
-    left: 50%;  
-    transform: translate(-50%, -50%); /* 使模块居中 */  
-    background-color: white; /* 模块背景 */  
-    padding: 20px;  
-    border-radius: 10px;  
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* 模块阴影 */
-  }
-  .bigBlock{
-    width: 100%;
-    height: 100%;
-  
-  }
-  .background {  
-    position: absolute;  
-    top: 0;  
-    left: 0;  
-    width: 100%;  
-    height: 100%;  
-    background-color: rgba(0, 0, 0, 0.5); /* 黑色半透明背景 */  
-  }  
-  .modify_input{
-    margin-top: 20rpx;
-    border-bottom: black 1rpx solid;
-    height: 80rpx;
-    box-shadow: 0 4px 2px -2px #e6e6e6; /* 添加阴影效果，只有底边有 */
-  }
+.edit-icon {
+  width: 30rpx;
+  height: 30rpx;
+  filter: brightness(0) invert(1);
+}
 
-  /*确认和取消的按钮*/
-  .block2{
-    margin-top: 20rpx;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    
-  }
-  .cancel{
-    position: relative;
-    padding: 5px;  
-    border-radius: 10px; 
-    border-bottom: black 1rpx solid;
-  }
-  .confirm{
-    position: relative;
-    padding: 5px;  
-    border-radius: 10px; 
-    border-bottom: black 1rpx solid;
-  }
-  .text_style{
-    font-size: 18px; /* 中等字体大小 */  
-    font-weight: bold; /* 加粗 */  
-  }
+.avatar-tip {
+  font-size: 24rpx;
+  color: #666;
+}
 
-  /*绑定手机号的按钮*/
-  .phonetext {
-    position: absolute !important;
-    right: 50rpx !important;
-    font-size: 32rpx !important;
-    width: 100rpx !important;
-    height: 50rpx !important;
-    padding: 10rpx !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    border: 1rpx solid #43c74c !important;
-    border-radius: 8rpx !important; /* 边框圆角 */
-    color: #43c74c !important;
-    background-color: transparent !important; /* 透明背景 */
-    line-height: 30rpx !important; /* 让文本垂直居中 */
-  }
-  
-  .phonetext::after {
-    border: none !important; /* 取消默认点击高亮效果 */
-  }
-  
+.info-list {
+  background: white;
+  border-radius: 20rpx;
+  margin-bottom: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+}
+
+.info-item {
+  padding: 30rpx;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.info-item:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 15rpx;
+}
+
+.info-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.info-input {
+  flex: 1;
+  font-size: 30rpx;
+  color: #333;
+  padding: 10rpx;
+  border: 1px solid #ddd;
+  border-radius: 10rpx;
+  background: #fafafa;
+}
+
+.info-text {
+  flex: 1;
+  font-size: 30rpx;
+  color: #333;
+}
+
+.info-actions {
+  margin-left: 20rpx;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10rpx;
+}
+
+.action-btn {
+  padding: 10rpx 20rpx;
+  border-radius: 10rpx;
+  font-size: 24rpx;
+  border: none;
+}
+
+.action-btn.cancel {
+  background: #f5f5f5;
+  color: #666;
+}
+
+.action-btn.confirm {
+  background: #07c160;
+  color: white;
+}
+
+.edit-btn {
+  width: 40rpx;
+  height: 40rpx;
+  opacity: 0.6;
+}
+
+.wechat-auth-btn {
+  background: #07c160;
+  color: white;
+  border: none;
+  border-radius: 10rpx;
+  padding: 20rpx 40rpx;
+  font-size: 28rpx;
+}
+
+.preview-section {
+  padding: 20rpx 0;
+}
+
+.preview-btn {
+  width: 100%;
+  height: 80rpx;
+  background: #007aff;
+  color: white;
+  border: none;
+  border-radius: 20rpx;
+  font-size: 30rpx;
+}
+
+.upload-status {
+  position: fixed;
+  bottom: 100rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 20rpx 40rpx;
+  border-radius: 10rpx;
+  font-size: 28rpx;
+}

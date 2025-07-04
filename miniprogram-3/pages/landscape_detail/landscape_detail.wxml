@@ -1,80 +1,50 @@
 <!--pages/landscape_detail/landscape_detail.wxml-->
-<!--轮播图-->
-<swiper class="swiperBlock" autoplay="true" interval="3000" duration="500" indicator-dots="true" circular="true">
-<!--swiper组件中不能放view,所以要用block-->
- <block wx:if="{{myLandscapeName=='大湖寨'}}">
-    <block wx:for="{{dhzList}}" wx:key="index">
-      <swiper-item>
-        <image src="{{item}}" class="slide-image" />
-      </swiper-item>
-    </block>
-  </block>
-  <swiper-item wx:else>
-        <image src="{{picture}}" class="slide-image" />
-      </swiper-item>
-</swiper>
+<view class="container">
+  <!-- 景点图片轮播 -->
+  <swiper wx:if="{{landscapeImages.length > 0}}" class="landscape-swiper" indicator-dots="{{true}}" autoplay="{{false}}">
+    <swiper-item wx:for="{{landscapeImages}}" wx:key="index">
+      <image src="{{item}}" class="landscape-image"></image>
+    </swiper-item>
+  </swiper>
 
-<!-- 景区名称 -->
-<view class="T1">{{myLandscapeName}}</view>
+  <!-- 默认图片 -->
+  <image wx:else src="{{picture || '/images/dhz/4.jpg'}}" class="landscape-image-single"></image>
 
-<!-- 地点信息 + 导航按钮 -->
-<view class="location-container">
-  <view class="location">地点：{{land_detail.location}}</view>
-    <image src="/images/map.png" class="icon-image" bindtap="navigateToLocation"></image>
-</view>
-<!-- 致电景区 -->
-<view class="contact-container">
-  <view class="callBlock">致电景区：{{land_detail.telephone}}</view>
-  <image src="/images/call.png" class="icon-image" bindtap="makePhoneCall"></image>
-</view>
-
-
-<!-- 按钮区 -->
-<view class="button-container">
-  <view class="button-block">
-    <!-- 介绍按钮 -->
-    <view class="custom-button" bindtap="goToIntro" style="color: {{currentPage !== 'introduction'? 'black' : 'green'}}; box-shadow:{{currentPage !== 'introduction'? '0 4px 2px -2px lightgray' : ' 0 4px 2px -2px #c6ddc7'}}">
-      介绍
+  <!-- 其他内容保持不变 -->
+  <view class="content">
+    <!-- 景点信息 -->
+    <view class="info-section">
+      <view class="title">{{myLandscapeName}}</view>
+      <view class="score">推荐指数：{{score}}</view>
     </view>
-    <!-- 评价按钮 -->
-    <view class="custom-button" bindtap="goToComments" style="color: {{currentPage === 'comments' ? 'green' : 'black'}}; box-shadow:{{currentPage === 'comments' ?  ' 0 4px 2px -2px #c6ddc7':'0 4px 2px -2px lightgray' }}">
-      评价
-    </view>
-  </view>
-</view>
 
-<!-- 显示不同的内容 -->
-<scroll-view scroll-y="true" class="content-area">
-  <!-- 介绍内容 -->
-  <view wx:if="{{currentPage !== 'comments'}}" class="introBlock">
-    <view class="introContent">  大湖寨建于南宋时期，历经元、明、清、民国，是一座典型的客家围屋古建筑 ，已有889年历史，是连平最古老、最具规模的古寨围。 </view>
-      <view class="introContent">大湖寨座南朝北，建筑平面呈半月形，总建筑面积为14000多平方米，有36座大小不一的祠堂，72条巷街，合成了天罡地煞的108之合数。寨前有一呈半月形的池塘，与寨内建筑面积几乎相等，合成一个圆月形。横梁竖柱雕琢精美，壁画、题书众多，明清时的建筑风格突出，且具有唐宋遗风，是一部解读客家古建筑文化的缩影。大湖寨已打造成以客家宴席为主题，融美食节庆活动、文化古村落、客家田园风光、农事体验于一体的旅游点。
+    <!-- 导航按钮 -->
+    <view class="nav-buttons">
+      <button class="nav-btn {{currentPage === 'introduction' ? 'active' : ''}}" bindtap="goToIntro">介绍</button>
+      <button class="nav-btn {{currentPage === 'comments' ? 'active' : ''}}" bindtap="goToComments">评价</button>
     </view>
-  </view>
-  
-  <!-- 评价内容 -->
-    <view class="comments-list" wx:if="{{currentPage === 'comments'}}">
-    <view class="comment" wx:for="{{comments}}" wx:key="index">
-      <view class="landscapeBlock">
-        <text class="comment-landscape">对</text>
-        <text class="comment-landscape2">{{item.landscape_id}}</text>
-        <text class="comment-landscape">的评论：</text>
+
+    <!-- 介绍页面 -->
+    <view wx:if="{{currentPage === 'introduction'}}" class="introduction">
+      <text>{{land_detail.introduction || '暂无介绍'}}</text>
+
+      <!-- 操作按钮 -->
+      <view class="action-buttons">
+        <button class="action-btn" bindtap="getLocationByName">导航</button>
+        <button class="action-btn" bindtap="makePhoneCall">电话</button>
+        <button class="action-btn" bindtap="navigateToComment">评论</button>
       </view>
-      
-      <text class="comment-content">{{item.content}}</text>
-      <text class="comment-tourist">评论者：{{item.tourist_name}}</text>
-      <text class="comment-time">评论时间：{{item.time}}</text>
     </view>
 
-  </view>
-  
-      <!-- 底部操作 -->
-      <view class="bottom">
-        <view class="action-btn" bind:tap="navigateToComment">去评论</view>
+    <!-- 评论页面 -->
+    <view wx:if="{{currentPage === 'comments'}}" class="comments">
+      <view wx:for="{{comments}}" wx:key="index" class="comment-item">
+        <view class="comment-header">
+          <text class="comment-user">{{item.tourist_name}}</text>
+          <text class="comment-time">{{item.create_time}}</text>
+        </view>
+        <view class="comment-content">{{item.content}}</view>
       </view>
-  
-</scroll-view>
-
-
-
-
+    </view>
+  </view>
+</view>

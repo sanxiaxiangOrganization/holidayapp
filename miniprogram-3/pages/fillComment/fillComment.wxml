@@ -1,38 +1,67 @@
 <!--pages/fillComment/fillComment.wxml-->
-<view class="container5">
-  <view class="landName">{{myLandscapeName}}评价</view>
+<view class="container">
+  <view class="title">评价 {{myLandscapeName}}</view>
 
-  <!-- 星级评价 -->
-  <view class="rating">
-    <text>评分：</text>
+  <!-- 星级评分 -->
+  <view class="rating-section">
+    <view class="rating-title">您的评分</view>
     <view class="stars">
-      <block wx:for="{{stars}}" wx:key="index">
-        <image class="star" src="{{index < selectedStars ? '/images/star_active.png' : '/images/star.png'}}" data-index="{{index}}" bindtap="setRating"></image>
-      </block>
+      <view wx:for="{{stars}}" wx:key="index" class="star-wrapper">
+        <image
+          class="star {{index < selectedStars ? 'star-selected' : ''}}"
+          src="{{index < selectedStars ? '/images/star_active.png' : '/images/star.png'}}"
+          data-index="{{index}}"
+          bindtap="setRating">
+        </image>
+      </view>
     </view>
   </view>
 
-  <!-- 手写评价 -->
-  <textarea class="review-text" placeholder="请输入您的评价" bindinput="onInput" value="{{reviewText}}"></textarea>
-
-  <!-- 上传图片 -->
-  <view class="cblock" bindtap="chooseImage">
-    <image class="icover" src="/images/camera.png"></image>
-    <text class="text">上传图片</text>
+  <!-- 文字评价 -->
+  <view class="review-section">
+    <view class="review-title">写下您的评价</view>
+    <textarea
+      class="review-textarea"
+      placeholder="分享您的体验..."
+      bindinput="onInput"
+      value="{{reviewText}}"
+      maxlength="500">
+    </textarea>
+    <view class="char-count">{{reviewText.length}}/500</view>
   </view>
 
-  <!-- 显示上传的图片 -->
-  <view class="image-list">
-    <block wx:for="{{imageList}}" wx:key="index">
-      <view class="image-item">
-        <image class="uploaded-image" src="{{item}}" mode="aspectFill"></image>
-        <image class="delete-icon" src="/images/delete-icon.png" data-index="{{index}}" bindtap="deleteImage"></image>
+  <!-- 图片上传 -->
+  <view class="image-section">
+    <view class="image-title">添加照片（最多3张）</view>
+
+    <!-- 添加照片按钮 -->
+    <view wx:if="{{imageList.length < 3}}" class="add-image-btn" bindtap="chooseImage">
+      <image class="camera-icon" src="{{cameraIcon}}"></image>
+      <text class="add-text">添加照片</text>
+    </view>
+
+    <!-- 已选择的图片 -->
+    <view class="image-grid">
+      <view wx:for="{{imageList}}" wx:key="index" class="image-wrapper">
+        <image
+          src="{{item}}"
+          class="uploaded-image"
+          mode="aspectFill"
+          data-src="{{item}}"
+          bindtap="previewImage">
+        </image>
+        <image
+          class="delete-icon"
+          src="{{deleteIcon}}"
+          data-index="{{index}}"
+          bindtap="deleteImage">
+        </image>
       </view>
-    </block>
+    </view>
   </view>
 
   <!-- 提交按钮 -->
-  <view class="submit">
-    <button bindtap="submitReview">提交评价</button>
+  <view class="submit-section">
+    <button class="submit-btn" bindtap="submitReview">提交评价</button>
   </view>
 </view>

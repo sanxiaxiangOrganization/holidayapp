@@ -1,158 +1,226 @@
-/* pages/landscape/landscape.wxss */
+/* 主容器 */
 .container{
   height: 100%;
   width: 100%;
   padding: 0%;
   box-sizing: border-box;
 }
-/*最顶上那一条*/
+
+/* 加载状态样式 */
+.loading-container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-content {
+  text-align: center;
+}
+
+.loading-spinner {
+  width: 80rpx;
+  height: 80rpx;
+  border: 6rpx solid #f3f3f3;
+  border-top: 6rpx solid #43c74c;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 40rpx;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+  font-size: 32rpx;
+  color: #666;
+}
+
+/* 错误状态样式 */
+.error-container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40rpx;
+}
+
+.error-content {
+  text-align: center;
+  max-width: 600rpx;
+}
+
+.error-icon {
+  font-size: 120rpx;
+  display: block;
+  margin-bottom: 40rpx;
+}
+
+.error-message {
+  font-size: 32rpx;
+  color: #666;
+  display: block;
+  margin-bottom: 60rpx;
+  line-height: 1.5;
+}
+
+.retry-btn {
+  background: #43c74c;
+  color: white;
+  border: none;
+  border-radius: 50rpx;
+  padding: 20rpx 60rpx;
+  font-size: 32rpx;
+}
+
+.retry-btn:active {
+  background: #38a943;
+}
+
+/* 轮播图样式 */
+.banner-swiper {
+  width: 100%;
+  height: 300rpx;
+  margin-bottom: 20rpx;
+}
+
+.banner-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 通知栏样式 */
 .notification_bar {
   display: flex;
   align-items: center;
-  /*top: 10rpx; 这条改不了艹*/
   width: 83%;
-  margin-bottom: 10rpx;
+  margin: 0 auto 10rpx;
   padding: 0 30rpx;
   height: 80rpx;
   overflow: hidden;
-  background:#f2f1c7;
-  border-radius: 20px; /* 设置曲线边框的半径 */
-  box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.5); /* 添加阴影效果，只有底边有 */
+  background: #f2f1c7;
+  border-radius: 20rpx;
+  box-shadow: 0 4rpx 2rpx -2rpx rgba(0, 0, 0, 0.5);
 }
+
 .notification_bar_left {
   display: flex;
-  /*width: 80%;*/
   align-items: center;
   padding: 0;
   height: 100%;
   overflow: hidden;
-  /*border-right: 1rpx solid black;*/
 }
-/*左边图片的大小*/
+
 .bar_left {
   margin-left: 10rpx;
   width: 55rpx;
   height: 60rpx;
+  flex-shrink: 0;
 }
-/*文字大小和颜色，距离图片多少像素显示*/
+
 .bar_text {
   margin-left: 20rpx;
-  font-size: 18px;
+  font-size: 36rpx;
   color: #43c74c;
 }
-/*右边推荐路线*/
-.bar_right{
-  display: flex;
-  justify-content: center;
-  width: 20%;
-  align-items: center;
-  padding: 0;
-  height:100%;
-  color: gray;
-}
 
-/*
-.landscapeblock{
-  position: absolute;
-  width: 100%;
-  padding: 0;
-  box-sizing: border-box; /* padding不会撑开容器 
-  margin:0;
-}
-.landscape_card{
-  border: 3rpx solid red;
-  width: 100%;
-  height:400rpx;
-}
-
-/* 动画效果 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-@keyframes inkSpread {
-  from {
-    text-shadow: 0 0 0 rgba(0, 0, 0, 0);
-  }
-  to {
-    text-shadow: 4rpx 4rpx 8rpx rgba(0, 0, 0, 0.5);
-  }
-}
-.landscape_text{
-  color: white; /* 字体颜色为白色 
-  font-size: 80rpx;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  text-shadow: 2rpx 2rpx 4rpx rgba(0,0,0,0.5);
-  font-weight: bold;
-  animation: fadeIn 1s ease-in-out;
-  /* 增加文字特色：倾斜效果
-  transform: rotate(-10deg);
-  overflow: hidden;
-  white-space: nowrap;
-}
-*/
-
-
-/*滑动框——景点详细介绍*/
+/* 景点列表样式 */
 .landscapeBlock{
   width: 100%;
   height: 75%;
   padding: 0%;
   margin: auto;
 }
+
 .landscape-item{
   width: 95%;
   display: flex;
   align-items: center;
-  margin:auto;
-  /*border-bottom: 1rpx solid black; */
-  margin-bottom: 5rpx;
-  border: 1px solid rgba(0, 0, 0, 0.1); /* 设置四条边的边界颜色，较浅色 */
-    box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.5); /* 添加阴影效果，只有底边有 */
-    border-radius: 8rpx; /* 边框圆角 */
-    padding: 10rpx;
-    box-sizing: border-box; /* padding不会撑开容器 */
+  margin: auto;
+  margin-bottom: 20rpx;
+  border: 1rpx solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4rpx 2rpx -2rpx rgba(0, 0, 0, 0.5);
+  border-radius: 16rpx;
+  padding: 20rpx;
+  box-sizing: border-box;
+  background: white;
 }
-/*景点代表图片*/
+
+/* 图片容器样式 */
 .pictureBlock{
   height: 100%;
-  /*border-right: 1rpx solid black;*/
   display: flex;
   justify-content: center;
+  flex-shrink: 0;
+  margin-right: 20rpx;
 }
+
 .picture{
-  width: 400rpx;
-  height: 300rpx;
-  margin-bottom: 0;
+  width: 200rpx;
+  height: 150rpx;
+  border-radius: 12rpx;
+  background: #f5f5f5;
+  object-fit: cover;
+  border: 1rpx solid #e0e0e0;
 }
-/*景点的详细信息（除图片外的）*/
+
+/* 景点信息样式 */
 .profileBlock{
-  padding: 10rpx;
+  padding: 0;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-left: 10rpx;
+  flex: 1;
+  min-width: 0;
 }
+
 .name{
   font-size: 40rpx;
   font-weight: bold;
   margin-bottom: 20rpx;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-/*查看详情的按钮*/
+
+.profileBlock > view:nth-child(2) {
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 20rpx;
+}
+
+/* 查看详情按钮 */
 .checkDetail{
-  margin-top: 20rpx;
+  margin-top: 10rpx;
   width: 140rpx;
-  height: 30rpx;
-  padding: 10rpx;
+  height: 60rpx;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1rpx solid gray;
-  border-radius: 8rpx; /* 边框圆角 */
-  color: gray;
+  border: 2rpx solid #43c74c;
+  border-radius: 30rpx;
+  color: #43c74c;
+  font-size: 28rpx;
+  background: white;
+  transition: all 0.3s ease;
 }
 
+.checkDetail:active {
+  background: #43c74c;
+  color: white;
+}
 
-
-
+/* 空状态提示 */
+.empty-tip {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400rpx;
+  color: #999;
+  font-size: 28rpx;
+}

@@ -1,228 +1,384 @@
-// pages/information/information.js
+// 引入配置
+const { API_CONFIG, USER_UTILS, IMAGE_UTILS, PHONE_UTILS , AUTH_UTILS } = require('../../utils/config');
+
+// pages/edit_information/edit_information.js
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-    userName:wx.getStorageSync('nickName'),//wx.getStorageSync('userName'),
-    phoneNumber:wx.getStorageSync('phoneNumber'),//wx.getStorage('phoneNumber'),
-    userPic:wx.getStorageSync('userPic'),//wx.getStorageSync('userPic'),//用户头像
-    clickPencil1:false,//如果点击小铅笔1，表示用户要修改昵称，则显示这个模块
-    clickPencil2:false,//如果点击小铅笔2，表示用户要修改手机号，则显示这个模块
-  },
-  /*修改头像处理函数*/
-  headHandler(){
-    var that=this;
-  wx.chooseImage({
-    complete: (res) => {},
-    fail: (res) => {},
-    sizeType: ['compressed','original'],
-    sourceType: ['album','camera'],
-    success: (result) => {
-      console.log("选择图片成功："+result)
-      const FilePaths = result.tempFilePaths[0];
-      console.log("tempFilePaths: "+FilePaths)
-     
-
-      //调用接口获取永久url
-      wx.uploadFile({
-        filePath: result.tempFilePaths[0],
-        name: 'file',
-        url: 'http://8.134.128.39:8080/vegetable/upload_file',// 上传图片的接口地址
-        formData: {
-        // 其他要随文件一起提交的表单信息
-      },
-      success(res) {
-        console.log('获取永久url请求成功:', res.data);
-        //console.log("res.data的类型： ")
-        //console.log(typeof res.data); // 输出 'string'
-
-        //因为它tm是个字符串，所以把它五马分尸！！
-          res.data = JSON.parse(res.data);
-        
-          console.log("uploadRes.data.data: "+res.data.data); // 现在应该输出URL
-        
-        
-        that.setData({
-          userPic:res.data.data
-        })    
-        console.log("userPic: "+res.data.data)
-          var userPic=res.data.data;
-          wx.setStorageSync('userPic', res.data.data)
-
-
-         //调用接口将更新后的用户信息保存到服务器
-        wx.request({
-          url: '', // 更新用户(头像）的接口地址？？？？？？？？？？？？？？？？？？？？？？？？？
-          method: 'PUT',
-          data:{
-            "username":wx.getStorageSync('nickName'), 
-            "userPic":userPic, 
-           
-          },
-          header: {
-            'Authorization':wx.getStorageSync('token'),
-          },
-          success(res) {
-            console.log('更新用户头像请求成功:', res.data);
-            
-           
-          },
-          fail(err) { 
-            console.error('更新用户头像请求失败:', err);
-          }
-        
-        })
-      },
-      fail(err) { 
-        console.error('获取永久url请求失败:', err);
-      }
-      
-    })
-  },
-  fail(err) { 
-    console.error('选择图片请求失败:', err);
-  }
-})
+    userName: '',
+    phoneNumber: '', // 脱敏显示的手机号
+    rawPhoneNumber: '', // 原始手机号，用于编辑
+    userPic: '',
+    // 编辑状态
+    editingName: false,
+    editingPhone: false,
+    tempUserName: '',
+    tempPhoneNumber: '',
+    // 图标资源
+    pencilIcon: '',
+    // 上传状态
+    uploading: false
   },
 
-
-/*修改昵称处理函数*/
-  pencilHandler1(){
-    this.setData({
-      clickPencil1:true
-     })
-  }
-  ,
-  /*修改个性签名处理函数*/
-  pencilHandler2(){
-   this.setData({
-    clickPencil2:true
-   })
-  }
-    ,
-  cancelHandler(){
-    this.setData({
-      clickPencil1:false,
-      clickPencil2:false
-     })
-  },
-  /*输入处理函数*/
-  inputHandler(e){
-    /*先将用户输入的内容保存下来 */
-    wx.setStorageSync('inputValue', e.detail.value)
-  }
-  ,
-  confirmHandler(){
-    var that=this;
-    var app=getApp();
-    /*如果是修改昵称*/
-    if(that.data.clickPencil1==true){
-      this.setData({
-        userName:wx.getStorageSync('inputValue')
-      })
-     app.globalData.userName=wx.getStorageSync('inputValue');
-      /*检查是否修改成功 */
-     console.log("修改后的昵称：",app.globalData.userName);
-     //将修改后的昵称保存到本地——快
-     wx.setStorageSync('nickName',wx.getStorageSync('inputValue'));
-
-    }
-     /*如果是修改手机号*/
-     else{
-      this.setData({
-        phoneNumber:wx.getStorageSync('inputValue')
-      })
-      app.globalData.phoneNumber=wx.getStorageSync('inputValue');
-       /*检查是否修改成功 */
-     console.log("修改后的手机号：",app.globalData.phoneNumber);
-     wx.setStorageSync('phoneNumber',wx.getStorageSync('inputValue'));
-     }
-     
-     /*调用更新游客的接口将用户更新的东西放到数据库中*/
-        wx.request({
-          url: 'http://localhost:8080/tourist/update', // 更新游客的接口
-          method: 'PUT',
-          data:{
-            "tourist_id": wx.getStorageSync('tourist_id'), 
-            "tourist_name":wx.getStorageSync('nickName'), 
-            "tourist_password":"123456",//默认123456 
-          },
-          header: {
-            'content-type': 'application/json' // 默认值
-          },
-          success(res) {
-            console.log('更新用户信息成功:', res.data);
-            
-           
-          },
-          fail(err) { 
-            console.error('更新用户信息请求失败:', err);
-          }
-        
-        })
-      
-     /*无论是修改什么，最后都应该回到原来的视图，并进行重新渲染 */
-     this.setData({
-      clickPencil1:false,
-      clickPencil2:false
-     })
-  },
-  //绑定手机号处理函数
-  getPhoneNumber(e) {
-    console.log("————————————————————————————绑定手机号——————————————————————————");
-    console.log("手机号信息", e);
-    if (e.detail.errMsg === "getPhoneNumber:ok") {
-      // 用户同意授权
-      wx.login({
-        success: (res) => {
-          if (res.code) {
-            console.log("登录成功，code:", res.code);
-
-            // 发送 code、encryptedData、iv 到后端解密
-            wx.request({
-              url: "https://your-backend.com/api/decryptPhoneNumber",
-              method: "POST",
-              data: {
-                code: res.code, // 登录凭证
-                encryptedData: e.detail.encryptedData, // 加密的手机号数据
-                iv: e.detail.iv, // 解密向量
-              },
-              success: (response) => {
-                console.log("手机号解密结果:", response.data);
-                this.setData({
-                  phoneNumber: response.data.phoneNumber, // 绑定手机号
-                });
-                wx.showToast({
-                  title: "手机号绑定成功",
-                  icon: "success",
-                });
-              },
-              fail: (err) => {
-                console.error("手机号解密失败", err);
-              },
-            });
-          }
-        },
+  async onLoad() {
+    // 检查登录状态
+    const touristId = wx.getStorageSync('tourist_id');
+    if (!touristId) {
+      wx.showToast({
+        title: '请先登录',
+        icon: 'none'
       });
-    } else {
-      console.log("用户拒绝授权手机号", e.detail.errMsg);
+      setTimeout(() => {
+        wx.navigateBack();
+      }, 1500);
+      return;
+    }
+
+    // 加载图标
+    await this.loadIcons();
+
+    // 加载用户信息
+    this.loadUserInfo();
+  },
+
+  // 加载图标
+  async loadIcons() {
+    try {
+      const icons = await IMAGE_UTILS.getIcons();
+      this.setData({
+        pencilIcon: icons.PENCIL || icons.pencil || icons.EDIT || icons.edit || '/images/pencil.png'
+      });
+    } catch (error) {
+      console.error('加载图标失败:', error);
+      this.setData({
+        pencilIcon: '/images/pencil.png'
+      });
     }
   },
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-    var app=getApp();
-    app.getUserByOpenid(wx.getStorageSync('openid'))
+
+  // 加载用户信息
+  loadUserInfo() {
+    const rawPhoneNumber = wx.getStorageSync('phoneNumber') || '';
     this.setData({
-      userName:wx.getStorageSync('nickName'),//wx.getStorageSync('userName'),
-      phoneNumber:wx.getStorageSync('phoneNumber'),//wx.getStorage('phoneNumber'),
-      userPic:wx.getStorageSync('userPic'),
-    })
-    console.log("——————————————————————读到的用户的数据————————————————————");
-    console.log(this.data.userName,"\n",this.data.phoneNumber,"\n",this.data.userPic,"\n");
+      userName: wx.getStorageSync('nickName') || '',
+      phoneNumber: PHONE_UTILS.formatPhoneDisplay(rawPhoneNumber), // 脱敏显示
+      rawPhoneNumber: rawPhoneNumber, // 原始手机号
+      userPic: wx.getStorageSync('userPic') || '',
+      tempUserName: wx.getStorageSync('nickName') || '',
+      tempPhoneNumber: rawPhoneNumber // 编辑时使用原始手机号
+    });
   },
-  
-})
+
+  // 修改头像
+  async headHandler() {
+    const touristId = wx.getStorageSync('tourist_id');
+    if (!touristId) {
+      wx.showToast({
+        title: '请先登录',
+        icon: 'none'
+      });
+      return;
+    }
+
+    if (this.data.uploading) {
+      wx.showToast({
+        title: '正在上传中...',
+        icon: 'none'
+      });
+      return;
+    }
+
+    try {
+      const res = await new Promise((resolve, reject) => {
+        wx.showActionSheet({
+          itemList: ['从相册选择', '拍照'],
+          success: resolve,
+          fail: reject
+        });
+      });
+
+      const sourceType = res.tapIndex === 0 ? ['album'] : ['camera'];
+      const imageResult = await this.chooseImage(sourceType);
+
+      if (imageResult.tempFilePaths && imageResult.tempFilePaths.length > 0) {
+        await this.uploadAvatar(imageResult.tempFilePaths[0], touristId);
+      }
+    } catch (error) {
+      if (error.errMsg !== 'showActionSheet:fail cancel') {
+        console.error('选择图片失败:', error);
+      }
+    }
+  },
+
+  // 选择图片
+  chooseImage(sourceType) {
+    return new Promise((resolve, reject) => {
+      wx.chooseImage({
+        count: 1,
+        sizeType: ['compressed'],
+        sourceType: sourceType,
+        success: resolve,
+        fail: reject
+      });
+    });
+  },
+
+  // 上传头像
+  async uploadAvatar(filePath, touristId) {
+    this.setData({ uploading: true });
+
+    wx.showLoading({
+      title: '正在上传头像...',
+      mask: true
+    });
+
+    try {
+      const uploadResult = await new Promise((resolve, reject) => {
+        wx.uploadFile({
+          url: API_CONFIG.IMAGES.AVATAR_UPLOAD,
+          filePath: filePath,
+          name: 'file',
+          formData: {
+            'touristId': touristId.toString()
+          },
+          success: resolve,
+          fail: reject
+        });
+      });
+
+      const result = JSON.parse(uploadResult.data);
+
+      if (result.code === 1) {
+        const avatarUrl = result.data;
+
+        // 更新用户头像
+        const updateResult = await USER_UTILS.updateUserInfo({
+          user_pic: avatarUrl
+        });
+
+        if (updateResult.success) {
+          this.setData({
+            userPic: avatarUrl
+          });
+          wx.showToast({
+            title: '头像更新成功',
+            icon: 'success'
+          });
+        } else {
+          throw new Error(updateResult.message);
+        }
+      } else {
+        throw new Error(result.msg || '上传失败');
+      }
+    } catch (error) {
+      console.error('上传头像失败:', error);
+      wx.showToast({
+        title: '上传失败',
+        icon: 'none'
+      });
+    } finally {
+      this.setData({ uploading: false });
+      wx.hideLoading();
+    }
+  },
+
+  // 预览头像
+  previewAvatar() {
+    if (this.data.userPic) {
+      wx.previewImage({
+        current: this.data.userPic,
+        urls: [this.data.userPic]
+      });
+    }
+  },
+
+  // 开始编辑用户名
+  startEditName() {
+    this.setData({
+      editingName: true,
+      tempUserName: this.data.userName
+    });
+  },
+
+  // 开始编辑手机号
+  startEditPhone() {
+    this.setData({
+      editingPhone: true,
+      tempPhoneNumber: this.data.rawPhoneNumber === '未设置' ? '' : this.data.rawPhoneNumber
+    });
+  },
+
+  // 取消编辑
+  cancelEdit() {
+    this.setData({
+      editingName: false,
+      editingPhone: false,
+      tempUserName: this.data.userName,
+      tempPhoneNumber: this.data.phoneNumber
+    });
+  },
+
+  // 输入处理
+  onNameInput(e) {
+    this.setData({
+      tempUserName: e.detail.value
+    });
+  },
+
+  onPhoneInput(e) {
+    this.setData({
+      tempPhoneNumber: e.detail.value
+    });
+  },
+
+  // 确认修改
+  async confirmEdit() {
+    const { tempUserName, tempPhoneNumber, editingName, editingPhone } = this.data;
+
+    // 验证输入
+    if (editingName && !tempUserName.trim()) {
+      wx.showToast({
+        title: '用户名不能为空',
+        icon: 'none'
+      });
+      return;
+    }
+
+    if (editingPhone && tempPhoneNumber && !PHONE_UTILS.validatePhone(tempPhoneNumber)) {
+      wx.showToast({
+        title: '请输入正确的手机号格式',
+        icon: 'none'
+      });
+      return;
+    }
+
+    wx.showLoading({
+      title: '保存中...',
+      mask: true
+    });
+
+    try {
+      const updateData = {};
+
+      if (editingName && tempUserName.trim() !== this.data.userName) {
+        updateData.tourist_name = tempUserName.trim();
+      }
+
+      if (editingPhone && tempPhoneNumber !== this.data.rawPhoneNumber) {
+        updateData.phone_number = tempPhoneNumber;
+      }
+
+      if (Object.keys(updateData).length > 0) {
+        const result = await USER_UTILS.updateUserInfo(updateData);
+
+        if (result.success) {
+          // 更新本地数据
+          const newData = {
+            editingName: false,
+            editingPhone: false
+          };
+
+          if (updateData.tourist_name) {
+            newData.userName = updateData.tourist_name;
+            wx.setStorageSync('nickName', updateData.tourist_name);
+          }
+
+          if (updateData.phone_number) {
+            newData.rawPhoneNumber = updateData.phone_number;
+            newData.phoneNumber = PHONE_UTILS.formatPhoneDisplay(updateData.phone_number);
+            wx.setStorageSync('phoneNumber', updateData.phone_number);
+          }
+
+          this.setData(newData);
+
+          wx.showToast({
+            title: '保存成功',
+            icon: 'success'
+          });
+        } else {
+          throw new Error(result.message);
+        }
+      } else {
+        // 没有修改，直接退出编辑状态
+        this.setData({
+          editingName: false,
+          editingPhone: false
+        });
+      }
+    } catch (error) {
+      console.error('保存失败:', error);
+      wx.showToast({
+        title: '保存失败',
+        icon: 'none'
+      });
+    } finally {
+      wx.hideLoading();
+    }
+  },
+
+  // 获取手机号授权
+  // 获取手机号授权
+async getPhoneNumber(e) {
+  if (e.detail.errMsg === 'getPhoneNumber:ok') {
+    wx.showLoading({
+      title: '获取中...',
+      mask: true
+    });
+
+    try {
+      // 获取微信返回的加密数据
+      const { encryptedData, iv } = e.detail;
+
+      // 调用后端解密接口
+      const decryptResult = await AUTH_UTILS.decryptPhoneNumber(encryptedData, iv);
+
+      if (decryptResult.success) {
+        const phoneNumber = decryptResult.purePhoneNumber || decryptResult.phoneNumber;
+
+        // 更新页面数据
+        this.setData({
+          rawPhoneNumber: phoneNumber,
+          phoneNumber: PHONE_UTILS.formatPhoneDisplay(phoneNumber),
+          tempPhoneNumber: phoneNumber
+        });
+
+        // 保存到本地存储
+        wx.setStorageSync('phoneNumber', phoneNumber);
+
+        // 同步到服务器
+        const result = await USER_UTILS.updateUserInfo({
+          phone_number: phoneNumber
+        });
+
+        if (result.success) {
+          wx.showToast({
+            title: '获取手机号成功',
+            icon: 'success'
+          });
+        } else {
+          console.error('同步手机号到服务器失败:', result.message);
+          wx.showToast({
+            title: '保存手机号失败',
+            icon: 'none'
+          });
+        }
+      } else {
+        throw new Error(decryptResult.message || '解密手机号失败');
+      }
+    } catch (error) {
+      console.error('获取手机号失败:', error);
+      wx.showToast({
+        title: `获取手机号失败: ${error.message || '请重试'}`,
+        icon: 'none'
+      });
+    } finally {
+      wx.hideLoading();
+    }
+  } else {
+    console.log('用户拒绝授权手机号');
+    wx.showToast({
+      title: '需要授权才能获取手机号',
+      icon: 'none'
+    });
+  }
+}
+});
