@@ -1,9 +1,12 @@
 /* 主容器 */
 .container{
-  height: 100%;
   width: 100%;
   padding: 0%;
-  box-sizing: border-box;
+  
+}
+
+.container>view{
+  width: 100%;
 }
 
 /* 加载状态样式 */
@@ -129,14 +132,12 @@
 
 /* 景点列表样式 */
 .landscapeBlock{
-  width: 100%;
   height: 75%;
   padding: 0%;
-  margin: auto;
 }
 
 .landscape-item{
-  width: 95%;
+  width: 100%;
   display: flex;
   align-items: center;
   margin: auto;
