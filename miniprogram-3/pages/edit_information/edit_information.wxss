@@ -11,7 +11,6 @@
   margin-bottom: 20rpx;
   text-align: center;
   box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
-  width:30%;
 }
 
 .avatar-container {
@@ -54,11 +53,9 @@
 .info-list {
   background: white;
   border-radius: 20rpx;
-  margin-bottom: 60%;
+  margin-bottom: 20rpx;
   overflow: hidden;
   box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
-  width:100%;
-  padding-top: 0rpx;
 }
 
 .info-item {
@@ -84,10 +81,6 @@
   justify-content: space-between;
 }
 
-.info-content.active{
-  display: block;
-}
-
 .info-input {
   flex: 1;
   font-size: 30rpx;
@@ -96,7 +89,6 @@
   border: 1px solid #ddd;
   border-radius: 10rpx;
   background: #fafafa;
-  margin-bottom: 10rpx;
 }
 
 .info-text {
@@ -107,10 +99,6 @@
 
 .info-actions {
   margin-left: 20rpx;
-}
-
-.info-content.active .info-actions{
-  margin-left: 0;
 }
 
 .action-buttons {
@@ -152,7 +140,6 @@
 
 .preview-section {
   padding: 20rpx 0;
-  bottom:20rpx;
 }
 
 .preview-btn {

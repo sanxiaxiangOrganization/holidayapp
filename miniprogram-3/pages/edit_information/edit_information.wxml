@@ -15,7 +15,7 @@
     <!-- 用户名编辑 -->
     <view class="info-item">
       <text class="info-label">用户名</text>
-      <view class="info-content {{editingName ? 'active' : ''}}" bindtap="{{editingName ? '' : 'startEditName'}}">
+      <view class="info-content" bindtap="{{editingName ? '' : 'startEditName'}}">
         <input
           wx:if="{{editingName}}"
           class="info-input"
@@ -39,7 +39,7 @@
     <!-- 手机号编辑 -->
     <view class="info-item">
       <text class="info-label">手机号</text>
-      <view class="info-content {{editingPhone ? 'active' : ''}}">
+      <view class="info-content">
         <input
           wx:if="{{editingPhone}}"
           class="info-input"

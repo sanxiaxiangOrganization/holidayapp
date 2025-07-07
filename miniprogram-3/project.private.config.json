@@ -17,8 +17,7 @@
     "showES6CompileOption": false,
     "checkInvalidKey": true,
     "ignoreDevUnusedFiles": true,
-    "bigPackageSizeSupport": false,
-    "useIsolateContext": true
+    "bigPackageSizeSupport": false
   },
   "condition": {},
   "libVersion": "3.8.10"

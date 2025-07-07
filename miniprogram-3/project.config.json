@@ -3,11 +3,10 @@
   "packOptions": {
     "ignore": [
       {
-        "value": ".eslintrc.js",
-        "type": "file"
+        "type": "file",
+        "value": ".eslintrc.js"
       }
-    ],
-    "include": []
+    ]
   },
   "setting": {
     "bundle": false,
@@ -37,23 +36,20 @@
     "packNpmRelationList": [],
     "minifyWXSS": true,
     "disableUseStrict": false,
-    "minifyWXML": true,
-    "compileWorklet": false,
-    "localPlugins": false,
-    "useCompilerPlugins": false,
-    "condition": false,
-    "swc": false,
-    "disableSWC": true,
-    "babelSetting": {
-      "ignore": [],
-      "disablePlugins": [],
-      "outputPath": ""
-    }
+    "minifyWXML": true
   },
   "compileType": "miniprogram",
-  "libVersion": "3.8.10",
+  "libVersion": "2.19.4",
   "appid": "wx56e6d24ee800ceea",
   "projectname": "holidayapp-miniprogram",
+  "debugOptions": {
+    "hidedInDevtools": []
+  },
+  "scripts": {},
+  "staticServerOptions": {
+    "baseURL": "",
+    "servePath": ""
+  },
   "isGameTourist": false,
   "condition": {
     "search": {
@@ -74,7 +70,5 @@
     "miniprogram": {
       "list": []
     }
-  },
-  "simulatorPluginLibVersion": {},
-  "editorSetting": {}
+  }
 }
