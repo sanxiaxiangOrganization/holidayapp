@@ -1,4 +1,10 @@
 /* pages/landscape/landscape_detail/landscape_detail.wxss */
+/* 主容器 */
+.container{
+  padding: 0;
+  justify-content: flex-start;
+  display: flex;
+}
 page {
   height: 100%;
 }
@@ -65,10 +71,68 @@ page {
   color: #333;
 }
 
+/* 内容区 */
 .content {
+  display: flex;
+  flex-direction: column;
   font-size: 14px;
   color: #555;
   margin-top: 5px;
+  width: 90%;
+  gap: 20rpx;
+  flex: 1;
+}
+
+/* 简介 */
+.info-section .title{
+  margin-bottom: 10rpx;
+}
+
+/* 导航按钮 */
+.nav-buttons{
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+}
+
+.nav-btn{
+  background-color: rgb(48, 119, 252);
+  color: #fff;
+}
+
+/* 介绍区 */
+.introduction{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.introduction>text{
+  flex: 1;
+}
+
+/* 底部操作按钮 */
+.action-buttons{
+  display: flex;
+  gap: 20rpx;
+  margin-bottom: 40rpx;
+}
+
+.bottom {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.action-btn {
+  padding: 10px 20px;
+  text-align: center;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 .time {
@@ -144,25 +208,6 @@ page {
   border-radius: 10px;
   margin-bottom: 25rpx;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-/* 底部操作按钮 */
-.bottom {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 20px;
-}
-
-.action-btn {
-  padding: 10px 20px;
-  width: 200rpx;
-  text-align: center;
-  background-color: #4CAF50;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
 }
 
 /*评论部分*/

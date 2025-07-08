@@ -2,6 +2,7 @@
   padding: 20rpx;
   background-color: #f5f5f5;
   min-height: 100vh;
+  justify-content:initial;
 }
 
 .user-card {
@@ -12,6 +13,7 @@
   display: flex;
   align-items: center;
   box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+  width:90%;
 }
 
 .user-avatar {
@@ -96,6 +98,7 @@
   margin-bottom: 20rpx;
   overflow: hidden;
   box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+  width:100%;
 }
 
 .menu-item {
@@ -138,7 +141,11 @@
 }
 
 .logout-section {
-  padding: 20rpx 0;
+  position:fixed;
+  bottom:20rpx;
+  padding: 10rpx 0;
+  display: flex;
+  align-items: center;
 }
 
 .logout-btn {
