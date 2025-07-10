@@ -61,60 +61,40 @@ Page({
   async loadBanners() {
     try {
       console.log('开始加载轮播图...');
-
-      // 调用后端推荐的轮播图API
-      const response = await new Promise((resolve, reject) => {
-        wx.request({
-          url: API_CONFIG.IMAGES.BANNERS,
-          method: 'GET',
-          header: {
-            'Accept': 'application/json'
-          },
-          success: resolve,
-          fail: reject
+      const banners = await IMAGE_UTILS.getBanners();
+  
+      // 检查 banners 是否为有效对象
+      if (typeof banners === 'object' && banners !== null && Object.keys(banners).length > 0) {
+        // 将键值对转换为数组 [{ key: 'BANNER-01', value: { url: '...', sort_order: 1 } }, ...]
+        const bannerEntries = Object.entries(banners).map(([key, value]) => ({ key, value }));
+        
+        // 按 sort_order 排序（数字越小越靠前）
+        const sortedBanners = bannerEntries.sort((a, b) => {
+          return (a.value.sort_order || 0) - (b.value.sort_order || 0);
         });
-      });
-
-      console.log('轮播图API响应:', response);
-
-      if (response.statusCode === 200) {
-        // 适配后端返回格式: {code: 1, msg: "success", data: []}
-        if (response.data && response.data.code === 1 && response.data.data) {
-          const banners = response.data.data;
-          console.log('轮播图原始数据:', banners);
-
-          if (Array.isArray(banners) && banners.length > 0) {
-            // 按 sort_order 排序
-            const sortedBanners = banners.sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
-            console.log('排序后的轮播图:', sortedBanners);
-
-            // 提取URL数组
-            const bannerUrls = sortedBanners.map(banner => banner.url).filter(url => url);
-            console.log('提取的轮播图URLs:', bannerUrls);
-
-            if (bannerUrls.length > 0) {
-              this.setData({
-                background: bannerUrls
-              }, () => {
-                // 设置完成后的回调，强制重新渲染
-                console.log('✅ 轮播图数据设置完成，background.length:', this.data.background.length);
-              });
-              console.log('✅ 轮播图加载成功，共', bannerUrls.length, '张');
-            } else {
-              console.log('⚠️ 轮播图URL为空，使用默认图片');
-              this.setDefaultBanners();
-            }
-          } else {
-            console.log('⚠️ 轮播图数据为空，使用默认图片');
-            this.setDefaultBanners();
-          }
+        
+        console.log('排序后的轮播图:', sortedBanners);
+  
+        // 提取URL数组（按排序后的顺序）
+        const bannerUrls = sortedBanners
+          .map(item => item.value.url) // 从 value 中获取 url
+          .filter(url => url); // 过滤无效URL
+        
+        console.log('提取的轮播图URLs:', bannerUrls);
+  
+        if (bannerUrls.length > 0) {
+          this.setData({
+            background: bannerUrls
+          }, () => {
+            console.log('✅ 轮播图数据设置完成，background.length:', this.data.background.length);
+          });
+          console.log('✅ 轮播图加载成功，共', bannerUrls.length, '张');
         } else {
-          console.error('❌ 轮播图API返回格式错误:', response.data);
-          console.log('预期格式: {code: 1, msg: "success", data: [...]}');
+          console.log('⚠️ 轮播图URL为空，使用默认图片');
           this.setDefaultBanners();
         }
       } else {
-        console.error('❌ 轮播图API请求失败，状态码:', response.statusCode);
+        console.log('⚠️ 轮播图数据为空，使用默认图片');
         this.setDefaultBanners();
       }
     } catch (error) {
@@ -126,10 +106,9 @@ Page({
   // 设置默认轮播图
   setDefaultBanners() {
     const defaultBanners = [
-      '/images/cover/cover.jpg',
-      '/images/yggyd/1.jpg',
-      '/images/dhz/1.jpg',
-      '/images/byl/1.jpg'
+      '/images/banners/banner-01.jpg',
+      '/images/banners/banner-02.jpg',
+      '/images/banners/banner-03.jpg',
     ];
 
     this.setData({
@@ -218,6 +197,7 @@ Page({
 
       // 处理景点数据
       landscapes.forEach(landscape => {
+        console.log(landscape);
         if (landscape.images && Array.isArray(landscape.images) && landscape.images.length > 0) {
           landscape.pic_url = landscape.images[0];
           landscape.allImages = landscape.images;
