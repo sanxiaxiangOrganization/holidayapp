@@ -1,5 +1,8 @@
 // 引入配置
-const { API_CONFIG, IMAGE_UTILS } = require('../../utils/config');
+const {
+  API_CONFIG,
+  IMAGE_UTILS
+} = require('../../utils/config');
 
 // pages/manager/manager.js
 Page({
@@ -28,9 +31,13 @@ Page({
   async loadBanners() {
     try {
       const banners = await IMAGE_UTILS.getBanners();
-      if (banners && banners.length > 0) {
+      // 检查是否有轮播图数据
+      if (banners && Object.keys(banners).length > 0) {
+        // 获取所有轮播图URL（假设所有值都是URL）
+        const bannerUrls = Object.values(banners);
+
         this.setData({
-          background: banners.map(banner => banner.url || banner)
+          background: bannerUrls
         });
       }
     } catch (error) {
@@ -69,7 +76,7 @@ Page({
     wx.showModal({
       title: '确认删除',
       content: `确定要删除景点"${name}"吗？此操作不可撤销。`,
-      success: function(res) {
+      success: function (res) {
         if (res.confirm) {
           // 用户点击确定
           wx.request({
@@ -81,7 +88,7 @@ Page({
             header: {
               'Content-Type': 'application/x-www-form-urlencoded'
             },
-            success: function(res) {
+            success: function (res) {
               console.log('删除景点响应:', res);
 
               if (res.statusCode === 200) {
@@ -109,7 +116,7 @@ Page({
                 });
               }
             },
-            fail: function(error) {
+            fail: function (error) {
               console.error('删除景点失败:', error);
               wx.showToast({
                 title: '网络错误',

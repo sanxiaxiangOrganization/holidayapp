@@ -1,3 +1,8 @@
+// 引入配置
+const {
+  downloadAndCacheImage
+} = require('imageCache');
+
 // 后端API基础URL - 请根据实际部署环境修改
 const API_BASE_URL = 'http://localhost:8080';
 
@@ -136,7 +141,9 @@ const AUTH_UTILS = {
         header: {
           'content-type': 'application/x-www-form-urlencoded'
         },
-        data: { code },
+        data: {
+          code
+        },
         success: (res) => {
           if (res.statusCode === 200 && res.data.code === 1) {
             resolve(res.data.data);
@@ -153,7 +160,9 @@ const AUTH_UTILS = {
 
   //获取用户头像
   getAvatarUrl(e) {
-    const { avatarUrl } = e.detail;
+    const {
+      avatarUrl
+    } = e.detail;
     return avatarUrl;
   },
 
@@ -180,7 +189,10 @@ const AUTH_UTILS = {
       return result;
     } catch (error) {
       console.error('更新用户资料失败:', error);
-      return { success: false, message: error.message };
+      return {
+        success: false,
+        message: error.message
+      };
     }
   },
 
@@ -336,10 +348,16 @@ const USER_UTILS = {
         wx.setStorageSync('userPic', updateData.user_pic);
       }
 
-      return { success: true, message: '更新成功' };
+      return {
+        success: true,
+        message: '更新成功'
+      };
     } catch (error) {
       console.error('更新用户信息失败:', error);
-      return { success: false, message: error.message };
+      return {
+        success: false,
+        message: error.message
+      };
     }
   },
 
@@ -350,7 +368,9 @@ const USER_UTILS = {
         wx.request({
           url: API_CONFIG.USER.GET_BY_ID,
           method: 'GET',
-          data: { tourist_id: touristId },
+          data: {
+            tourist_id: touristId
+          },
           success: (res) => {
             if (res.statusCode === 200 && res.data.code === 1) {
               resolve(res.data.data);
@@ -364,10 +384,16 @@ const USER_UTILS = {
         });
       });
 
-      return { success: true, data: response };
+      return {
+        success: true,
+        data: response
+      };
     } catch (error) {
       console.error('获取用户信息失败:', error);
-      return { success: false, message: error.message };
+      return {
+        success: false,
+        message: error.message
+      };
     }
   },
 
@@ -401,10 +427,16 @@ const USER_UTILS = {
         });
       });
 
-      return { success: true, message: '评分成功' };
+      return {
+        success: true,
+        message: '评分成功'
+      };
     } catch (error) {
       console.error('评分失败:', error);
-      return { success: false, message: error.message };
+      return {
+        success: false,
+        message: error.message
+      };
     }
   }
 };
@@ -414,124 +446,99 @@ const IMAGE_UTILS = {
   // 缓存对象
   _cache: {},
 
-  // 获取图标资源
-  async getIcons() {
+  // 通用资源获取函数
+  async _getResource(resourceType, apiUrl, storageKey, defaultData = {}) {
     try {
       // 先检查内存缓存
-      if (this._cache.icons) {
-        console.log('使用内存缓存的图标数据');
-        return this._cache.icons;
+      if (this._cache[resourceType]) {
+        console.log(`使用内存缓存的${resourceType}数据`);
+        return this._cache[resourceType];
       }
 
       // 检查本地存储缓存
-      const cachedIcons = wx.getStorageSync('cached_icons');
-      const cacheTime = wx.getStorageSync('icons_cache_time');
-      const now = Date.now();
+      const cachedData = wx.getStorageSync(storageKey);
 
-      // 如果缓存存在且未过期（1小时）
-      if (cachedIcons && cacheTime && (now - cacheTime) < 3600000) {
-        console.log('使用本地存储缓存的图标数据');
-        this._cache.icons = cachedIcons;
-        return cachedIcons;
+      // 如果缓存存在
+      if (cachedData) {
+        console.log(`使用本地存储缓存的${resourceType}数据`);
+        this._cache[resourceType] = cachedData;
+        return cachedData;
       }
 
-      console.log('从服务器获取图标数据');
-      const iconArray = await this._requestIcons();
+      console.log(`从服务器获取${resourceType}数据`);
+      const resourceArray = await this._request(apiUrl);
 
       // 将数组转换为对象格式，便于使用
-      const iconMap = {};
-      if (Array.isArray(iconArray)) {
-        iconArray.forEach(icon => {
-          if (icon.key && icon.url) {
-            iconMap[icon.key.toUpperCase()] = icon.url;
-            iconMap[icon.key.toLowerCase()] = icon.url;
+      const resourceMap = {};
+      if (Array.isArray(resourceArray)) {
+        for (const item of resourceArray) {
+          if (item.key && item.url) {
+            const value = await downloadAndCacheImage(item.url, resourceType); // 等待结果
+            resourceMap[item.key.toUpperCase()] = value;
+            resourceMap[item.key.toLowerCase()] = value;
           }
-        });
+        }
       }
 
       // 缓存数据
-      this._cache.icons = iconMap;
-      wx.setStorageSync('cached_icons', iconMap);
-      wx.setStorageSync('icons_cache_time', now);
+      this._cache[resourceType] = resourceMap;
+      wx.setStorageSync(storageKey, resourceMap);
 
-      return iconMap;
+      return resourceMap;
     } catch (error) {
-      console.error('获取图标失败:', error);
-      const cachedIcons = wx.getStorageSync('cached_icons');
-      if (cachedIcons) {
-        this._cache.icons = cachedIcons;
-        return cachedIcons;
+      console.error(`获取${resourceType}失败:`, error);
+      const cachedData = wx.getStorageSync(storageKey);
+      if (cachedData) {
+        this._cache[resourceType] = cachedData;
+        return cachedData;
       }
-      return {};
+      return defaultData;
     }
   },
 
-  // 获取横幅图片
-  async getBanners() {
-    try {
-      if (this._cache.banners) return this._cache.banners;
+  // 获取图标资源
+  async getIcons() {
+    return this._getResource(
+      'icons', 
+      API_CONFIG.IMAGES.ICONS, 
+      'cached_icons'
+    );
+  },
 
-      const res = await this._request(API_CONFIG.IMAGES.BANNERS);
-      this._cache.banners = res;
-      return res;
-    } catch (error) {
-      console.error('获取横幅图片失败:', error);
-      return [];
-    }
+  // 获取轮播图
+  async getBanners() {
+    return this._getResource(
+      'banners', 
+      API_CONFIG.IMAGES.BANNERS, 
+      'cached_banners',
+      [] // 轮播图默认返回空数组
+    );
   },
 
   // 获取标签栏图标
   async getTabbarIcons() {
-    try {
-      if (this._cache.tabbarIcons) return this._cache.tabbarIcons;
-
-      const res = await this._request(API_CONFIG.IMAGES.TABBAR);
-      this._cache.tabbarIcons = res;
-      return res;
-    } catch (error) {
-      console.error('获取标签栏图标失败:', error);
-      // 返回默认图标路径
-      return {
-        LANDSCAPE_NORMAL: '/images/icon/landscape.png',
-        LANDSCAPE_ACTIVE: '/images/icon/landscape_active.png',
-        COMMUNITY_NORMAL: '/images/icon/community.png',
-        COMMUNITY_ACTIVE: '/images/icon/community_active.png',
-        MINE_NORMAL: '/images/icon/mine.png',
-        MINE_ACTIVE: '/images/icon/mine_active.png'
-      };
-    }
-  },
-
-  // 请求图标数据
-  _requestIcons() {
-    return new Promise((resolve, reject) => {
-      wx.request({
-        url: API_CONFIG.IMAGES.ICONS,
-        method: 'GET',
-        header: {
-          'Accept': 'application/json'
-        },
-        success: (res) => {
-          if (res.statusCode === 200 && res.data.code === 1) {
-            resolve(res.data.data);
-          } else {
-            reject(new Error(res.data.msg || '获取图标失败'));
-          }
-        },
-        fail: (error) => {
-          reject(error);
-        }
-      });
-    });
+    return this._getResource(
+      'tabbarIcons', 
+      API_CONFIG.IMAGES.TABBAR, 
+      'cached_tabbarIcons',
+      { // 标签栏图标默认值
+        LANDSCAPE_NORMAL: '/images/tabBar_icons/landscape.png',
+        LANDSCAPE_ACTIVE: '/images/tabBar_icons/landscape_active.png',
+        COMMUNITY_NORMAL: '/images/tabBar_icons/community.png',
+        COMMUNITY_ACTIVE: '/images/tabBar_icons/community_active.png',
+        MINE_NORMAL: '/images/tabBar_icons/mine.png',
+        MINE_ACTIVE: '/images/tabBar_icons/mine_active.png'
+      }
+    );
   },
 
   // 获取封面图片
   async getCovers() {
-    if (this._cache.covers) return this._cache.covers;
-
-    const res = await this._request(API_CONFIG.IMAGES.COVERS);
-    this._cache.covers = res;
-    return res;
+    return this._getResource(
+      'covers', 
+      API_CONFIG.IMAGES.COVERS, 
+      'cached_covers'
+    );
   },
 
   // 通用请求方法
@@ -541,9 +548,13 @@ const IMAGE_UTILS = {
         url,
         method,
         data,
+        header: {
+          'Accept': 'application/json'
+        },
         success: (res) => {
           if (res.statusCode === 200 && res.data.code === 1) {
             resolve(res.data.data);
+            console.log(res.data.data);
           } else {
             reject(new Error(res.data.msg || '请求失败'));
           }

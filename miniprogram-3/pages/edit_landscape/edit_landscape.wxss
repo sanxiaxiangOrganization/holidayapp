@@ -1,75 +1,41 @@
 /* pages/edit_landscape/edit_landscape.wxss */
-.container5 {
+.container {
   margin:auto;
   padding: 10rpx;
-  width: 90%;
-  height: 100%;
+  height: 100vh;
 }
-/*景点名字*/
-.landName-text{
-  width: 70%;
-  min-height:1.5em; /* 根据字体大小的最小高度 */
-  font-size: medium;
-  font-weight: bolder;
-  padding: 10rpx;
-  border: 1px solid #4CAF50;
-  border-radius: 5px;
-  line-height: 1.5;
-  resize: none;
+/*景点内容板块*/
+.info-section{
+  padding: 20rpx;
+  width:90%;
+  height:50%;
 }
-
-.smallBlock{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: auto;
-  margin-bottom: 20rpx;
-}
-/* 地点信息 */
-.location,.callBlock {
-  font-size: medium;
-  color: #333;
-  margin-bottom: 10rpx;
-  display: flex;
-}
-
-.review-text {
-  width: 70%;
-  min-height:1.5em; /* 根据字体大小的最小高度 */
-  padding: 10rpx;
-  border: 1px solid #4CAF50;
-  border-radius: 5px;
-  font-size: 16px;
-  line-height: 1.5;
-  resize: none;
+/*输入框样式*/
+.field{
+  width: 95%;  
+  padding: 10px;  
+  border: 1px solid #ccc;  
+  border-radius: 4px;  
+  margin-top:5px;
+  margin-bottom: 5px;
 }
 
 /* 图片上传区域 */
-.cblock,.icover1{
-  margin: auto;
+.image-section{
+  width:90%;
+  height:50%;
+}
+/*添加图片按钮*/
+.add-image-btn{
   margin-top: 30rpx;
   height: 50rpx;
-  width: 80%;
-  padding: 10rpx;
+  width: 98%;  
+  padding: 10rpx;  
   display: flex;
   flex-direction: column;
   align-items: center;
   border: 1px solid #4CAF50;
   border-radius: 5px;
-}
-/*图标的样式*/
-.icover{
-  width: 80rpx;
-  height: 80rpx;
-}
-.text{
-  color:#515151;
-}
-.hblock{
-  margin-top: 30rpx;
-  display: flex;
-  height: 150rpx;
-  align-items: center;
 }
 /* 上传的图片 */
 .image-list {
@@ -82,11 +48,7 @@
   margin-right: 10px;
   margin-bottom: 10px;
 }
-.uploaded-image {
-  width: 80px;
-  height: 80px;
-  margin-right: 10px;
-  margin-bottom: 10px;
+.landscape-image {
   border-radius: 5px;
 }
 .delete-icon {
@@ -100,13 +62,11 @@
   cursor: pointer;
 }
 
-
-
 /* 提交按钮 */
-.submit {
-  margin-top: 50px;
+.submit-section {
   display: flex;
   justify-content: center;
+  padding:20px;
 }
 
 button {

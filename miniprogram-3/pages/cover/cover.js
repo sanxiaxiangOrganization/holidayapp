@@ -29,17 +29,16 @@ Page({
     try {
       console.log('开始加载封面图片...');
       const covers = await IMAGE_UTILS.getCovers();
-      console.log('封面图片数据:', covers);
-
-      if (covers && covers.length > 0) {
-        const imageUrls = covers
-          .sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0))
-          .map(cover => cover.url);
-
+  
+      // 检查是否有封面图片数据（对象非空）
+      if (covers && Object.keys(covers).length > 0) {
+        // 将对象值转换为数组（假设值都是URL）
+        const imageUrls = Object.values(covers);
+  
         this.setData({
           backgroundImages: imageUrls
         });
-        console.log('封面图片加载成功:', imageUrls);
+        console.log('封面图片加载成功');
       } else {
         console.log('没有获取到封面图片数据，使用默认背景');
         this.setData({
@@ -48,7 +47,7 @@ Page({
       }
     } catch (error) {
       console.error('加载封面图片失败:', error);
-      // 使用默认背景
+      // 使用默认封面图片
       this.setData({
         backgroundImages: ['/images/cover/cover.jpg']
       });

@@ -5,6 +5,7 @@ const { API_CONFIG, IMAGE_UTILS, AUTH_UTILS, USER_UTILS } = require('./utils/con
 App({
   onLaunch() {
     console.log('应用启动');
+    console.log('用户数据存储路径:', wx.env.USER_DATA_PATH);
 
     // 展示本地存储能力
     const logs = wx.getStorageSync('logs') || [];
@@ -34,7 +35,7 @@ App({
         IMAGE_UTILS.getCovers()
       ]);
 
-      // 更新底部导航栏图标
+      // 更新标签栏图标
       await this.updateTabBarIcons();
 
       console.log('图片资源预加载完成');
@@ -83,12 +84,12 @@ App({
     }
   },
 
-  // 更新底部导航栏图标
+  // 更新标签栏图标
   async updateTabBarIcons() {
     try {
       const tabbarIcons = await IMAGE_UTILS.getTabbarIcons();
 
-      // 更新底部导航栏图标
+      // 更新标签栏图标
       wx.setTabBarItem({
         index: 0,
         iconPath: tabbarIcons.LANDSCAPE_NORMAL || tabbarIcons.landscape_normal,
@@ -107,9 +108,9 @@ App({
         selectedIconPath: tabbarIcons.MINE_ACTIVE || tabbarIcons.mine_active
       });
 
-      console.log('底部导航栏图标更新成功');
+      console.log('标签栏图标更新成功');
     } catch (error) {
-      console.error('底部导航栏图标更新失败:', error);
+      console.error('标签栏图标更新失败:', error);
     }
   },
 

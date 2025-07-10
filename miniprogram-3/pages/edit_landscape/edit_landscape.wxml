@@ -6,18 +6,18 @@
   <view class="info-section">
     <view class="form-item">
       <text class="label">景点名称</text>
-      <input class="input-field" placeholder="请输入景点名称" value="{{land_detail.name}}"></input>
+      <input class="field" placeholder="请输入景点名称" value="{{land_detail.name}}"></input>
     </view>
 
     <view class="form-item">
       <text class="label">景点描述</text>
-      <textarea class="textarea-field" placeholder="请输入景点描述" value="{{land_detail.introduction}}"></textarea>
+      <textarea class="field" placeholder="请输入景点描述" value="{{land_detail.introduction}}"></textarea>
     </view>
   </view>
 
   <!-- 图片管理 -->
   <view class="image-section">
-    <view class="section-title">景点图片管理（最多9张）</view>
+    <text class="label">景点图片管理（最多9张）</text>
 
     <!-- 添加图片按钮 -->
     <view wx:if="{{imageList.length < 9}}" class="add-image-btn" bindtap="chooseImage">

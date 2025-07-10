@@ -8,7 +8,7 @@
       </view>  
       <view class="form-item">  
         <text class="label">密码</text>  
-        <input class="input" type="password" name="password" placeholder="请输入密码" required />  
+        <input class="input" password type="text" name="password" placeholder="请输入密码" required />  
       </view>  
       <button class="btn" bindtap="managerLogin">登录</button>  
     </form>  

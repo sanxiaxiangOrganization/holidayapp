@@ -1,6 +1,6 @@
 /* pages/manager/manager.wxss */
 .container{
-  height: 100%;
+  height: 100vh;
   width: 100%;
   padding: 0%;
   box-sizing: border-box;
@@ -57,7 +57,7 @@
 .name{
   font-size: 40rpx;
 }
-/*编辑景点的按钮*/
+/*查看景点的按钮*/
 .edit{
   position: absolute; 
   right: 50rpx;
