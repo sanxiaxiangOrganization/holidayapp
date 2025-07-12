@@ -7,11 +7,7 @@
     <view class="rating-title">您的评分</view>
     <view class="stars">
       <view wx:for="{{stars}}" wx:key="index" class="star-wrapper">
-        <image
-          class="star {{index < selectedStars ? 'star-selected' : ''}}"
-          src="{{index < selectedStars ? '/images/icons/star_active.png' : '/images/icons/star.png'}}"
-          data-index="{{index}}"
-          bindtap="setRating">
+        <image class="star {{index < selectedStars ? 'star-selected' : ''}}" src="{{index < selectedStars ? '/images/icons/star_active.png' : '/images/icons/star.png'}}" data-index="{{index}}" bindtap="setRating">
         </image>
       </view>
     </view>
@@ -19,41 +15,27 @@
 
   <!-- 文字评价 -->
   <view class="review-section">
-    <view class="review-title">您的评价</view>
-    <textarea
-      class="review-text"
-      placeholder="分享您的体验..."
-      bindinput="onInput"
-      value="{{reviewText}}"
-      maxlength="500">
+    <view class="review-title">写下您的评价</view>
+    <textarea class="review-text" placeholder="分享您的体验..." bindinput="onInput" value="{{reviewText}}" maxlength="500">
     </textarea>
     <view class="char-count">{{reviewText.length}}/500</view>
   </view>
 
   <!-- 图片上传 -->
   <view class="image-section">
-    <!-- 添加照片按钮 -->
-    <view wx:if="{{imageList.length < 3}}" class="add-image-btn" bindtap="chooseImage">
-      <image class="camera-icon" src="{{cameraIcon}}"></image>
-      <text class="add-text">添加照片（最多3张）</text>
-    </view>
-
+    <view class="review-title">分享您的图片（最多3张）</view>
     <!-- 已选择的图片 -->
     <view class="image-list">
       <view wx:for="{{imageList}}" wx:key="index" class="image-item">
-        <image
-          src="{{item}}"
-          class="uploaded-image"
-          mode="aspectFill"
-          data-src="{{item}}"
-          bindtap="previewImage">
+        <image src="{{item}}" class="uploaded-image" mode="aspectFill" data-src="{{item}}" bindtap="previewImage">
         </image>
-        <image
-          class="delete-icon"
-          src="{{deleteIcon}}"
-          data-index="{{index}}"
-          bindtap="deleteImage">
+        <image class="delete-icon" src="{{deleteIcon}}" data-index="{{index}}" bindtap="deleteImage">
         </image>
+      </view>
+      <!-- 添加照片按钮 -->
+      <view wx:if="{{imageList.length < 3}}" class="add-image-btn {{imageList.length > 0 ? 'active' : ''}}" bindtap="chooseImage">
+        <image class="camera-icon" src="{{cameraIcon}}"></image>
+        <text class="add-text">添加照片</text>
       </view>
     </view>
   </view>
