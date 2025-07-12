@@ -1,0 +1,74 @@
+<wxs module="filters">
+  var toFixed = function(value) {
+    if (isNaN(value)) return value;
+    return value.toFixed(1);
+  }
+  module.exports.toFixed = toFixed;
+</wxs>
+<!--pages/landscape/landscape.wxml-->
+<view class="container">
+  <!-- 加载状态 -->
+  <view wx:if="{{isLoading}}" class="loading-container">
+    <view class="loading-content">
+      <view class="loading-spinner"></view>
+      <text class="loading-text">正在加载景点信息...</text>
+    </view>
+  </view>
+
+  <!-- 错误状态 -->
+  <view wx:elif="{{loadError}}" class="error-container">
+    <view class="error-content">
+      <text class="error-icon">⚠️</text>
+      <text class="error-message">{{errorMessage}}</text>
+      <button class="retry-btn" bindtap="reloadData">重新加载</button>
+    </view>
+  </view>
+
+  <!-- 正常内容 -->
+  <view wx:else>
+    <!--轮播图-->
+    <swiper wx:if="{{background.length > 0}}" class="banner-swiper" indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+      <swiper-item wx:for="{{background}}" wx:key="index">
+        <image src="{{item}}" class="banner-image" mode="aspectFill"></image>
+      </swiper-item>
+    </swiper>
+
+    <!--滚动通知栏-->
+    <view class="notification_bar">
+      <view class="notification_bar_left">
+        <image class="bar_left" src="{{noticeIcon}}" mode="aspectFit"/>
+        <view class="bar_text">7月份会有荷花节</view>
+      </view>
+    </view>
+
+    <!--渲染景点详细信息-->
+    <scroll-view class="landscapeBlock" scroll-y="true" bindscrolltoupper="upper" bindscrolltolower="lower" bindscroll="scroll" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
+      <view class="landscape-item" wx:for="{{landscapeList}}" wx:key="index">
+        <view class="pictureBlock">
+          <image
+            class="picture"
+            src="{{item.pic_url}}"
+            mode="aspectFill"
+            lazy-load="{{false}}"
+            show-menu-by-longpress="{{false}}"
+            data-index="{{index}}"
+            data-name="{{item.name}}"
+            data-src="{{item.pic_url}}"
+            bindload="onImageLoad"
+            binderror="onImageError">
+          </image>
+        </view>
+        <view class="profileBlock">
+          <view class="name">{{item.name}}</view>
+          <view>推荐指数：{{filters.toFixed(item.score)}}</view>
+          <view class="checkDetail" bind:tap="navigateToDetail" data-name="{{item.name}}" data-id="{{item.landscape_id}}" data-index="{{index}}" data-picture="{{item.pic_url}}" data-score="{{filters.toFixed(item.score)}}">查看详情</view>
+        </view>
+      </view>
+    </scroll-view>
+
+    <!-- 如果没有景点数据显示提示 -->
+    <view wx:if="{{landscapeList.length === 0}}" class="empty-tip">
+      <text>暂无景点信息</text>
+    </view>
+  </view>
+</view>
