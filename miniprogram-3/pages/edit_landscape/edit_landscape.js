@@ -1,11 +1,17 @@
 // 引入配置
-const { API_CONFIG, IMAGE_UTILS } = require('../../utils/config');
+const {
+  API_CONFIG,
+  IMAGE_UTILS
+} = require('../../utils/config');
 
 Page({
   data: {
     myLandscapeName: "",
     myLandscapeId: "",
-    imageList: [],
+    imageList: [], //展示图片路径
+    oldImageList: [], //原图片路径
+    newNameList: [], //新图片文件名
+    tmpImageList: [], //新图片的临时路径
     currentPage: 'introduction',
     land_detail: [],
     comments: [],
@@ -13,7 +19,7 @@ Page({
     latitude: null,
     longitude: null,
     deleteIcon: '',
-    cameraIcon:''
+    cameraIcon: ''
   },
 
   async onLoad(options) {
@@ -24,19 +30,12 @@ Page({
     // 加载图标
     await this.loadIcons();
 
-    let newArr = this.data.imageList;
-    if (options.picture) {
-      newArr.push(options.picture);
-    }
-
     that.setData({
       myLandscapeName: options.name,
       myLandscapeId: options.id,
       score: options.score,
-      imageList: newArr,
-    }, function() {
+    }, function () {
       that.getInfo();
-      console.log("获取到的景点的图片的地址：", that.data.imageList);
     });
   },
 
@@ -77,7 +76,9 @@ Page({
           // 处理后端统一返回格式
           if (res.data && res.data.code === 1) {
             that.setData({
-              land_detail: res.data.data
+              land_detail: res.data.data,
+              imageList: res.data.data.images,
+              oldImageList: res.data.data.images
             });
           } else {
             console.error('获取景点信息失败:', res.data);
@@ -96,7 +97,7 @@ Page({
           });
         }
       },
-      fail: function(error) {
+      fail: function (error) {
         console.log('获取单个景点信息失败:', error);
         wx.showToast({
           title: '网络错误，请重启小程序',
@@ -111,23 +112,36 @@ Page({
   chooseImage() {
     console.log("————————————————用户选择图片——————————————————————");
     const that = this;
-    wx.chooseMedia({
+    wx.chooseMessageFile({
       count: 9,
       mediaType: ['image'],
       sourceType: ['album', 'camera'],
       success(res) {
-        const selectedImages = res.tempFiles.map(file => file.tempFilePath);
+        console.log(res);
+        // 处理选择的图片：提取临时路径和原物理路径
+        const selectedImages = res.tempFiles.map(file => {
+          return {
+            tempPath: file.path, // 临时路径（用于预览/上传）
+            originalName: file.name // 原物理路径
+          };
+        });
 
+        // 检查总数量是否超过9张
         if (selectedImages.length + that.data.imageList.length > 9) {
           wx.showToast({
-            title: '总共最多可选择9张图片',
+            title: '最多选择9张图片',
             icon: 'none'
           });
           selectedImages.splice(9 - that.data.imageList.length);
         }
 
+        // 更新 newNameList,tmpImageList,imageList
+        const newTmpImageList = that.data.tmpImageList.concat(selectedImages.map(img => img.tempPath));
+        const newNewNameList = that.data.newNameList.concat(selectedImages.map(img => img.originalName));
         that.setData({
-          imageList: that.data.imageList.concat(selectedImages)
+          newNameList: newNewNameList,
+          tmpImageList: newTmpImageList,
+          imageList: [...that.data.oldImageList, ...newTmpImageList]
         });
       },
       fail(err) {
@@ -137,37 +151,78 @@ Page({
   },
 
   // 预览图片
-  previewImage: function(event) {
-    const src = event.currentTarget.dataset.src;
+  previewImage: function (event) {
+    const index = event.currentTarget.dataset.index;
+    const imageList = this.data.imageList;
+    const src = imageList[index];
     wx.previewImage({
       current: src,
-      urls: this.data.imageList
+      urls: imageList
     });
   },
 
   // 删除图片
-  deleteImage: function(event) {
-    var that = this;
+  deleteImage: function (event) {
     const index = event.currentTarget.dataset.index;
-    let imageList = that.data.imageList;
+    let {
+      imageList,
+      oldImageList,
+      newNameList,
+      tmpImageList
+    } = this.data;
     imageList.splice(index, 1);
-    that.setData({
-      imageList: imageList
+    if (index < oldImageList.length) {
+      oldImageList.splice(index, 1);
+    } else {
+      newNameList.splice(index - oldImageList.length, 1);
+      tmpImageList.splice(index - oldImageList.length, 1);
+    }
+    this.setData({
+      imageList,
+      oldImageList,
+      newNameList,
+      tmpImageList
     });
   },
 
   // 提交对景点作出的修改
   submitChange() {
-    var that = this;
+    const {
+      myLandscapeId,
+      myLandscapeName,
+      oldImageList,
+      newNameList,
+      landscapeLocation,
+      land_detail
+    } = this.data;
+
+    // 生成目标图片路径（使用原文件名）
+    const oldImages = oldImageList.map(image => {
+      // 1. 获取原文件名（如 "yggyd-03.jpg"）
+      const fullFilename = image.split('/').pop();
+
+      // 2. 提取 location（文件名中 '-' 前的部分，如 "yggyd"）
+      const location = fullFilename.split('-')[0];
+
+      // 3. 组合成目标路径
+      return `attractions/${location}/${fullFilename}`;
+    });
+    const newImages = newNameList.map(imageName => {
+      const location = imageName.split('-')[0];
+
+      // 3. 组合成目标路径
+      return `attractions/${location}/${imageName}`;
+    });
+    let images = [...oldImages, ...newImages];
 
     // 构建更新数据
     const updateData = {
-      landscape_id: that.data.myLandscapeId,
-      name: that.data.myLandscapeName,
-      images: that.data.imageList, // 这里需要根据后端接口要求调整
-      location: that.data.landscapeLocation,
-      telephone: that.data.land_detail.telephone || '',
-      description: that.data.land_detail.description || ''
+      landscape_id: myLandscapeId,
+      name: myLandscapeName,
+      images: images, // 这里需要根据后端接口要求调整
+      location: landscapeLocation,
+      telephone: land_detail.telephone || '',
+      description: land_detail.description || ''
     };
 
     // 调用更新景点接口
@@ -178,7 +233,7 @@ Page({
       header: {
         'Content-Type': 'application/json'
       },
-      success: function(res) {
+      success: function (res) {
         console.log('更新景点信息成功:', res);
 
         if (res.statusCode === 200) {
@@ -213,7 +268,7 @@ Page({
           });
         }
       },
-      fail: function(error) {
+      fail: function (error) {
         console.error('更新景点信息失败:', error);
         wx.showToast({
           title: '网络错误',
