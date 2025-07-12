@@ -1,5 +1,8 @@
 // 引入配置
-const { API_CONFIG, IMAGE_UTILS } = require('../../utils/config');
+const {
+  API_CONFIG,
+  IMAGE_UTILS
+} = require('../../utils/config');
 
 // pages/landscape_detail/landscape_detail.js
 Page({
@@ -9,6 +12,10 @@ Page({
     score: 4.5,
     picture: "",
     landscapeImages: [], // 动态加载的景点图片
+    indicatorDots: false,
+    autoplay: true,
+    interval: 2000,
+    duration: 500,
     currentPage: 'introduction',
     land_detail: [],
     comments: [],
@@ -37,7 +44,7 @@ Page({
       myLandscapeId: options.id,
       score: options.score,
       picture: options.picture,
-    }, function() {
+    }, function () {
       that.getInfo();
       that.getTheComments();
     });
@@ -66,6 +73,7 @@ Page({
               land_detail: res.data.data,
               landscapeImages: imageUrls
             });
+            if(res.data.data.images.length > 1) that.setData({indicatorDots:true})
           } catch (error) {
             console.error('获取景点图片失败:', error);
             that.setData({
@@ -78,7 +86,7 @@ Page({
           });
         }
       },
-      fail: function(error) {
+      fail: function (error) {
         console.log('获取单个景点信息失败:', error);
         wx.showToast({
           title: '网络错误，请重启小程序',
@@ -141,7 +149,7 @@ Page({
           });
         }
       },
-      fail: function(error) {
+      fail: function (error) {
         console.error('获取该景点的所有评论失败:', error);
         wx.showToast({
           title: '网络错误，请重试',
@@ -165,7 +173,7 @@ Page({
       header: {
         'content-type': 'application/json',
       },
-      success: function(res) {
+      success: function (res) {
         console.log('获取用户评论成功:', res);
 
         if (res.statusCode === 200) {
@@ -182,11 +190,11 @@ Page({
           return comments;
         }
       },
-      fail: function(error) {
+      fail: function (error) {
         console.error('获取用户评论失败:', error);
       }
     });
-},
+  },
 
   navigateToComment() {
     wx.navigateTo({
@@ -206,7 +214,7 @@ Page({
     });
   },
 
-  getLocationByName: function() {
+  getLocationByName: function () {
     var that = this;
     wx.request({
       url: 'https://apis.map.qq.com/ws/geocoder/v1/',
@@ -214,7 +222,7 @@ Page({
         address: "广东省河源市连平县大湖镇" + that.data.myLandscapeName,
         key: '', // 需要配置腾讯地图API密钥
       },
-      success: function(res) {
+      success: function (res) {
         if (res.data.status === 0) {
           var location = res.data.result.location;
           that.setData({
@@ -229,7 +237,7 @@ Page({
           });
         }
       },
-      fail: function() {
+      fail: function () {
         wx.showToast({
           title: '网络错误',
           icon: 'none',
@@ -238,7 +246,7 @@ Page({
     });
   },
 
-  navigateToLocation: function() {
+  navigateToLocation: function () {
     var that = this;
     console.log("——————————————————————导航到景区————————————————————————");
     if (that.data.latitude && that.data.longitude) {
@@ -257,14 +265,14 @@ Page({
     }
   },
 
-  makePhoneCall: function() {
+  makePhoneCall: function () {
     var that = this;
     wx.makePhoneCall({
       phoneNumber: that.data.land_detail.telephone,
-      success: function() {
+      success: function () {
         console.log("电话拨打成功");
       },
-      fail: function() {
+      fail: function () {
         console.log("电话拨打失败");
       }
     });

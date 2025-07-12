@@ -1,7 +1,7 @@
 <!--pages/landscape_detail/landscape_detail.wxml-->
 <view class="container">
   <!-- 景点图片轮播 -->
-  <swiper wx:if="{{landscapeImages.length > 0}}" class="landscape-swiper" indicator-dots="{{true}}" autoplay="{{false}}">
+  <swiper wx:if="{{landscapeImages.length > 0}}" class="landscape-swiper" indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
     <swiper-item wx:for="{{landscapeImages}}" wx:key="index">
       <image src="{{item}}" class="landscape-image"></image>
     </swiper-item>
