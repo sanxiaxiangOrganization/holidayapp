@@ -45,13 +45,14 @@ Page({
     try {
       const icons = await IMAGE_UTILS.getIcons();
       this.setData({
-        pencilIcon: icons.PENCIL || icons.pencil || icons.EDIT || icons.edit || '/images/pencil.png'
+        pencilIcon: icons.PENCIL || icons.EDIT
       });
     } catch (error) {
       console.error('加载图标失败:', error);
       this.setData({
-        pencilIcon: '/images/pencil.png'
+        pencilIcon: '/images/icons/pencil.png'
       });
+      throw error;
     }
   },
 

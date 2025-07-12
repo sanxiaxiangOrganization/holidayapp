@@ -356,10 +356,12 @@ Page({
     const dataset = e.currentTarget.dataset;
     const landscapeId = dataset.id;
     const landscapeName = dataset.name;
+    const landscapeScore = dataset.score;
+    const landscapePicture = dataset.picture;
 
     if (landscapeId && landscapeName) {
       wx.navigateTo({
-        url: `/pages/landscape_detail/landscape_detail?id=${landscapeId}&name=${encodeURIComponent(landscapeName)}`
+        url: `/pages/landscape_detail/landscape_detail?id=${landscapeId}&name=${encodeURIComponent(landscapeName)}&score=${landscapeScore}&picture=${landscapePicture}`
       });
     }
   },

@@ -22,7 +22,6 @@
 .rating-section{
   width:100%;
   height:10%;
-
 }
 
 .stars {
@@ -72,6 +71,10 @@
   align-items: center;
   gap: 10rpx;
   padding: 20rpx 0;
+}
+
+.add-image-btn.active{
+  width: 190rpx;
 }
 
 /*图标的样式*/

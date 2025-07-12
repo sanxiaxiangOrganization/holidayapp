@@ -54,11 +54,16 @@ Page({
     try {
       const icons = await IMAGE_UTILS.getIcons();
       this.setData({
-        cameraIcon: icons.CAMERA || icons.camera,
-        deleteIcon: icons.DELETE || icons.delete
+        cameraIcon: '/images/icons/camera.png',
+        deleteIcon: '/images/icons/delete.png'
       });
+      
     } catch (error) {
       console.error('加载图标失败:', error);
+      this.setData({
+        cameraIcon: icons.CAMERA,
+        deleteIcon: icons.DELETE
+      });
       throw error;
     }
   },

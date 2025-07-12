@@ -33,11 +33,10 @@ Page({
     }
 
     that.setData({
-      myLandscapeName: options.name,
+      myLandscapeName: decodeURIComponent(options.name),
       myLandscapeId: options.id,
       score: options.score,
       picture: options.picture,
-      landscapeImages: allImages
     }, function() {
       that.getInfo();
       that.getTheComments();
@@ -60,9 +59,9 @@ Page({
         console.log('获取该景点信息的接口请求成功:', res.data.data);
 
         // 如果后端返回了图片路径，重新获取图片URLs
-        if (res.data.data.imagePaths && res.data.data.imagePaths.length > 0) {
+        if (res.data.data.images && res.data.data.images.length > 0) {
           try {
-            const imageUrls = await IMAGE_UTILS.getLandscapeImageUrls(res.data.data.imagePaths);
+            const imageUrls = res.data.data.images;
             that.setData({
               land_detail: res.data.data,
               landscapeImages: imageUrls

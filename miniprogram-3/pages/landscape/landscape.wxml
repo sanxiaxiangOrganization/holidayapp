@@ -54,7 +54,7 @@
         <view class="profileBlock">
           <view class="name">{{item.name}}</view>
           <view>推荐指数：{{item.score}}</view>
-          <view class="checkDetail" bind:tap="navigateToDetail" data-name="{{item.name}}" data-id="{{item.landscape_id}}" data-index="{{index}}" data-picture="{{item.pic_url}}">查看详情</view>
+          <view class="checkDetail" bind:tap="navigateToDetail" data-name="{{item.name}}" data-id="{{item.landscape_id}}" data-index="{{index}}" data-picture="{{item.pic_url}}" data-score="{{item.score}}">查看详情</view>
         </view>
       </view>
     </scroll-view>

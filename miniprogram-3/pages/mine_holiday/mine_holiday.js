@@ -56,20 +56,21 @@ Page({
     try {
       const icons = await IMAGE_UTILS.getIcons();
       this.setData({
-        editIcon: icons.EDIT || icons.edit || icons.PENCIL || icons.pencil || '/images/edit.png',
-        assessmentIcon: icons.ASSESSMENT || icons.assessment || icons.STAR || icons.star || '/images/assessment.png',
-        orderIcon: icons.ORDER || icons.order || icons.LIST || icons.list || '/images/order.png',
-        feedbackIcon: icons.FEEDBACK || icons.feedback || icons.MESSAGE || icons.message || '/images/feedback.png'
+        editIcon: icons.EDIT || icons.PENCIL,
+        assessmentIcon: icons.ASSESSMENT || icons.STAR,
+        orderIcon: icons.ORDER || icons.LIST,
+        feedbackIcon: icons.FEEDBACK || icons.MESSAGE
       });
     } catch (error) {
       console.error('加载图标失败:', error);
       // 使用默认图标
       this.setData({
-        editIcon: '/images/edit.png',
-        assessmentIcon: '/images/assessment.png',
-        orderIcon: '/images/order.png',
-        feedbackIcon: '/images/feedback.png'
+        editIcon: '/images/icons/edit.png',
+        assessmentIcon: '/images/icons/assessment.png',
+        orderIcon: '/images/icons/order.png',
+        feedbackIcon: '/images/icons/feedback.png'
       });
+      throw error;
     }
   },
 

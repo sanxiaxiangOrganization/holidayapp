@@ -26,7 +26,7 @@
 
     <!-- 介绍页面 -->
     <view wx:if="{{currentPage === 'introduction'}}" class="introduction">
-      <text>{{land_detail.introduction || '暂无介绍'}}</text>
+      <text>{{land_detail.description || '暂无介绍'}}</text>
 
       <!-- 操作按钮 -->
       <view class="action-buttons">

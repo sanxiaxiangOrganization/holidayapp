@@ -28,20 +28,20 @@
       {
         "pagePath": "pages/landscape/landscape",
         "text": "景点",
-        "iconPath": "images/icon/landscape.png",
-        "selectedIconPath": "images/icon/landscape_active.png"
+        "iconPath": "images/tabBar_icons/landscape.png",
+        "selectedIconPath": "images/tabBar_icons/landscape_active.png"
       },
       {
         "pagePath": "pages/community/community",
         "text": "社区",
-        "iconPath": "images/icon/community.png",
-        "selectedIconPath": "images/icon/community_active.png"
+        "iconPath": "images/tabBar_icons/community.png",
+        "selectedIconPath": "images/tabBar_icons/community_active.png"
       },
       {
         "pagePath": "pages/mine_holiday/mine_holiday",
         "text": "我的",
-        "iconPath": "images/icon/mine.png",
-        "selectedIconPath": "images/icon/mine_active.png"
+        "iconPath": "images/tabBar_icons/mine.png",
+        "selectedIconPath": "images/tabBar_icons/mine_active.png"
       }
     ]
   },

@@ -92,20 +92,20 @@ App({
       // 更新标签栏图标
       wx.setTabBarItem({
         index: 0,
-        iconPath: tabbarIcons.LANDSCAPE_NORMAL || tabbarIcons.landscape_normal,
-        selectedIconPath: tabbarIcons.LANDSCAPE_ACTIVE || tabbarIcons.landscape_active
+        iconPath: tabbarIcons.LANDSCAPE_NORMAL,
+        selectedIconPath: tabbarIcons.LANDSCAPE_ACTIVE
       });
 
       wx.setTabBarItem({
         index: 1,
-        iconPath: tabbarIcons.COMMUNITY_NORMAL || tabbarIcons.community_normal,
-        selectedIconPath: tabbarIcons.COMMUNITY_ACTIVE || tabbarIcons.community_active
+        iconPath: tabbarIcons.COMMUNITY_NORMAL,
+        selectedIconPath: tabbarIcons.COMMUNITY_ACTIVE
       });
 
       wx.setTabBarItem({
         index: 2,
-        iconPath: tabbarIcons.MINE_NORMAL || tabbarIcons.mine_normal,
-        selectedIconPath: tabbarIcons.MINE_ACTIVE || tabbarIcons.mine_active
+        iconPath: tabbarIcons.MINE_NORMAL,
+        selectedIconPath: tabbarIcons.MINE_ACTIVE
       });
 
       console.log('标签栏图标更新成功');

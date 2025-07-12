@@ -20,11 +20,15 @@ Page({
     try {
       const icons = await IMAGE_UTILS.getIcons();
       this.setData({
-        cameraIcon: icons.CAMERA || icons.camera,
-        deleteIcon: icons.DELETE || icons.delete
+        cameraIcon: icons.CAMERA,
+        deleteIcon: icons.DELETE
       });
     } catch (error) {
       console.error('加载图标失败:', error);
+      this.setData({
+        cameraIcon: '/images/icons/camera.png',
+        deleteIcon: '/images/icons/delete.png'
+      });
       throw error;
     }
   },

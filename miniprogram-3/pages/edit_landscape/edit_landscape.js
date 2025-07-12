@@ -44,10 +44,13 @@ Page({
     try {
       const icons = await IMAGE_UTILS.getIcons();
       this.setData({
-        deleteIcon: icons.DELETE || icons.delete
+        deleteIcon: icons.DELETE
       });
     } catch (error) {
       console.error('加载图标失败:', error);
+      this.setData({
+        deleteIcon: '/images/icons/delete.png'
+      });
       throw error;
     }
   },
