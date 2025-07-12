@@ -52,10 +52,9 @@ Page({
     /*将对应景点的名字当参数传给页面*/
     const name = e.currentTarget.dataset.name;
     const id = e.currentTarget.dataset.id;
-    const picture = e.currentTarget.dataset.picture;
     // 跳转到编辑景点的页面
     wx.navigateTo({
-      url: `../edit_landscape/edit_landscape?name=${name}&id=${id}&picture=${picture}`,
+      url: `../edit_landscape/edit_landscape?name=${name}&id=${id}`,
     });
   },
 

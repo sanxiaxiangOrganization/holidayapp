@@ -6,7 +6,7 @@
   <view class="landscape-item" wx:for="{{landscapeList}}" wx:key="index">
       <view class="profileBlock">
         <view class="name">{{item.name}}</view>
-        <view class="edit" bind:tap="editLand" data-name="{{item.name}}" data-id="{{item.landscape_id}}"  data-index="{{index}}" data-picture="{{item.pic_url}}">查看></view>
+        <view class="edit" bind:tap="editLand" data-name="{{item.name}}" data-id="{{item.landscape_id}}"  data-index="{{index}}">查看></view>
       </view>
   </view>
 </scroll-view>
