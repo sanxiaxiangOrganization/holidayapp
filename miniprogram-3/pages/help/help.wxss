@@ -18,38 +18,62 @@ textarea {
 }
 
 /* 图片上传区域 */
-.cblock{
+.image-section {
+  height: auto;
   width: 100%;
-  padding: 10rpx;
+}
+
+.add-image-btn {
+  width: 100%;
+  height: auto;
+  background-color: rgb(228, 228, 228);
+  border-radius: 10rpx;
   display: flex;
-  justify-content: flex-start;
+  flex-direction: column;
+  align-items: center;
+  padding: 35rpx 0;
 }
+
+.add-image-btn.active{
+  width: 190rpx;
+}
+
 /*图标的样式*/
-.icover{
-  width: 50rpx;
-  height: 50rpx;
+.camera-icon {
+  width: 80rpx;
+  height: 80rpx;
 }
 
+.add-text {
+  color: #515151;
+}
 
-/* 图片预览容器 */
-.image-preview {
+/* 上传的图片 */
+.image-list {
+  height: 200rpx;
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  margin-top: 30rpx;
+  gap: 40rpx;
 }
 
-
-.image-item0 {
+.image-item {
   position: relative;
-  margin-right: 10px;
-  margin-bottom: 10px;
 }
+
+.uploaded-image {
+  width: 190rpx;
+  height: 190rpx;
+  border-radius: 20rpx;
+}
+
+/*图标的样式*/
 .delete-icon {
   position: absolute;
   top: 0;
   right: 0;
-  width: 20px;
-  height: 20px;
+  width: 40rpx;
+  height: 40rpx;
   background-color: white;
   border-radius: 50%;
   cursor: pointer;

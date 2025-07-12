@@ -1,24 +1,25 @@
 <!-- pages/help/help.wxml -->
 <!-- 帮助反馈页面 -->
 <view class="container">
-  
-
   <!-- 反馈内容输入框 -->
   <textarea class="feedback-textarea" placeholder="请描述您的问题或建议" bindinput="bindTextAreaInput"></textarea>
 
-  <!-- 上传图片 -->
-  <view class="cblock">
-    <image class="icover" src="/images/camera.png"  bindtap="chooseImage"></image>
-  </view>
-
-  <!-- 图片预览部分，仅在有图片时显示 -->
-  <view class="image-preview" wx:if="{{images.length > 0}}">
-    <block wx:for="{{images}}" wx:key="index">
-      <view class="image-item0">
-        <image class="image-item" src="{{item}}" mode="aspectFill"></image>
-        <image class="delete-icon" src="/images/delete-icon.png" data-index="{{index}}" bindtap="deleteImage"></image>
-        </view>
-    </block>
+  <!-- 图片上传 -->
+  <view class="image-section">
+    <!-- 已选择的图片 -->
+    <view class="image-list">
+      <view wx:for="{{images}}" wx:key="index" class="image-item">
+        <image src="{{item}}" class="uploaded-image" mode="aspectFill" data-src="{{item}}" bindtap="previewImage">
+        </image>
+        <image class="delete-icon" src="{{deleteIcon}}" data-index="{{index}}" bindtap="deleteImage">
+        </image>
+      </view>
+      <!-- 添加照片按钮 -->
+      <view wx:if="{{images.length < 3}}" class="add-image-btn {{images.length > 0 ? 'active' : ''}}" bindtap="chooseImage">
+        <image class="camera-icon" src="{{cameraIcon}}"></image>
+        <text class="add-text">添加照片</text>
+      </view>
+    </view>
   </view>
 
   <view class="container6">
@@ -26,7 +27,6 @@
     <button class="submit-btn" bindtap="submitFeedback">提交反馈</button>
     <!-- 客服按钮 -->
     <button class="contact-btn" open-type="contact">联系客服</button>
-
-</view>
+  </view>
 
 </view>
