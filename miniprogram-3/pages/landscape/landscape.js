@@ -1,11 +1,14 @@
 // 引入配置
-const { API_CONFIG, IMAGE_UTILS } = require('../../utils/config');
+const {
+  API_CONFIG,
+  IMAGE_UTILS
+} = require('../../utils/config');
 
 // pages/landscape/landscape.js
 Page({
   data: {
     background: [],
-    indicatorDots: true,
+    indicatorDots: false,
     vertical: false,
     autoplay: true,
     interval: 2000,
@@ -62,26 +65,29 @@ Page({
     try {
       console.log('开始加载轮播图...');
       const banners = await IMAGE_UTILS.getBanners();
-  
+
       // 检查 banners 是否为有效对象
       if (typeof banners === 'object' && banners !== null && Object.keys(banners).length > 0) {
         // 将键值对转换为数组 [{ key: 'BANNER-01', value: { url: '...', sort_order: 1 } }, ...]
-        const bannerEntries = Object.entries(banners).map(([key, value]) => ({ key, value }));
-        
+        const bannerEntries = Object.entries(banners).map(([key, value]) => ({
+          key,
+          value
+        }));
+
         // 按 sort_order 排序（数字越小越靠前）
         const sortedBanners = bannerEntries.sort((a, b) => {
           return (a.value.sort_order || 0) - (b.value.sort_order || 0);
         });
-        
+
         console.log('排序后的轮播图:', sortedBanners);
-  
+
         // 提取URL数组（按排序后的顺序）
         const bannerUrls = sortedBanners
           .map(item => item.value.url) // 从 value 中获取 url
           .filter(url => url); // 过滤无效URL
-        
+
         console.log('提取的轮播图URLs:', bannerUrls);
-  
+
         if (bannerUrls.length > 0) {
           this.setData({
             background: bannerUrls
@@ -89,6 +95,9 @@ Page({
             console.log('✅ 轮播图数据设置完成，background.length:', this.data.background.length);
           });
           console.log('✅ 轮播图加载成功，共', bannerUrls.length, '张');
+          if (this.data.background.length > 1) this.setData({
+            indicatorDots: true
+          });
         } else {
           console.log('⚠️ 轮播图URL为空，使用默认图片');
           this.setDefaultBanners();
@@ -267,16 +276,25 @@ Page({
       const scorePromises = this.data.landscapeList.map(async (landscape, index) => {
         try {
           const score = await app.getScore(landscape.landscape_id);
-          return { index, score };
+          return {
+            index,
+            score
+          };
         } catch (error) {
-          return { index, score: 0 };
+          return {
+            index,
+            score: 0
+          };
         }
       });
 
       const scores = await Promise.all(scorePromises);
       const landscapes = [...this.data.landscapeList];
 
-      scores.forEach(({ index, score }) => {
+      scores.forEach(({
+        index,
+        score
+      }) => {
         landscapes[index].score = score;
       });
 
