@@ -1,0 +1,50 @@
+<!--pages/landscape_detail/landscape_detail.wxml-->
+<view class="container">
+  <!-- 景点图片轮播 -->
+  <swiper wx:if="{{landscapeImages.length > 0}}" class="landscape-swiper" indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+    <swiper-item wx:for="{{landscapeImages}}" wx:key="index">
+      <image src="{{item}}" class="landscape-image"></image>
+    </swiper-item>
+  </swiper>
+
+  <!-- 默认图片 -->
+  <image wx:else src="{{picture || '/images/dhz/4.jpg'}}" class="landscape-image-single"></image>
+
+  <!-- 其他内容保持不变 -->
+  <view class="content">
+    <!-- 景点信息 -->
+    <view class="info-section">
+      <view class="title">{{myLandscapeName}}</view>
+      <view class="score">推荐指数：{{score}}</view>
+    </view>
+
+    <!-- 导航按钮 -->
+    <view class="nav-buttons">
+      <button class="nav-btn {{currentPage === 'introduction' ? 'active' : ''}}" bindtap="goToIntro">介绍</button>
+      <button class="nav-btn {{currentPage === 'comments' ? 'active' : ''}}" bindtap="goToComments">评价</button>
+    </view>
+
+    <!-- 介绍页面 -->
+    <view wx:if="{{currentPage === 'introduction'}}" class="introduction">
+      <text>{{land_detail.description || '暂无介绍'}}</text>
+
+      <!-- 操作按钮 -->
+      <view class="action-buttons">
+        <button class="action-btn" bindtap="getLocationByName">导航</button>
+        <button class="action-btn" bindtap="makePhoneCall">电话</button>
+        <button class="action-btn" bindtap="navigateToComment">评论</button>
+      </view>
+    </view>
+
+    <!-- 评论页面 -->
+    <view wx:if="{{currentPage === 'comments'}}" class="comments">
+      <view wx:for="{{comments}}" wx:key="index" class="comment-item">
+        <view class="comment-header">
+          <text class="comment-user">{{item.tourist_name}}</text>
+          <text class="comment-time">{{item.create_time}}</text>
+        </view>
+        <view class="comment-content">{{item.content}}</view>
+      </view>
+    </view>
+  </view>
+</view>
