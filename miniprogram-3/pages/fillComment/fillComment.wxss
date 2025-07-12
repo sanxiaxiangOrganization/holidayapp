@@ -70,7 +70,11 @@
   flex-direction: column;
   align-items: center;
   gap: 10rpx;
-  padding: 20rpx 0;
+  padding: 35rpx 0;
+}
+
+.add-image-btn.active{
+  width: 190rpx;
 }
 
 .add-image-btn.active{
