@@ -12,7 +12,8 @@ Page({
     landscapeLocation: '广东省河源市连平县大湖寨',
     latitude: null,
     longitude: null,
-    deleteIcon: ''
+    deleteIcon: '',
+    cameraIcon:''
   },
 
   async onLoad(options) {
@@ -44,12 +45,14 @@ Page({
     try {
       const icons = await IMAGE_UTILS.getIcons();
       this.setData({
-        deleteIcon: icons.DELETE
+        deleteIcon: icons.DELETE,
+        cameraIcon: icons.CAMERA,
       });
     } catch (error) {
       console.error('加载图标失败:', error);
       this.setData({
-        deleteIcon: '/images/icons/delete.png'
+        deleteIcon: '/images/icons/delete.png',
+        cameraIcon: '/images/icons/camera.png',
       });
       throw error;
     }

@@ -8,11 +8,21 @@
 .info-section{
   padding: 20rpx;
   width:90%;
-  height:50%;
+  height:30%;
 }
 /*输入框样式*/
 .field{
   width: 95%;  
+  padding: 10px;  
+  border: 1px solid #ccc;  
+  border-radius: 4px;  
+  margin-top:5px;
+  margin-bottom: 5px;
+}
+
+.describ-field{
+  width: 95%;  
+  height:100px;
   padding: 10px;  
   border: 1px solid #ccc;  
   border-radius: 4px;  
@@ -25,38 +35,58 @@
   width:90%;
   height:50%;
 }
-/*添加图片按钮*/
-.add-image-btn{
-  margin-top: 30rpx;
-  height: 50rpx;
-  width: 98%;  
-  padding: 10rpx;  
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border: 1px solid #4CAF50;
-  border-radius: 5px;
-}
+
 /* 上传的图片 */
 .image-list {
   display: flex;
   flex-wrap: wrap;
-  margin-top: 10px;
+  margin-top: 30rpx;
+  gap: 40rpx;
 }
+
 .image-item {
   position: relative;
-  margin-right: 10px;
-  margin-bottom: 10px;
 }
-.landscape-image {
-  border-radius: 5px;
+
+.uploaded-image {
+  width: 190rpx;
+  height: 190rpx;
+  border-radius: 20rpx;
 }
+
+/*添加照片图标样式*/
+.add-image-btn {
+  width: 100%;
+  height: auto;
+  background-color: rgb(228, 228, 228);
+  border-radius: 10rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10rpx;
+  padding: 35rpx 0;
+}
+
+.add-image-btn.active{
+  width: 190rpx;
+}
+
+.camera-icon {
+  width: 80rpx;
+  height: 80rpx;
+}
+
+.add-text {
+  color: #515151;
+}
+
+/*删除图标*/
 .delete-icon {
   position: absolute;
   top: 0;
   right: 0;
-  width: 20px;
-  height: 20px;
+  width: 40rpx;
+  height: 40rpx;
   background-color: white;
   border-radius: 50%;
   cursor: pointer;

@@ -11,35 +11,25 @@
 
     <view class="form-item">
       <text class="label">景点描述</text>
-      <textarea class="field" placeholder="请输入景点描述" value="{{land_detail.introduction}}"></textarea>
+      <textarea class="describ-field" placeholder="请输入景点描述" value="{{land_detail.description}}"></textarea>
     </view>
   </view>
 
-  <!-- 图片管理 -->
-  <view class="image-section">
-    <text class="label">景点图片管理（最多9张）</text>
-
-    <!-- 添加图片按钮 -->
-    <view wx:if="{{imageList.length < 9}}" class="add-image-btn" bindtap="chooseImage">
-      <text class="add-text">+ 添加图片</text>
-    </view>
-
-    <!-- 图片网格 -->
-    <view class="image-grid">
-      <view wx:for="{{imageList}}" wx:key="index" class="image-wrapper">
-        <image
-          src="{{item}}"
-          class="landscape-image"
-          mode="aspectFill"
-          data-src="{{item}}"
-          bindtap="previewImage">
+<!-- 图片上传 -->
+<view class="image-section">
+    <view class="review-title">景点图片管理（最多9张）</view>
+    <!-- 已选择的图片 -->
+    <view class="image-list">
+      <view wx:for="{{imageList}}" wx:key="index" class="image-item">
+        <image src="{{item}}" class="uploaded-image" mode="aspectFill" data-src="{{item}}" bindtap="previewImage">
         </image>
-        <image
-          class="delete-icon"
-          src="{{deleteIcon}}"
-          data-index="{{index}}"
-          bindtap="deleteImage">
+        <image class="delete-icon" src="{{deleteIcon}}" data-index="{{index}}" bindtap="deleteImage">
         </image>
+      </view>
+      <!-- 添加照片按钮 -->
+      <view wx:if="{{imageList.length < 9}}" class="add-image-btn {{imageList.length > 0 ? 'active' : ''}}" bindtap="chooseImage">
+        <image class="camera-icon" src="{{cameraIcon}}"></image>
+        <text class="add-text">添加照片</text>
       </view>
     </view>
   </view>
@@ -49,3 +39,4 @@
     <button class="submit-btn" bindtap="submitChange">保存修改</button>
   </view>
 </view>
+
