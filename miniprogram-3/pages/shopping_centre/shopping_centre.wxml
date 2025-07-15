@@ -1,0 +1,92 @@
+<!--pages/shopping_centre/shopping_centre.wxml-->
+<view class="container">
+  <!-- 搜索框部分 -->
+  <view class="search-container {{isFocused ? 'active' : ''}}">
+    <input type="text" placeholder="搜索商品" class="search-input" bindfocus="onInputFocus" bindblur="onInputBlur" bindinput="onSearchInput" bindconfirm="onSearchConfirm" value="{{searchValue}}" />
+    <image src="{{hasInput ? deleteIcon : ''}}" class="delete-btn" bindtap="deleteSearch"></image>
+    <icon type="search" size="15" class="search-btn" bindtap="startSearch" mode="aspectFit"></icon>
+  </view>
+
+  <!-- 分类框部分 -->
+  <view class="category-container">
+    <view class="category-list">
+      <view class="category-item {{currentCategory === 'agricultural' ? 'active' : ''}}" bindtap="changeCategory" data-category="agricultural">农产品</view>
+      <view class="category-item {{currentCategory === 'accommodation' ? 'active' : ''}}" bindtap="changeCategory" data-category="accommodation">住宿</view>
+    </view>
+  </view>
+
+  <!-- 商品列表部分 -->
+  <view class="product-container">
+    <!-- 筛选工具栏 -->
+    <view class="filter-bar">
+      <view class="filter-item {{sortType === 'price' ? 'active' : ''}}" bindtap="sortByFilter" data-filter="price">
+        <text>价格</text>
+      </view>
+      <view class="filter-item {{sortType === 'sales' ? 'active' : ''}}" bindtap="sortByFilter" data-filter="sales">
+        <text>销量</text>
+      </view>
+      <view class="filter-item {{sortType === 'rating' ? 'active' : ''}}" bindtap="sortByFilter" data-filter="rating">
+        <text>好评</text>
+      </view>
+    </view>
+
+    <!-- 商品网格 -->
+    <view class="product-grid">
+      <view class="product-card" wx:for="{{products}}" wx:key="id" bindtap="navigateToProductDetail" data-id="{{item.id}}">
+        <!-- 商品图片 -->
+        <view class="relative">
+          <image src="{{item.imageUrl ? item.imageUrl : '/images/default-avatar.png'}}" mode="aspectFill" class="product-image" />
+          <view class="product-tag">{{item.tag || '热卖'}}</view>
+        </view>
+
+        <!-- 商品信息 -->
+        <view class="product-info">
+          <text class="product-title">{{item.title}}</text>
+          <view class="product-marketing">
+            <text class="product-price">¥{{item.price}}</text>
+            <text class="product-sales">月销{{item.sales}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 加载更多提示 -->
+    <view class="loading-more">
+      {{hasMore ? '加载更多...' : '没有更多商品了'}}
+    </view>
+  </view>
+
+  <!-- 购物篮部分 -->
+  <view class="cart-container {{currentCategory === 'agricultural' ? 'show' : ''}}">
+    <!-- 购物篮标题 -->
+    <view class="cart-header" wx:if="{{cartIsShow}}">
+      <text class="cart-title">购物篮 ({{cartTotalCount}})</text>
+      <icon type="clear" size="18" class="clear-cart" bindtap="clearCart"></icon>
+    </view>
+
+    <!-- 购物篮商品列表 -->
+    <view class="cart-items" wx:if="{{cartIsShow}}">
+      <view class="cart-item" wx:for="{{cartItems}}" wx:key="id">
+        <image src="{{item.imageUrl ? item.imageUrl : '/images/default-avatar.png'}}" mode="aspectFill" class="cart-item-img" />
+        <view class="cart-item-info">
+          <text class="cart-item-name">{{item.title}}</text>
+          <text class="cart-item-price">¥{{item.price}}</text>
+        </view>
+        <view class="cart-item-control">
+          <button class="count-btn minus" bindtap="decreaseCount" data-id="{{item.id}}">-</button>
+          <text class="count">{{item.count}}</text>
+          <button class="count-btn plus" bindtap="increaseCount" data-id="{{item.id}}">+</button>
+        </view>
+      </view>
+    </view>
+
+    <!-- 购物篮底部结算 -->
+    <view class="cart-footer" bindtap="cartShow">
+      <view class="total-amount">
+        <text>合计: </text>
+        <text class="total-price">¥{{cartTotalPrice}}</text>
+      </view>
+      <button class="checkout-btn" bindtap="goToCheckout">去结算</button>
+    </view>
+  </view>
+</view>
