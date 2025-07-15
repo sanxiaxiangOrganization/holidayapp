@@ -1,0 +1,320 @@
+/* pages/checkout/checkout.wxss */
+.container {
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  padding: 0 0 120rpx 0;
+  justify-content: normal;
+  align-items: normal;
+}
+
+/* 页面标题 */
+.page-title {
+  font-size: 18px;
+  font-weight: bold;
+  padding: 15px;
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
+}
+
+/* 区域标题通用样式 */
+.section-title {
+  font-size: 16px;
+  padding: 12px 15px;
+  color: #666;
+  background-color: #f5f5f5;
+}
+
+/* 收货信息区域 */
+.address-section {
+  margin-bottom: 10px;
+  background-color: #fff;
+}
+
+.address-card {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.address-icon {
+  margin-right: 10px;
+  color: #f43f30;
+}
+
+.address-info {
+  flex: 1;
+}
+
+.empty-address {
+  color: #999;
+  padding: 10px 0;
+}
+
+.contact-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.contact-name {
+  font-weight: bold;
+}
+
+.contact-phone {
+  color: #666;
+}
+
+.address-detail {
+  color: #333;
+  line-height: 1.5;
+}
+
+.arrow-icon {
+  color: #ccc;
+}
+
+/* 地址表单样式 */
+.address-form {
+  background-color: #fff;
+  padding: 0 15px;
+}
+
+.form-item {
+  display: flex;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+  align-items: center;
+}
+
+.form-label {
+  width: 80px;
+  color: #666;
+  font-size: 14px;
+}
+
+.required::after {
+  content: '*';
+  color: #f43f30;
+  margin-left: 3px;
+}
+
+.form-input {
+  flex: 1;
+  font-size: 14px;
+  padding: 5px 0;
+}
+
+.form-textarea {
+  flex: 1;
+  font-size: 14px;
+  min-height: 60px;
+  padding: 5px 0;
+  line-height: 1.5;
+}
+
+.region-picker {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+}
+
+.picker-text {
+  font-size: 14px;
+  color: #999;
+}
+
+/* 商品清单区域 */
+.goods-section {
+  margin-bottom: 10px;
+  background-color: #fff;
+}
+
+.goods-list {
+  padding: 0 15px;
+}
+
+.goods-item {
+  display: flex;
+  padding: 15px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.goods-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.goods-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.goods-name {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.goods-amount {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.goods-price {
+  color: #f43f30;
+  font-weight: bold;
+}
+
+.goods-count {
+  color: #666;
+}
+
+/* 订单信息区域 */
+.order-section {
+  margin-bottom: 10px;
+  background-color: #fff;
+  padding: 0 15px;
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.order-label {
+  color: #666;
+}
+
+.order-value {
+  color: #333;
+}
+
+/* 底部结算区域 */
+.checkout-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 15px;
+  background-color: #fff;
+  border-top: 1px solid #eee;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.total-container {
+  display: flex;
+  align-items: center;
+}
+
+.total-text {
+  color: #666;
+  margin-right: 5px;
+}
+
+.total-money {
+  color: #f43f30;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.pay-btn {
+  background-color: #f43f30;
+  color: #fff;
+  padding: 8px 25px;
+  border-radius: 20px;
+  font-size: 16px;
+}
+
+.pay-btn:disabled {
+  background-color: #ff9494;
+  color: #fff;
+}
+
+/* 地区选择弹窗样式 */
+.picker-modal {
+  display: none;
+}
+
+.picker-modal.show {
+  display: block;
+}
+
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+}
+
+.modal-content {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  z-index: 101;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+.picker-modal.show .modal-content {
+  transform: translateY(0);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.modal-title {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.modal-close {
+  background: transparent;
+  border: none;
+  color: #666;
+  font-size: 14px;
+  padding: 5px 10px;
+}
+
+.region-picker-view {
+  width: 100%;
+  height: 200px;
+}
+
+.modal-confirm {
+  width: 100%;
+  padding: 12px 0;
+  margin: 10px 0;
+  background-color: #f43f30;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+}

@@ -1,0 +1,98 @@
+<!--pages/checkout/checkout.wxml-->
+<view class="container">
+  <!-- 页面标题 -->
+  <view class="page-title">确认订单</view>
+
+  <!-- 收货信息区域 -->
+  <view class="address-section">
+    <view class="section-title">收货信息</view>
+    <view class="address-form">
+      <view class="form-item">
+        <text class="form-label required">收货人</text>
+        <input type="text" placeholder="请输入收货人姓名" class="form-input" bindinput="onAddressInput" data-field="name" value="{{addressInfo.name || ''}}" />
+      </view>
+      <view class="form-item">
+        <text class="form-label required">联系电话</text>
+        <input type="number" placeholder="请输入手机号码" class="form-input" bindinput="onAddressInput" data-field="phone" value="{{addressInfo.phone || ''}}" />
+      </view>
+      <view class="form-item">
+        <text class="form-label required">所在地区</text>
+        <view class="region-picker" bindtap="showRegionPicker">
+          <text class="picker-text">{{addressInfo.region ? addressInfo.region.join(' ') : '请选择省/市/区'}}</text>
+          <icon type="arrowright" size="16" color="#999" class="picker-arrow" />
+        </view>
+      </view>
+      <view class="form-item">
+        <text class="form-label required">详细地址</text>
+        <textarea placeholder="请输入详细地址（街道、门牌号等）" class="form-textarea" bindinput="onAddressInput" data-field="detail" value="{{addressInfo.detail || ''}}" />
+      </view>
+      <view class="form-item">
+        <text class="form-label">备注</text>
+        <input type="text" placeholder="如：小区门禁密码、送货时间要求等" class="form-input" bindinput="onAddressInput" data-field="remark" value="{{addressInfo.remark || ''}}" />
+      </view>
+    </view>
+  </view>
+
+  <!-- 商品清单区域 -->
+  <view class="goods-section">
+    <view class="section-title">商品清单</view>
+    <view class="goods-list">
+      <view class="goods-item" wx:for="{{cartItems}}" wx:key="id">
+        <image src="{{item.imageUrl ? item.imageUrl : '/images/default-avatar.png'}}" mode="aspectFill" class="goods-image"></image>
+        <view class="goods-info">
+          <text class="goods-name">{{item.title}}</text>
+          <view class="goods-amount">
+            <text class="goods-price">¥{{item.price}}</text>
+            <text class="goods-count">x{{item.count}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 订单信息区域 -->
+  <view class="order-section">
+    <view class="order-item">
+      <text class="order-label">商品总价</text>
+      <text class="order-value">¥{{totalPrice}}</text>
+    </view>
+    <view class="order-item">
+      <text class="order-label">运费</text>
+      <text class="order-value">{{freight > 0 ? '¥' + freight : '免费'}}</text>
+    </view>
+  </view>
+
+  <!-- 底部结算区域 -->
+  <view class="checkout-footer">
+    <view class="total-container">
+      <text class="total-text">实付款：</text>
+      <text class="total-money">¥{{totalPrice + freight}}</text>
+    </view>
+    <button class="pay-btn" bindtap="submitOrder" disabled="{{!addressInfo || cartItems.length === 0}}">
+      提交订单
+    </button>
+  </view>
+
+  <!-- 地区选择弹窗 -->
+  <view class="picker-modal {{showRegionPicker ? 'show' : ''}}">
+    <view class="modal-mask" bindtap="hideRegionPicker"></view>
+    <view class="modal-content">
+      <view class="modal-header">
+        <text class="modal-title">选择地区</text>
+        <button class="modal-close" bindtap="hideRegionPicker">取消</button>
+      </view>
+      <picker-view class="region-picker-view" value="{{regionValue}}" bindchange="onRegionChange">
+        <picker-view-column>
+          <view wx:for="{{provinces}}" wx:key="id">{{item.name}}</view>
+        </picker-view-column>
+        <picker-view-column>
+          <view wx:for="{{cities}}" wx:key="id">{{item.name}}</view>
+        </picker-view-column>
+        <picker-view-column>
+          <view wx:for="{{areas}}" wx:key="id">{{item.name}}</view>
+        </picker-view-column>
+      </picker-view>
+      <button class="modal-confirm" bindtap="confirmRegion">确定</button>
+    </view>
+  </view>
+</view>
