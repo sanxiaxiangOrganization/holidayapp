@@ -2,7 +2,7 @@
 .container {
   background-color: #f5f5f5;
   min-height: 100vh;
-  padding: 0 0 120rpx 0;
+  padding: 0 0 140rpx 0;
   justify-content: normal;
   align-items: normal;
 }
@@ -11,9 +11,10 @@
 .page-title {
   font-size: 18px;
   font-weight: bold;
-  padding: 15px;
+  padding: 30rpx;
   background-color: #fff;
   border-bottom: 1px solid #eee;
+  text-align: center;
 }
 
 /* 区域标题通用样式 */
@@ -84,13 +85,13 @@
   display: flex;
   padding: 12px 0;
   border-bottom: 1px solid #eee;
-  align-items: center;
 }
 
 .form-label {
   width: 80px;
   color: #666;
   font-size: 14px;
+  margin-bottom:auto;
 }
 
 .required::after {
@@ -102,14 +103,12 @@
 .form-input {
   flex: 1;
   font-size: 14px;
-  padding: 5px 0;
 }
 
 .form-textarea {
   flex: 1;
   font-size: 14px;
   min-height: 60px;
-  padding: 5px 0;
   line-height: 1.5;
 }
 
@@ -124,6 +123,10 @@
 .picker-text {
   font-size: 14px;
   color: #999;
+}
+
+.picker-text.active{
+  color: rgb(0, 0, 0);
 }
 
 /* 商品清单区域 */
@@ -211,7 +214,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 15px;
+  padding: 40rpx 30rpx;
   background-color: #fff;
   border-top: 1px solid #eee;
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
@@ -220,6 +223,7 @@
 .total-container {
   display: flex;
   align-items: center;
+  flex:1;
 }
 
 .total-text {
@@ -306,6 +310,7 @@
 .region-picker-view {
   width: 100%;
   height: 200px;
+  padding: 0 60rpx;
 }
 
 .modal-confirm {
