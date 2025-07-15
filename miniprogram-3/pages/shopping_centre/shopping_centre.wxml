@@ -59,13 +59,13 @@
   <!-- 购物篮部分 -->
   <view class="cart-container {{currentCategory === 'agricultural' ? 'show' : ''}}">
     <!-- 购物篮标题 -->
-    <view class="cart-header" wx:if="{{cartIsShow}}">
+    <view class="cart-header" wx:if="{{cartIsShow && cartItems.length > 0}}">
       <text class="cart-title">购物篮 ({{cartTotalCount}})</text>
       <icon type="clear" size="18" class="clear-cart" bindtap="clearCart"></icon>
     </view>
 
     <!-- 购物篮商品列表 -->
-    <view class="cart-items" wx:if="{{cartIsShow}}">
+    <view class="cart-items" wx:if="{{cartIsShow && cartItems.length > 0}}">
       <view class="cart-item" wx:for="{{cartItems}}" wx:key="id">
         <image src="{{item.imageUrl ? item.imageUrl : '/images/default-avatar.png'}}" mode="aspectFill" class="cart-item-img" />
         <view class="cart-item-info">

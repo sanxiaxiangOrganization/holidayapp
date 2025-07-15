@@ -337,6 +337,7 @@ button.count-btn {
   padding: 8px 25px;
   border-radius: 20px;
   font-size: 14px;
+  margin: 0;
 }
 
 /* 为商品列表添加底部间距，避免被购物篮遮挡 */
