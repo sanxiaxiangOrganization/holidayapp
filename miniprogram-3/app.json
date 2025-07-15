@@ -10,7 +10,9 @@
     "pages/fillComment/fillComment",
     "pages/help/help",
     "pages/manage_login/manage_login",
-    "pages/manager/manager"
+    "pages/manager/manager",
+    "pages/shopping_centre/shopping_centre",
+    "pages/checkout/checkout"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -32,8 +34,8 @@
         "selectedIconPath": "images/tabBar_icons/landscape_active.png"
       },
       {
-        "pagePath": "pages/community/community",
-        "text": "社区",
+        "pagePath": "pages/shopping_centre/shopping_centre",
+        "text": "商城",
         "iconPath": "images/tabBar_icons/community.png",
         "selectedIconPath": "images/tabBar_icons/community_active.png"
       },
@@ -50,7 +52,9 @@
       "desc": "用于获取您的位置信息，为您推荐附近的景点"
     }
   },
-  "requiredBackgroundModes": ["audio"],
+  "requiredBackgroundModes": [
+    "audio"
+  ],
   "style": "v2",
   "sitemapLocation": "sitemap.json"
 }
