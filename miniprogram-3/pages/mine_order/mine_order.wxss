@@ -1,0 +1,19 @@
+/* pages/mine_order/mine_order.wxss */
+.order-list {
+  padding: 10px;
+}
+
+.order-item {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.order-info {
+  margin-bottom: 10px;
+}
+
+.order-items .item {
+  margin-bottom: 5px;
+}

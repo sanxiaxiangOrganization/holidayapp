@@ -1,0 +1,39 @@
+<!--pages/mine_order/mine_order.wxml-->
+<view class="order-list">
+  <block wx:for="{{orders}}" wx:key="orderNo">
+    <view class="order-item">
+      <view class="order-info">
+        <view>订单编号: {{item.orderNo}}</view>
+        <view>创建时间: {{item.createTime}}</view>
+        <view>分类: {{item.category==='agricultural' ? '农产品' : '住宿'}}</view>
+        <view>总价: {{item.totalPrice}} 元</view>
+        <view>运费: {{item.freight}} 元</view>
+        <view>实际支付: {{item.actualPayment}} 元</view>
+        <!-- 住宿分类订单额外信息 -->
+        <view wx:if="{{item.category === 'accommodation'}}">
+          <view>联系人姓名: {{item.contactInfo.contactName}}</view>
+          <view>联系人电话: {{item.contactInfo.contactPhone}}</view>
+          <view>入住日期: {{item.checkInDate}}</view>
+          <view>退房日期: {{item.checkOutDate}}</view>
+          <view>入住天数: {{item.days}} 天</view>
+        </view>
+        <!-- 农产品分类订单额外信息 -->
+        <view wx:if="{{item.category === 'agricultural'}}">
+          <view>收货人姓名: {{item.address.name}}</view>
+          <view>收货人电话: {{item.address.phone}}</view>
+          <view>收货地址: {{item.address.region}} {{item.address.detail}}</view>
+          <view>备注: {{item.address.remark}}</view>
+        </view>
+      </view>
+      <view class="order-items">
+        <block wx:for="{{item.items}}" wx:key="id">
+          <view class="item">
+            <view>商品名称: {{item.title}}</view>
+            <view>单价: {{item.price}} 元</view>
+            <view>数量: {{item.count}}</view>
+          </view>
+        </block>
+      </view>
+    </view>
+  </block>
+</view>
