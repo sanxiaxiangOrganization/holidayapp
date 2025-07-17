@@ -1,5 +1,5 @@
 <!--pages/shopping_centre/shopping_centre.wxml-->
-<view class="container">
+<view class="container" style="{{currentCategory === 'accommodation' ? 'padding: 0;' : ''}}">
   <!-- 搜索框部分 -->
   <view class="search-container {{isFocused ? 'active' : ''}}">
     <input type="text" placeholder="搜索商品" class="search-input" bindfocus="onInputFocus" bindblur="onInputBlur" bindinput="onSearchInput" bindconfirm="onSearchConfirm" value="{{searchValue}}" />

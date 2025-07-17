@@ -331,21 +331,11 @@ button.count-btn {
   margin-left: 5px;
 }
 
-.checkout-btn {
+button.checkout-btn {
   background-color: #f43f30;
   color: #fff;
   padding: 8px 25px;
   border-radius: 20px;
   font-size: 14px;
   margin: 0;
-}
-
-/* 为商品列表添加底部间距，避免被购物篮遮挡 */
-.product-container {
-  padding-bottom: 20px; /* 原有间距 */
-}
-
-/* 当购物篮显示时，增加商品列表底部间距 */
-.cart-container.show ~ .product-container {
-  padding-bottom: 60vh;
 }

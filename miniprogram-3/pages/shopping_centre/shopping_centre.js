@@ -66,8 +66,19 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad(options) {
-
+  onLoad() {
+    try {
+      const cartItems = wx.getStorageSync('cartItems') || [];
+      this.setData({
+        cartItems
+      });
+      this.updateCart();
+    } catch (e) {
+      console.error('读取购物车数据失败:', e);
+      this.setData({
+        cartItems: []
+      });
+    }
   },
 
   // 输入框获得焦点时触发
@@ -173,7 +184,7 @@ Page({
   // 控制商品列表显示
   cartShow: function () {
     const cartIsShow = this.data.cartIsShow;
-    this.setData ({
+    this.setData({
       cartIsShow: !cartIsShow
     });
   },
@@ -182,10 +193,18 @@ Page({
   navigateToProductDetail: function (e) {
     const productId = e.currentTarget.dataset.id;
     const product = this.data.products.find(item => item.id === productId);
-
     // 只有农产品分类才添加到购物篮
     if (this.data.currentCategory === 'agricultural') {
       this.addToCart(product);
+    } else if (this.data.currentCategory === 'accommodation') {
+      // 跳转到房间预约页面，传递商品信息（构造cartItems）
+      const cartItems = [{
+        ...product,
+        count: 1 // 默认数量1，后续结合日期计算天数
+      }];
+      wx.navigateTo({
+        url: `/pages/checkout/checkout?cartItems=${JSON.stringify(cartItems)}&category=${this.data.currentCategory}`
+      });
     }
   },
 
@@ -210,6 +229,7 @@ Page({
 
   // 更新购物篮数据
   updateCart: function (cartItems) {
+    cartItems = cartItems || [...this.data.cartItems];
     // 计算总数和总价
     let totalCount = 0;
     let totalPrice = 0;
@@ -218,6 +238,12 @@ Page({
       totalCount += item.count;
       totalPrice += item.price * item.count;
     });
+
+    try {
+      wx.setStorageSync('cartItems', cartItems);
+    } catch (e) {
+      console.error('保存购物车数据失败:', e);
+    }
 
     this.setData({
       cartItems,
@@ -262,15 +288,22 @@ Page({
       cartTotalCount: 0,
       cartTotalPrice: 0
     });
+    this.updateCart();
   },
 
   // 前往结算
   goToCheckout: function () {
-    if (this.data.cartItems.length === 0) return;
+    if (this.data.cartItems.length === 0) {
+      wx.showToast({
+        title: '购物车为空，请先添加商品',
+        icon: 'none'
+      });
+      return;
+    }
 
     // 跳转到结算页面，携带购物篮数据
     wx.navigateTo({
-      url: `/pages/checkout/checkout?cartItems=${JSON.stringify(this.data.cartItems)}`
+      url: `/pages/checkout/checkout?cartItems=${JSON.stringify(this.data.cartItems)}&category=${this.data.currentCategory}`
     });
   },
 
