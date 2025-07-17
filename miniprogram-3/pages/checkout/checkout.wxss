@@ -18,6 +18,11 @@
 }
 
 /* 区域标题通用样式 */
+.section{
+  display: flex;
+  flex-direction: column;
+}
+
 .section-title {
   font-size: 16px;
   padding: 12px 15px;
@@ -25,9 +30,39 @@
   background-color: #f5f5f5;
 }
 
+/* 入住和退房时间区域整体样式 */
+/* 日期选择器容器 */
+.date-picker {
+  display: flex;
+  justify-content: space-between;
+  padding: 20rpx 30rpx;
+  background-color: #fff;
+}
+
+/* 单个日期选择器样式 */
+.date-picker picker {
+  padding: 20rpx 25rpx;
+  background-color: #f5f7fa;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  color: #333;
+  text-align: center;
+  border: 2rpx solid #eee;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* 区分入住/退房的辅助样式 */
+.date-picker picker:first-child {
+  border-left: 6rpx solid #00cc66;
+}
+
+.date-picker picker:last-child {
+  border-left: 6rpx solid #ff6666;
+}
+
 /* 收货信息区域 */
 .address-section {
-  margin-bottom: 10px;
   background-color: #fff;
 }
 
@@ -131,7 +166,6 @@
 
 /* 商品清单区域 */
 .goods-section {
-  margin-bottom: 10px;
   background-color: #fff;
 }
 
@@ -185,9 +219,9 @@
 
 /* 订单信息区域 */
 .order-section {
-  margin-bottom: 10px;
   background-color: #fff;
   padding: 0 15px;
+  margin-top: 30rpx;
 }
 
 .order-item {
