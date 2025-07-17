@@ -88,24 +88,25 @@ App({
   async updateTabBarIcons() {
     try {
       const tabbarIcons = await IMAGE_UTILS.getTabbarIcons();
+      console.log(tabbarIcons);
 
       // 更新标签栏图标
       wx.setTabBarItem({
         index: 0,
-        iconPath: tabbarIcons.LANDSCAPE_NORMAL,
-        selectedIconPath: tabbarIcons.LANDSCAPE_ACTIVE
+        iconPath: tabbarIcons["LANDSCAPE-NORMAL"],
+        selectedIconPath: tabbarIcons["LANDSCAPE-ACTIVE"]
       });
-
+  
       wx.setTabBarItem({
         index: 1,
-        iconPath: tabbarIcons.COMMUNITY_NORMAL,
-        selectedIconPath: tabbarIcons.COMMUNITY_ACTIVE
+        iconPath: tabbarIcons["COMMUNITY-NORMAL"],
+        selectedIconPath: tabbarIcons["COMMUNITY-ACTIVE"]
       });
-
+  
       wx.setTabBarItem({
         index: 2,
-        iconPath: tabbarIcons.MINE_NORMAL,
-        selectedIconPath: tabbarIcons.MINE_ACTIVE
+        iconPath: tabbarIcons["MINE-NORMAL"],
+        selectedIconPath: tabbarIcons["MINE-ACTIVE"]
       });
 
       console.log('标签栏图标更新成功');
@@ -127,7 +128,6 @@ App({
           'content-type': 'application/x-www-form-urlencoded',
         },
         success(res) {
-          console.log('获取该景点评分的接口请求成功:', res.data);
           if(res.data.data !== null)
             resolve(res.data.data);
           else resolve(0)

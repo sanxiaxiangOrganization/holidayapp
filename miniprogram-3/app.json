@@ -12,7 +12,9 @@
     "pages/manage_login/manage_login",
     "pages/manager/manager",
     "pages/shopping_centre/shopping_centre",
-    "pages/checkout/checkout"
+    "pages/checkout/checkout",
+    "pages/room_reservation/room_reservation",
+    "pages/mine_order/mine_order"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -30,20 +32,20 @@
       {
         "pagePath": "pages/landscape/landscape",
         "text": "景点",
-        "iconPath": "images/tabBar_icons/landscape.png",
-        "selectedIconPath": "images/tabBar_icons/landscape_active.png"
+        "iconPath": "",
+        "selectedIconPath": ""
       },
       {
         "pagePath": "pages/shopping_centre/shopping_centre",
         "text": "商城",
-        "iconPath": "images/tabBar_icons/community.png",
-        "selectedIconPath": "images/tabBar_icons/community_active.png"
+        "iconPath": "",
+        "selectedIconPath": ""
       },
       {
         "pagePath": "pages/mine_holiday/mine_holiday",
         "text": "我的",
-        "iconPath": "images/tabBar_icons/mine.png",
-        "selectedIconPath": "images/tabBar_icons/mine_active.png"
+        "iconPath": "",
+        "selectedIconPath": ""
       }
     ]
   },
