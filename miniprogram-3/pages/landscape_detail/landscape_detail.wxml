@@ -8,7 +8,7 @@
   </swiper>
 
   <!-- 默认图片 -->
-  <image wx:else src="{{picture || '/images/dhz/4.jpg'}}" class="landscape-image-single"></image>
+  <image wx:else src="{{picture || 'http://usr/images/default-avatar.png'}}" class="landscape-image-single"></image>
 
   <!-- 其他内容保持不变 -->
   <view class="content">
