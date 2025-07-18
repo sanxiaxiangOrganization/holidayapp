@@ -5,7 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    deleteIcon: '/images/icons/delete.png',
+    deleteIcon: '',
     hasInput: false, // 控制删除按钮是否显示
     searchValue: '', // 搜索框的内容
     isFocused: false, // 输入框是否获得焦点
@@ -18,7 +18,7 @@ Page({
         title: "有机生态种植草莓 2斤装",
         price: 39.9,
         sales: 1256,
-        imageUrl: "", // 替换为你的图片路径
+        imageUrl: "http://usr/images/default-avatar.png", // 替换为你的图片路径
         tag: "限时特惠"
       },
       {
@@ -26,7 +26,7 @@ Page({
         title: "农家散养土鸡蛋 30枚",
         price: 58.0,
         sales: 2341,
-        imageUrl: "",
+        imageUrl: "http://usr/images/default-avatar.png",
         tag: "农家直供"
       },
       {
@@ -34,7 +34,7 @@ Page({
         title: "现摘新鲜圣女果 5斤装",
         price: 25.8,
         sales: 892,
-        imageUrl: "",
+        imageUrl: "http://usr/images/default-avatar.png",
         tag: "新品"
       },
 
@@ -44,7 +44,7 @@ Page({
         title: "山间民宿 双人套房 含早餐",
         price: 368.0,
         sales: 456,
-        imageUrl: "",
+        imageUrl: "http://usr/images/default-avatar.png",
         tag: "热门"
       },
       {
@@ -52,7 +52,7 @@ Page({
         title: "田园别墅 整栋出租 可住6人",
         price: 888.0,
         sales: 129,
-        imageUrl: "",
+        imageUrl: "http://usr/images/default-avatar.png",
         tag: "推荐"
       }
     ],
@@ -73,10 +73,16 @@ Page({
         cartItems
       });
       this.updateCart();
+
+      const icons = wx.getStorageSync('cached_icons') || [];
+      this.setData({
+        deleteIcon: icons.DELETE
+      });
     } catch (e) {
       console.error('读取购物车数据失败:', e);
       this.setData({
-        cartItems: []
+        cartItems: [],
+        deleteIcon: 'https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/icons/delete.png'
       });
     }
   },
@@ -318,7 +324,8 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
-
+    const app = getApp();
+    app.updateTabBarIcons();
   },
 
   /**
