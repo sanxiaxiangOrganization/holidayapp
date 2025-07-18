@@ -7,7 +7,7 @@
     <view class="rating-title">您的评分</view>
     <view class="stars">
       <view wx:for="{{stars}}" wx:key="index" class="star-wrapper">
-        <image class="star {{index < selectedStars ? 'star-selected' : ''}}" src="{{index < selectedStars ? '/images/icons/star_active.png' : '/images/icons/star.png'}}" data-index="{{index}}" bindtap="setRating">
+        <image class="star {{index < selectedStars ? 'star-selected' : ''}}" src="{{index < selectedStars ? star_activeIcon : starIcon}}" data-index="{{index}}" bindtap="setRating">
         </image>
       </view>
     </view>
@@ -15,7 +15,7 @@
 
   <!-- 文字评价 -->
   <view class="review-section">
-    <view class="review-title">您的评价</view>
+    <view class="review-title">写下您的评价</view>
     <textarea class="review-text" placeholder="分享您的体验..." bindinput="onInput" value="{{reviewText}}" maxlength="500">
     </textarea>
     <view class="char-count">{{reviewText.length}}/500</view>

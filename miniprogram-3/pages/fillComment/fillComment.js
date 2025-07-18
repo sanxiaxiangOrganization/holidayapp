@@ -1,5 +1,8 @@
 // 引入配置
-const { API_CONFIG, IMAGE_UTILS } = require('../../utils/config');
+const {
+  API_CONFIG,
+  IMAGE_UTILS
+} = require('../../utils/config');
 
 // pages/fillComment/fillComment.js
 Page({
@@ -13,7 +16,9 @@ Page({
     commentTime: "", // 用户发布评论的时间
     // 图标资源
     cameraIcon: '',
-    deleteIcon: ''
+    deleteIcon: '',
+    star_activeIcon: '',
+    starIcon: ''
   },
 
   async onLoad(options) {
@@ -54,33 +59,36 @@ Page({
     try {
       const icons = await IMAGE_UTILS.getIcons();
       this.setData({
-        cameraIcon: '/images/icons/camera.png',
-        deleteIcon: '/images/icons/delete.png'
+        cameraIcon: icons.CAMERA,
+        deleteIcon: icons.DELETE,
+        star_activeIcon: icons['STAR-ACTIVE'],
+        starIcon: icons['STAR-NORMAL']
       });
-      
     } catch (error) {
       console.error('加载图标失败:', error);
       this.setData({
-        cameraIcon: icons.CAMERA,
-        deleteIcon: icons.DELETE
+        deleteIcon: 'https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/icons/delete.png',
+        cameraIcon: 'https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/icons/camera.png',
+        star_activeIcon: 'https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/icons/star_active.png',
+        starIcon: 'https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/icons/star-normal.png'
       });
       throw error;
     }
   },
 
   // 设置星级评分
-  setRating: function(event) {
+  setRating: function (event) {
     var that = this;
     const index = event.currentTarget.dataset.index;
     this.setData({
       selectedStars: index + 1
-    }, function() {
+    }, function () {
       console.log("分数：", that.data.selectedStars);
     });
   },
 
   // 处理手写评价输入
-  onInput: function(event) {
+  onInput: function (event) {
     this.setData({
       reviewText: event.detail.value
     });
@@ -116,7 +124,7 @@ Page({
   },
 
   // 预览图片
-  previewImage: function(event) {
+  previewImage: function (event) {
     const src = event.currentTarget.dataset.src;
     wx.previewImage({
       current: src,
@@ -125,7 +133,7 @@ Page({
   },
 
   // 删除图片
-  deleteImage: function(event) {
+  deleteImage: function (event) {
     var that = this;
     const index = event.currentTarget.dataset.index;
     let imageList = that.data.imageList;
@@ -136,8 +144,12 @@ Page({
   },
 
   // 提交评价
-  submitReview: function() {
-    const { selectedStars, reviewText, imageList } = this.data;
+  submitReview: function () {
+    const {
+      selectedStars,
+      reviewText,
+      imageList
+    } = this.data;
     var that = this;
 
     // 提交用户给出的分数（就算是0，也给提交上去）
@@ -160,7 +172,7 @@ Page({
     // 返回上一页
     wx.navigateBack({
       delta: 1,
-      success: function(res) {
+      success: function (res) {
         const pages = getCurrentPages();
         const prevPage = pages[pages.length - 2];
 
@@ -180,271 +192,274 @@ Page({
   },
 
   // 提交星星打分
-submitScore() {
-  var that = this;
-  console.log("————————————————————————————————打分————————————————————————");
-  console.log("分数：", that.data.selectedStars);
+  submitScore() {
+    var that = this;
+    console.log("————————————————————————————————打分————————————————————————");
+    console.log("分数：", that.data.selectedStars);
 
-  // 获取请求参数
-  const tourist_id = wx.getStorageSync('tourist_id');
-  const landscape_id = that.data.myLandscapeId;
-  const score = that.data.selectedStars;
+    // 获取请求参数
+    const tourist_id = wx.getStorageSync('tourist_id');
+    const landscape_id = that.data.myLandscapeId;
+    const score = that.data.selectedStars;
 
-  // 调试信息：输出所有参数
-  console.log("请求参数详情:");
-  console.log("tourist_id:", tourist_id, "类型:", typeof tourist_id);
-  console.log("landscape_id:", landscape_id, "类型:", typeof landscape_id);
-  console.log("score:", score, "类型:", typeof score);
+    // 调试信息：输出所有参数
+    console.log("请求参数详情:");
+    console.log("tourist_id:", tourist_id, "类型:", typeof tourist_id);
+    console.log("landscape_id:", landscape_id, "类型:", typeof landscape_id);
+    console.log("score:", score, "类型:", typeof score);
 
-  // 参数验证
-  if (!tourist_id) {
-    console.error("tourist_id为空");
-    wx.showToast({
-      title: '用户ID为空，请重新登录',
-      icon: 'none',
-      duration: 2000
-    });
-    return;
-  }
+    // 参数验证
+    if (!tourist_id) {
+      console.error("tourist_id为空");
+      wx.showToast({
+        title: '用户ID为空，请重新登录',
+        icon: 'none',
+        duration: 2000
+      });
+      return;
+    }
 
-  if (!landscape_id) {
-    console.error("landscape_id为空");
-    wx.showToast({
-      title: '景点ID为空',
-      icon: 'none',
-      duration: 2000
-    });
-    return;
-  }
+    if (!landscape_id) {
+      console.error("landscape_id为空");
+      wx.showToast({
+        title: '景点ID为空',
+        icon: 'none',
+        duration: 2000
+      });
+      return;
+    }
 
-  const requestData = {
-    tourist_id: parseInt(tourist_id),
-    landscape_id: parseInt(landscape_id),
-    score: parseInt(score),
-  };
+    const requestData = {
+      tourist_id: parseInt(tourist_id),
+      landscape_id: parseInt(landscape_id),
+      score: parseInt(score),
+    };
 
-  console.log("最终请求数据:", requestData);
+    console.log("最终请求数据:", requestData);
 
-  wx.request({
-    url: API_CONFIG.USER.SCORE || 'http://localhost:8080/tourist/score',
-    method: 'POST',
-    data: requestData,
-    header: {
-      'content-type': 'application/x-www-form-urlencoded',
-    },
-    success(res) {
-      console.log('游客打分的接口请求成功:', res);
-      console.log('返回数据详情:', res.data);
+    wx.request({
+      url: API_CONFIG.USER.SCORE || 'http://localhost:8080/tourist/score',
+      method: 'POST',
+      data: requestData,
+      header: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+      success(res) {
+        console.log('游客打分的接口请求成功:', res);
+        console.log('返回数据详情:', res.data);
 
-      if (res.statusCode === 200) {
-        // 处理后端统一返回格式
-        if (res.data && res.data.code === 1) {
-          console.log('评分提交成功');
-          wx.showToast({
-            title: '评分提交成功',
-            icon: 'success',
-            duration: 2000
-          });
-        } else {
-          console.error('评分提交失败:', res.data);
-          wx.showToast({
-            title: res.data.msg || '评分提交失败',
-            icon: 'none',
-            duration: 2000
-          });
-        }
-      } else if (res.statusCode === 400) {
-        // 处理400错误，很可能是重复评分
-        console.error('评分提交失败，可能是重复评分:', res.data);
-        wx.showModal({
-          title: '评分失败',
-          content: '您已经对这个景点评分过了，每个景点只能评分一次。是否要删除之前的评分重新评分？',
-          showCancel: true,
-          confirmText: '删除重评',
-          cancelText: '取消',
-          success(modalRes) {
-            if (modalRes.confirm) {
-              // 用户选择删除重评
-              that.deleteAndResubmitScore();
-            }
+        if (res.statusCode === 200) {
+          // 处理后端统一返回格式
+          if (res.data && res.data.code === 1) {
+            console.log('评分提交成功');
+            wx.showToast({
+              title: '评分提交成功',
+              icon: 'success',
+              duration: 2000
+            });
+          } else {
+            console.error('评分提交失败:', res.data);
+            wx.showToast({
+              title: res.data.msg || '评分提交失败',
+              icon: 'none',
+              duration: 2000
+            });
           }
-        });
-      } else {
-        console.error('评分提交失败，状态码:', res.statusCode);
-        console.error('错误详情:', res.data);
-        wx.showToast({
-          title: `评分提交失败: ${res.data.msg || res.statusCode}`,
-          icon: 'none',
-          duration: 2000
-        });
-      }
-    },
-    fail(err) {
-      console.error('游客打分请求失败:', err);
-      wx.showToast({
-        title: '网络错误',
-        icon: 'none',
-        duration: 2000
-      });
-    }
-  });
-},
-
-// 提交用户评价内容
-submitComment() {
-  var that = this;
-  console.log("————————————————————————————————评论————————————————————————");
-  console.log("评价内容：", that.data.reviewText);
-
-  // 参数验证
-  if (!that.data.reviewText.trim()) {
-    wx.showToast({
-      title: '请输入评论内容',
-      icon: 'none',
-      duration: 2000
-    });
-    return;
-  }
-
-  that.setData({
-    commentTime: that.getCurrentTime()
-  });
-
-  // 获取请求参数
-  const tourist_id = wx.getStorageSync('tourist_id');
-  const landscape_id = that.data.myLandscapeId;
-  const content = that.data.reviewText;
-  const time = that.data.commentTime;
-
-  // 调试信息：输出所有参数
-  console.log("评论请求参数详情:");
-  console.log("tourist_id:", tourist_id, "类型:", typeof tourist_id);
-  console.log("landscape_id:", landscape_id, "类型:", typeof landscape_id);
-  console.log("content:", content, "长度:", content.length);
-  console.log("time:", time);
-
-  const requestData = {
-    landscape_id: parseInt(landscape_id),
-    tourist_id: parseInt(tourist_id),
-    content: content,
-    time: time,
-  };
-
-  console.log("最终评论请求数据:", requestData);
-
-  wx.request({
-    url: API_CONFIG.COMMENT.ADD || 'http://localhost:8080/comment/addComment',
-    method: 'POST',
-    data: requestData,
-    header: {
-      'content-type': 'application/json',
-    },
-    success(res) {
-      console.log('增加评论的接口请求成功:', res);
-      console.log('返回数据详情:', res.data);
-
-      if (res.statusCode === 200) {
-        // 处理后端统一返回格式
-        if (res.data && res.data.code === 1) {
-          console.log('评论提交成功');
-          wx.showToast({
-            title: '评论提交成功',
-            icon: 'success',
-            duration: 2000
+        } else if (res.statusCode === 400) {
+          // 处理400错误，很可能是重复评分
+          console.error('评分提交失败，可能是重复评分:', res.data);
+          wx.showModal({
+            title: '评分失败',
+            content: '您已经对这个景点评分过了，每个景点只能评分一次。是否要删除之前的评分重新评分？',
+            showCancel: true,
+            confirmText: '删除重评',
+            cancelText: '取消',
+            success(modalRes) {
+              if (modalRes.confirm) {
+                // 用户选择删除重评
+                that.deleteAndResubmitScore();
+              }
+            }
           });
         } else {
-          console.error('评论提交失败:', res.data);
+          console.error('评分提交失败，状态码:', res.statusCode);
+          console.error('错误详情:', res.data);
           wx.showToast({
-            title: res.data.msg || '评论提交失败',
+            title: `评分提交失败: ${res.data.msg || res.statusCode}`,
             icon: 'none',
             duration: 2000
           });
         }
-      } else {
-        console.error('评论提交失败，状态码:', res.statusCode);
-        console.error('错误详情:', res.data);
+      },
+      fail(err) {
+        console.error('游客打分请求失败:', err);
         wx.showToast({
-          title: `评论提交失败: ${res.data.msg || res.statusCode}`,
+          title: '网络错误',
           icon: 'none',
           duration: 2000
         });
       }
-    },
-    fail(err) {
-      console.error('增加评论请求失败:', err);
+    });
+  },
+
+  // 提交用户评价内容
+  submitComment() {
+    var that = this;
+    console.log("————————————————————————————————评论————————————————————————");
+    console.log("评价内容：", that.data.reviewText);
+
+    // 参数验证
+    if (!that.data.reviewText.trim()) {
       wx.showToast({
-        title: '网络错误',
+        title: '请输入评论内容',
         icon: 'none',
         duration: 2000
       });
+      return;
     }
-  });
-},
 
-
-// 提交评价逻辑，添加异步处理
-submitReview: function() {
-  const { selectedStars, reviewText } = this.data;
-  var that = this;
-
-  // 验证用户是否已登录
-  if (!wx.getStorageSync('tourist_id')) {
-    wx.showToast({
-      title: '请先登录',
-      icon: 'none',
-      duration: 2000
+    that.setData({
+      commentTime: that.getCurrentTime()
     });
-    return;
-  }
 
-  // 验证景点ID
-  if (!that.data.myLandscapeId) {
-    wx.showToast({
-      title: '景点信息错误',
-      icon: 'none',
-      duration: 2000
-    });
-    return;
-  }
+    // 获取请求参数
+    const tourist_id = wx.getStorageSync('tourist_id');
+    const landscape_id = that.data.myLandscapeId;
+    const content = that.data.reviewText;
+    const time = that.data.commentTime;
 
-  console.log('开始提交评价...');
-  console.log('评分:', selectedStars);
-  console.log('评价内容:', reviewText);
-  console.log('上传的图片:', that.data.imageList);
+    // 调试信息：输出所有参数
+    console.log("评论请求参数详情:");
+    console.log("tourist_id:", tourist_id, "类型:", typeof tourist_id);
+    console.log("landscape_id:", landscape_id, "类型:", typeof landscape_id);
+    console.log("content:", content, "长度:", content.length);
+    console.log("time:", time);
 
-  // 先提交评分
-  that.submitScore();
+    const requestData = {
+      landscape_id: parseInt(landscape_id),
+      tourist_id: parseInt(tourist_id),
+      content: content,
+      time: time,
+    };
 
-  // 如果有评论内容，延迟提交评论
-  if (reviewText && reviewText.trim()) {
-    setTimeout(() => {
-      that.submitComment();
-    }, 500);
-  }
+    console.log("最终评论请求数据:", requestData);
 
-  // 延迟导航返回，等待请求完成
-  setTimeout(() => {
-    wx.navigateBack({
-      delta: 1,
-      success: function(res) {
-        const pages = getCurrentPages();
-        const prevPage = pages[pages.length - 2];
+    wx.request({
+      url: API_CONFIG.COMMENT.ADD || 'http://localhost:8080/comment/addComment',
+      method: 'POST',
+      data: requestData,
+      header: {
+        'content-type': 'application/json',
+      },
+      success(res) {
+        console.log('增加评论的接口请求成功:', res);
+        console.log('返回数据详情:', res.data);
 
-        // 将新评论传递给上一页
-        if (prevPage && prevPage.setData) {
-          prevPage.setData({
-            newComment: {
-              stars: selectedStars,
-              reviewText: reviewText,
-              imageList: that.data.imageList,
-              time: that.getCurrentTime()
-            }
+        if (res.statusCode === 200) {
+          // 处理后端统一返回格式
+          if (res.data && res.data.code === 1) {
+            console.log('评论提交成功');
+            wx.showToast({
+              title: '评论提交成功',
+              icon: 'success',
+              duration: 2000
+            });
+          } else {
+            console.error('评论提交失败:', res.data);
+            wx.showToast({
+              title: res.data.msg || '评论提交失败',
+              icon: 'none',
+              duration: 2000
+            });
+          }
+        } else {
+          console.error('评论提交失败，状态码:', res.statusCode);
+          console.error('错误详情:', res.data);
+          wx.showToast({
+            title: `评论提交失败: ${res.data.msg || res.statusCode}`,
+            icon: 'none',
+            duration: 2000
           });
         }
+      },
+      fail(err) {
+        console.error('增加评论请求失败:', err);
+        wx.showToast({
+          title: '网络错误',
+          icon: 'none',
+          duration: 2000
+        });
       }
     });
-  }, 2000);
-},
+  },
+
+
+  // 提交评价逻辑，添加异步处理
+  submitReview: function () {
+    const {
+      selectedStars,
+      reviewText
+    } = this.data;
+    var that = this;
+
+    // 验证用户是否已登录
+    if (!wx.getStorageSync('tourist_id')) {
+      wx.showToast({
+        title: '请先登录',
+        icon: 'none',
+        duration: 2000
+      });
+      return;
+    }
+
+    // 验证景点ID
+    if (!that.data.myLandscapeId) {
+      wx.showToast({
+        title: '景点信息错误',
+        icon: 'none',
+        duration: 2000
+      });
+      return;
+    }
+
+    console.log('开始提交评价...');
+    console.log('评分:', selectedStars);
+    console.log('评价内容:', reviewText);
+    console.log('上传的图片:', that.data.imageList);
+
+    // 先提交评分
+    that.submitScore();
+
+    // 如果有评论内容，延迟提交评论
+    if (reviewText && reviewText.trim()) {
+      setTimeout(() => {
+        that.submitComment();
+      }, 500);
+    }
+
+    // 延迟导航返回，等待请求完成
+    setTimeout(() => {
+      wx.navigateBack({
+        delta: 1,
+        success: function (res) {
+          const pages = getCurrentPages();
+          const prevPage = pages[pages.length - 2];
+
+          // 将新评论传递给上一页
+          if (prevPage && prevPage.setData) {
+            prevPage.setData({
+              newComment: {
+                stars: selectedStars,
+                reviewText: reviewText,
+                imageList: that.data.imageList,
+                time: that.getCurrentTime()
+              }
+            });
+          }
+        }
+      });
+    }, 2000);
+  },
   // 删除评分并重新提交的函数
   deleteAndResubmitScore() {
     const that = this;
