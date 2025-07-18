@@ -86,8 +86,6 @@ Page({
           .map(item => item.value.url) // 从 value 中获取 url
           .filter(url => url); // 过滤无效URL
 
-        console.log('提取的轮播图URLs:', bannerUrls);
-
         if (bannerUrls.length > 0) {
           this.setData({
             background: bannerUrls
@@ -115,9 +113,9 @@ Page({
   // 设置默认轮播图
   setDefaultBanners() {
     const defaultBanners = [
-      '/images/banners/banner-01.jpg',
-      '/images/banners/banner-02.jpg',
-      '/images/banners/banner-03.jpg',
+      'https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/banners/banner-01.jpg',
+      'https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/banners/banner-02.jpg',
+      'https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/banners/banner-03.jpg',
     ];
 
     this.setData({
@@ -143,8 +141,6 @@ Page({
         });
       });
 
-      console.log('图标API响应:', response);
-
       if (response.statusCode === 200) {
         // 适配多种可能的响应格式
         let iconData = null;
@@ -155,8 +151,6 @@ Page({
         }
 
         if (iconData && Array.isArray(iconData) && iconData.length > 0) {
-          console.log('图标数据:', iconData);
-
           // 查找通知图标
           const noticeIcon = iconData.find(icon =>
             icon.key && (
@@ -175,25 +169,25 @@ Page({
           } else {
             console.log('⚠️ 未找到通知图标，使用默认图标');
             this.setData({
-              noticeIcon: '/images/notice.png'
+              noticeIcon: 'https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/icons/notice.png'
             });
           }
         } else {
           console.log('⚠️ 图标数据为空，使用默认图标');
           this.setData({
-            noticeIcon: '/images/notice.png'
+            noticeIcon: 'https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/icons/notice.png'
           });
         }
       } else {
         console.error('❌ 图标API请求失败，状态码:', response.statusCode);
         this.setData({
-          noticeIcon: '/images/notice.png'
+          noticeIcon: 'https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/icons/notice.png'
         });
       }
     } catch (error) {
       console.error('❌ 图标加载失败:', error);
       this.setData({
-        noticeIcon: '/images/notice.png'
+        noticeIcon: 'https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/icons/notice.png'
       });
     }
   },
@@ -206,12 +200,11 @@ Page({
 
       // 处理景点数据
       landscapes.forEach(landscape => {
-        console.log(landscape);
         if (landscape.images && Array.isArray(landscape.images) && landscape.images.length > 0) {
           landscape.pic_url = landscape.images[0];
           landscape.allImages = landscape.images;
         } else {
-          landscape.pic_url = '/images/default-landscape.jpg';
+          landscape.pic_url = 'http://usr/images/default-avatar.png';
           landscape.allImages = [];
         }
       });
@@ -431,7 +424,10 @@ Page({
     }, 1000);
   },
 
-  onShow() {},
+  onShow() {
+    const app = getApp();
+    app.updateTabBarIcons();
+  },
 
   onShareAppMessage() {
     return {
