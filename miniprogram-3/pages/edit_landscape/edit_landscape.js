@@ -50,8 +50,8 @@ Page({
     } catch (error) {
       console.error('加载图标失败:', error);
       this.setData({
-        deleteIcon: '/images/icons/delete.png',
-        cameraIcon: '/images/icons/camera.png',
+        deleteIcon: 'https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/icons/delete.png',
+        cameraIcon: 'https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/icons/camera.png'
       });
       throw error;
     }
