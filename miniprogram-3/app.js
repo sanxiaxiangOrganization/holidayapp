@@ -1,5 +1,10 @@
 // 引入配置
-const { API_CONFIG, IMAGE_UTILS, AUTH_UTILS, USER_UTILS } = require('./utils/config');
+const {
+  API_CONFIG,
+  IMAGE_UTILS,
+  AUTH_UTILS,
+  USER_UTILS
+} = require('./utils/config');
 
 // app.js
 App({
@@ -35,9 +40,6 @@ App({
         IMAGE_UTILS.getCovers()
       ]);
 
-      // 更新标签栏图标
-      await this.updateTabBarIcons();
-
       console.log('图片资源预加载完成');
       wx.hideLoading();
     } catch (error) {
@@ -54,7 +56,10 @@ App({
     this.globalData.isLoggedIn = isLoggedIn;
     this.globalData.userInfo = userInfo;
 
-    console.log('登录状态检查:', { isLoggedIn, userInfo });
+    console.log('登录状态检查:', {
+      isLoggedIn,
+      userInfo
+    });
   },
 
   // 获取景区评分
@@ -64,7 +69,9 @@ App({
         wx.request({
           url: API_CONFIG.LANDSCAPE.SCORE,
           method: 'GET',
-          data: { landscape_id: landscapeId },
+          data: {
+            landscape_id: landscapeId
+          },
           success: (res) => {
             if (res.statusCode === 200) {
               resolve(res.data.data || 0);
@@ -86,30 +93,60 @@ App({
 
   // 更新标签栏图标
   async updateTabBarIcons() {
+    // 检查是否已经更新过
+    if (this.globalData.tabBarIconsUpdated) {
+      return;
+    }
     try {
       const tabbarIcons = await IMAGE_UTILS.getTabbarIcons();
-      console.log(tabbarIcons);
+      console.log('获取到的图标数据:', tabbarIcons);
+
+      // 检查图标数据是否有效
+      if (!tabbarIcons || typeof tabbarIcons !== 'object') {
+        console.error('图标数据无效:', tabbarIcons);
+        return;
+      }
 
       // 更新标签栏图标
       wx.setTabBarItem({
         index: 0,
         iconPath: tabbarIcons["LANDSCAPE-NORMAL"],
-        selectedIconPath: tabbarIcons["LANDSCAPE-ACTIVE"]
+        selectedIconPath: tabbarIcons["LANDSCAPE-ACTIVE"],
+        success: () => {
+          console.log('第0个标签栏图标更新成功');
+        },
+        fail: (err) => {
+          console.error('第0个标签栏图标更新失败:', err);
+        }
       });
-  
+
       wx.setTabBarItem({
         index: 1,
         iconPath: tabbarIcons["COMMUNITY-NORMAL"],
-        selectedIconPath: tabbarIcons["COMMUNITY-ACTIVE"]
+        selectedIconPath: tabbarIcons["COMMUNITY-ACTIVE"],
+        success: () => {
+          console.log('第1个标签栏图标更新成功');
+        },
+        fail: (err) => {
+          console.error('第1个标签栏图标更新失败:', err);
+        }
       });
-  
+
       wx.setTabBarItem({
         index: 2,
         iconPath: tabbarIcons["MINE-NORMAL"],
-        selectedIconPath: tabbarIcons["MINE-ACTIVE"]
+        selectedIconPath: tabbarIcons["MINE-ACTIVE"],
+        success: () => {
+          console.log('第2个标签栏图标更新成功');
+        },
+        fail: (err) => {
+          console.error('第2个标签栏图标更新失败:', err);
+        }
       });
 
       console.log('标签栏图标更新成功');
+      // 标记为已更新
+      this.globalData.tabBarIconsUpdated = true;
     } catch (error) {
       console.error('标签栏图标更新失败:', error);
     }
@@ -128,7 +165,7 @@ App({
           'content-type': 'application/x-www-form-urlencoded',
         },
         success(res) {
-          if(res.data.data !== null)
+          if (res.data.data !== null)
             resolve(res.data.data);
           else resolve(0)
         },
@@ -163,7 +200,7 @@ App({
         header: {
           'content-type': 'application/json',
         },
-        success: function(res) {
+        success: function (res) {
           if (res.statusCode === 200 && res.data) {
             // 处理不同的返回格式
             if (res.data.code === 1 && res.data.data) {
@@ -177,7 +214,7 @@ App({
             reject(new Error('获取景点名称失败'));
           }
         },
-        fail: function(error) {
+        fail: function (error) {
           console.error('获取景点名称失败:', error);
           reject(error);
         }
