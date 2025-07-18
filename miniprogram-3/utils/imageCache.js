@@ -45,14 +45,12 @@ async function downloadAndCacheImage(url, subDir = '') {
     
     const fileName = generateFileName(url);
     const filePath = `${dirPath}/${fileName}`;
-    // console.log('目标缓存路径:', filePath);
     
     // 检查是否已缓存
     const exists = await new Promise((resolve) => {
       fs.access({ path: filePath, success: () => resolve(true), fail: () => resolve(false) });
     });
     if (exists) {
-      // console.log('图片已缓存，直接返回:', filePath);
       return filePath;
     }
     
