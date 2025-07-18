@@ -42,14 +42,14 @@ Page({
       } else {
         console.log('没有获取到封面图片数据，使用默认背景');
         this.setData({
-          backgroundImages: ['/images/cover/cover.jpg']
+          backgroundImages: ['https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/covers/login-bg.jpg']
         });
       }
     } catch (error) {
       console.error('加载封面图片失败:', error);
       // 使用默认封面图片
       this.setData({
-        backgroundImages: ['/images/cover/cover.jpg']
+        backgroundImages: ['https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/covers/login-bg.jpg']
       });
     }
   },
