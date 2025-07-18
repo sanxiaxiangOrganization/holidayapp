@@ -2,7 +2,7 @@
   <!-- 头像编辑 -->
   <view class="avatar-section">
     <view class="avatar-container" bindtap="headHandler">
-      <image src="{{userPic || '/images/default-avatar.png'}}" class="avatar-image" mode="aspectFill"></image>
+      <image src="{{userPic}}" class="avatar-image" mode="aspectFill"></image>
       <view class="avatar-mask">
         <image src="{{pencilIcon}}" class="edit-icon" mode="aspectFit"></image>
       </view>

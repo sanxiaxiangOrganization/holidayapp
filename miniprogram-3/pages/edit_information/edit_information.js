@@ -50,7 +50,7 @@ Page({
     } catch (error) {
       console.error('加载图标失败:', error);
       this.setData({
-        pencilIcon: '/images/icons/pencil.png'
+        pencilIcon: 'https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/icons/pencil.png'
       });
       throw error;
     }
