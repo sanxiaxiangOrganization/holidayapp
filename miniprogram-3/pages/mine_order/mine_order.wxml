@@ -1,38 +1,156 @@
-<!--pages/mine_order/mine_order.wxml-->
+<!-- pages/mine_order/mine_order.wxml -->
+<view class="tab-bar">
+  <view class="tab {{activeTab === 'all' ? 'active' : ''}}" data-tab="all" bindtap="switchTab">全部订单</view>
+  <view class="tab {{activeTab === 'agricultural' ? 'active' : ''}}" data-tab="agricultural" bindtap="switchTab">农产品订单</view>
+  <view class="tab {{activeTab === 'accommodation' ? 'active' : ''}}" data-tab="accommodation" bindtap="switchTab">住宿订单</view>
+</view>
+
 <view class="order-list">
-  <block wx:for="{{orders}}" wx:key="orderNo">
-    <view class="order-item">
-      <view class="order-info">
-        <view>订单编号: {{item.orderNo}}</view>
-        <view>创建时间: {{item.createTime}}</view>
-        <view>分类: {{item.category==='agricultural' ? '农产品' : '住宿'}}</view>
-        <view>总价: {{item.totalPrice}} 元</view>
-        <view>运费: {{item.freight}} 元</view>
-        <view>实际支付: {{item.actualPayment}} 元</view>
-        <!-- 住宿分类订单额外信息 -->
-        <view wx:if="{{item.category === 'accommodation'}}">
-          <view>联系人姓名: {{item.contactInfo.contactName}}</view>
-          <view>联系人电话: {{item.contactInfo.contactPhone}}</view>
-          <view>入住日期: {{item.checkInDate}}</view>
-          <view>退房日期: {{item.checkOutDate}}</view>
-          <view>入住天数: {{item.days}} 天</view>
-        </view>
-        <!-- 农产品分类订单额外信息 -->
-        <view wx:if="{{item.category === 'agricultural'}}">
-          <view>收货人姓名: {{item.address.name}}</view>
-          <view>收货人电话: {{item.address.phone}}</view>
-          <view>收货地址: {{item.address.region}} {{item.address.detail}}</view>
-          <view>备注: {{item.address.remark}}</view>
+  <!-- 根据 activeTab 决定显示的订单列表 -->
+  <block wx:if="{{activeTab === 'all'}}">
+    <view class="order-item" wx:for="{{allOrders}}" wx:key="orderNo">
+      <!-- 通用订单信息 -->
+      <view class="order-header">
+        <view class="order-no">订单号: {{item.orderNo}}</view>
+        <view class="create-time">创建时间: {{item.createTime}}</view>
+      </view>
+      
+      <!-- 商品信息 -->
+      <view class="goods-list">
+        <view class="goods-item" wx:for="{{item.items}}" wx:key="id">
+          <image src="{{item.imageUrl}}" mode="aspectFill" class="goods-image"></image>
+          <view class="goods-info">
+            <text class="goods-name">{{item.title}}</text>
+            <view class="goods-amount">
+              <text class="goods-price">¥{{item.price}}</text>
+              <text class="goods-count">x{{item.count}}</text>
+            </view>
+          </view>
         </view>
       </view>
-      <view class="order-items">
-        <block wx:for="{{item.items}}" wx:key="id">
-          <view class="item">
-            <view>商品名称: {{item.title}}</view>
-            <view>单价: {{item.price}} 元</view>
-            <view>数量: {{item.count}}</view>
+      
+      <!-- 根据订单类型显示不同的额外信息 -->
+      <view class="order-details" wx:if="{{item.category === 'agricultural'}}">
+        <view class="detail-item">
+          <text class="label">收货人:</text>
+          <text class="value">{{item.address.name}} {{item.address.phone}}</text>
+        </view>
+        <view class="detail-item">
+          <text class="label">收货地址:</text>
+          <text class="value">{{item.address.region}} {{item.address.detail}}</text>
+        </view>
+      </view>
+      
+      <view class="order-details" wx:if="{{item.category === 'accommodation'}}">
+        <view class="detail-item">
+          <text class="label">联系人:</text>
+          <text class="value">{{item.contactInfo.contactName}} {{item.contactInfo.contactPhone}}</text>
+        </view>
+        <view class="detail-item">
+          <text class="label">入住日期:</text>
+          <text class="value">{{item.checkInDate}}</text>
+        </view>
+        <view class="detail-item">
+          <text class="label">退房日期:</text>
+          <text class="value">{{item.checkOutDate}}</text>
+        </view>
+      </view>
+      
+      <!-- 价格信息 -->
+      <view class="order-footer">
+        <view class="total-price">总价: ¥{{item.totalPrice}}</view>
+        <view class="actual-payment">实付: <text class="price-highlight">¥{{item.actualPayment}}</text></view>
+      </view>
+    </view>
+  </block>
+  
+  <block wx:if="{{activeTab === 'agricultural'}}">
+    <view class="order-item" wx:for="{{agriculturalOrders}}" wx:key="orderNo">
+      <!-- 农产品订单内容 -->
+      <view class="order-header">
+        <view class="order-no">订单号: {{item.orderNo}}</view>
+        <view class="create-time">创建时间: {{item.createTime}}</view>
+      </view>
+      
+      <view class="goods-list">
+        <view class="goods-item" wx:for="{{item.items}}" wx:key="id">
+          <image src="{{item.imageUrl}}" mode="aspectFill" class="goods-image"></image>
+          <view class="goods-info">
+            <text class="goods-name">{{item.title}}</text>
+            <view class="goods-amount">
+              <text class="goods-price">¥{{item.price}}</text>
+              <text class="goods-count">x{{item.count}}</text>
+            </view>
           </view>
-        </block>
+        </view>
+      </view>
+      
+      <view class="order-details">
+        <view class="detail-item">
+          <text class="label">收货人:</text>
+          <text class="value">{{item.address.name}} {{item.address.phone}}</text>
+        </view>
+        <view class="detail-item">
+          <text class="label">收货地址:</text>
+          <text class="value">{{item.address.region}} {{item.address.detail}}</text>
+        </view>
+        <view class="detail-item" wx:if="{{item.address.remark}}">
+          <text class="label">备注:</text>
+          <text class="value">{{item.address.remark}}</text>
+        </view>
+      </view>
+      
+      <view class="order-footer">
+        <view class="total-price">总价: ¥{{item.totalPrice}}</view>
+        <view class="freight">运费: ¥{{item.freight}}</view>
+        <view class="actual-payment">实付: <text class="price-highlight">¥{{item.actualPayment}}</text></view>
+      </view>
+    </view>
+  </block>
+  
+  <block wx:if="{{activeTab === 'accommodation'}}">
+    <view class="order-item" wx:for="{{accommodationOrders}}" wx:key="orderNo">
+      <!-- 住宿订单内容 -->
+      <view class="order-header">
+        <view class="order-no">订单号: {{item.orderNo}}</view>
+        <view class="create-time">创建时间: {{item.createTime}}</view>
+      </view>
+      
+      <view class="goods-list">
+        <view class="goods-item" wx:for="{{item.items}}" wx:key="id">
+          <image src="{{item.imageUrl}}" mode="aspectFill" class="goods-image"></image>
+          <view class="goods-info">
+            <text class="goods-name">{{item.title}}</text>
+            <view class="goods-amount">
+              <text class="goods-price">¥{{item.price}}</text>
+              <text class="goods-count">x{{item.count}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      
+      <view class="order-details">
+        <view class="detail-item">
+          <text class="label">联系人:</text>
+          <text class="value">{{item.contactInfo.contactName}} {{item.contactInfo.contactPhone}}</text>
+        </view>
+        <view class="detail-item">
+          <text class="label">入住日期:</text>
+          <text class="value">{{item.checkInDate}}</text>
+        </view>
+        <view class="detail-item">
+          <text class="label">退房日期:</text>
+          <text class="value">{{item.checkOutDate}}</text>
+        </view>
+        <view class="detail-item">
+          <text class="label">入住天数:</text>
+          <text class="value">{{item.days}}天</text>
+        </view>
+      </view>
+      
+      <view class="order-footer">
+        <view class="total-price">总价: ¥{{item.totalPrice}}</view>
+        <view class="actual-payment">实付: <text class="price-highlight">¥{{item.actualPayment}}</text></view>
       </view>
     </view>
   </block>
