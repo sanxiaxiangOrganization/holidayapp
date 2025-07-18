@@ -1,5 +1,8 @@
 // 引入配置
 const { AUTH_UTILS, USER_UTILS, IMAGE_UTILS, PHONE_UTILS, USER_INFO_UTILS } = require('../../utils/config');
+const {
+  downloadAndCacheImage
+} = require('../../utils/imageCache');
 
 // pages/mine_holiday/mine_holiday.js
 Page({
@@ -45,6 +48,8 @@ Page({
   },
 
   onShow() {
+    const app = getApp();
+    app.updateTabBarIcons();
     // 页面显示时刷新用户信息
     if (AUTH_UTILS.checkLoginStatus()) {
       this.loadUserInfo();
@@ -65,10 +70,10 @@ Page({
       console.error('加载图标失败:', error);
       // 使用默认图标
       this.setData({
-        editIcon: '/images/icons/edit.png',
-        assessmentIcon: '/images/icons/assessment.png',
-        orderIcon: '/images/icons/order.png',
-        feedbackIcon: '/images/icons/feedback.png'
+        editIcon: 'https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/icons/edit.png',
+        assessmentIcon: 'https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/icons/assessment.png',
+        orderIcon: 'https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/icons/order.png',
+        feedbackIcon: 'https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/icons/feedback.png'
       });
       throw error;
     }
@@ -85,7 +90,7 @@ Page({
       this.setData({
         userInfo: userInfo,
         userName: localUserName || userInfo?.tourist_name || '未设置',
-        userPic: localUserPic || userInfo?.user_pic || '',
+        userPic: localUserPic || downloadAndCacheImage(userInfo?.user_pic,null) || '',
         phoneNumber: PHONE_UTILS.formatPhoneDisplay(localPhoneNumber), // 脱敏显示
         rawPhoneNumber: localPhoneNumber || '未设置' // 原始手机号
       });
@@ -95,9 +100,11 @@ Page({
         const result = await USER_UTILS.getUserById(userInfo.tourist_id);
         if (result.success) {
           const freshUserInfo = result.data;
+          console.log(freshUserInfo);
+          const userPic = await downloadAndCacheImage(freshUserInfo.user_pic,null) || ''
           this.setData({
             userName: freshUserInfo.tourist_name || '未设置',
-            userPic: freshUserInfo.user_pic || '',
+            userPic,
             phoneNumber: PHONE_UTILS.formatPhoneDisplay(freshUserInfo.phone_number), // 脱敏显示
             rawPhoneNumber: freshUserInfo.phone_number || '未设置' // 原始手机号
           });
@@ -105,7 +112,7 @@ Page({
           // 更新本地存储
           wx.setStorageSync('nickName', freshUserInfo.tourist_name);
           if (freshUserInfo.user_pic) {
-            wx.setStorageSync('userPic', freshUserInfo.user_pic);
+            wx.setStorageSync('userPic', userPic);
           }
           if (freshUserInfo.phone_number) {
             wx.setStorageSync('phoneNumber', freshUserInfo.phone_number);
@@ -187,9 +194,8 @@ Page({
 
   // 我的订单
   orderHandler() {
-    wx.showToast({
-      title: '功能开发中',
-      icon: 'none'
+    wx.navigateTo({
+      url: '/pages/mine_order/mine_order'
     });
   },
 

@@ -2,7 +2,7 @@
   <!-- 用户信息卡片 -->
   <view class="user-card">
     <view class="user-avatar" bindtap="editHandler">
-      <image src="{{userPic || '/images/default-avatar.png'}}" class="avatar-image" mode="aspectFill"></image>
+      <image src="{{userPic}}" class="avatar-image" mode="aspectFill"></image>
     </view>
     <view class="user-info">
       <view class="user-name-section">
