@@ -9,7 +9,7 @@
       <view class="section-title">房间预约信息</view>
       <view class="goods-list">
         <view class="goods-item" wx:for="{{cartItems}}" wx:key="id">
-          <image src="{{item.imageUrl ? item.imageUrl : '/images/default-avatar.png'}}" mode="aspectFill" class="goods-image"></image>
+          <image src="{{item.imageUrl}}" mode="aspectFill" class="goods-image"></image>
           <view class="goods-info">
             <text class="goods-name">{{item.title}}</text>
             <view class="goods-amount">
@@ -98,7 +98,7 @@
       <view class="section-title">商品清单</view>
       <view class="goods-list">
         <view class="goods-item" wx:for="{{cartItems}}" wx:key="id">
-          <image src="{{item.imageUrl ? item.imageUrl : '/images/default-avatar.png'}}" mode="aspectFill" class="goods-image"></image>
+          <image src="{{item.imageUrl}}" mode="aspectFill" class="goods-image"></image>
           <view class="goods-info">
             <text class="goods-name">{{item.title}}</text>
             <view class="goods-amount">
