@@ -1,5 +1,5 @@
 <!--pages/manage_login/manage_login.wxml-->
-<view class="cover" style="background-image: url('/images/cover/cover.jpg'); background-size: cover; background-position: center;">
+<view class="cover" style="background-image: url('http://usr/images/covers/login-bg.jpg'); background-size: cover; background-position: center;">
   <view class="login-box">   
     <form bindsubmit="onSubmit">  
       <view class="form-item">  
