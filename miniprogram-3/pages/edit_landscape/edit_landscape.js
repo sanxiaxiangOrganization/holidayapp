@@ -1,4 +1,5 @@
 // 引入配置
+// 引入配置
 const {
   API_CONFIG,
   IMAGE_UTILS
@@ -19,7 +20,10 @@ Page({
     latitude: null,
     longitude: null,
     deleteIcon: '',
-    cameraIcon: ''
+    cameraIcon: '',
+    isEditingLatitude: false,
+    isEditingLongitude: false,
+    markers: [] // 地图标记点
   },
 
   async onLoad(options) {
@@ -75,10 +79,16 @@ Page({
         if (res.statusCode === 200) {
           // 处理后端统一返回格式
           if (res.data && res.data.code === 1) {
+            // 设置景点信息
             that.setData({
               land_detail: res.data.data,
               imageList: res.data.data.images,
-              oldImageList: res.data.data.images
+              oldImageList: res.data.data.images,
+              latitude: res.data.data.latitude || 13, // 默认值
+              longitude: res.data.data.longitude || 114, // 默认值
+            }, () => {
+              // 设置地图标记
+              that.setMapMarker();
             });
           } else {
             console.error('获取景点信息失败:', res.data);
@@ -105,6 +115,104 @@ Page({
           duration: 2000
         });
       }
+    });
+  },
+
+  // 设置地图标记
+  setMapMarker() {
+    const {
+      latitude,
+      longitude
+    } = this.data;
+    this.setData({
+      markers: [{
+        id: 1,
+        latitude: latitude,
+        longitude: longitude,
+        iconPath: 'http://usr/images/icons/map.png', // 自定义标记图标
+        width: 30,
+        height: 30,
+        title: this.data.myLandscapeName || '景点位置'
+      }]
+    });
+  },
+
+  // 地图点击事件
+  onMapTap(e) {
+    const {
+      latitude,
+      longitude
+    } = e.detail;
+    this.setData({
+      latitude: latitude,
+      longitude: longitude
+    }, () => {
+      // 更新地图标记
+      this.setMapMarker();
+      // 显示位置更新提示
+      wx.showToast({
+        title: '位置已更新',
+        icon: 'success',
+        duration: 1000
+      });
+    });
+  },
+
+  // 切换纬度编辑状态
+  toggleEditLatitude() {
+    // 关闭经度编辑
+    if (this.data.isEditingLongitude) {
+      this.setData({
+        isEditingLongitude: false
+      });
+    }
+    
+    // 切换纬度编辑状态
+    this.setData({
+      isEditingLatitude: !this.data.isEditingLatitude
+    });
+  },
+
+  // 切换经度编辑状态
+  toggleEditLongitude() {
+    // 关闭纬度编辑
+    if (this.data.isEditingLatitude) {
+      this.setData({
+        isEditingLatitude: false
+      });
+    }
+    
+    // 切换经度编辑状态
+    this.setData({
+      isEditingLongitude: !this.data.isEditingLongitude
+    });
+  },
+
+  // 处理纬度输入
+  onLatitudeInput: function (e) {
+    this.setData({
+      latitude: e.detail.value
+    });
+  },
+
+  // 处理经度输入
+  onLongitudeInput: function (e) {
+    this.setData({
+      longitude: e.detail.value
+    });
+  },
+
+  // 纬度输入框失去焦点
+  onLatitudeBlur() {
+    this.setData({
+      isEditingLatitude: false
+    });
+  },
+
+  // 经度输入框失去焦点
+  onLongitudeBlur() {
+    this.setData({
+      isEditingLongitude: false
     });
   },
 
@@ -193,7 +301,9 @@ Page({
       oldImageList,
       newNameList,
       landscapeLocation,
-      land_detail
+      land_detail,
+      latitude,
+      longitude
     } = this.data;
 
     // 生成目标图片路径（使用原文件名）
@@ -222,7 +332,9 @@ Page({
       images: images, // 这里需要根据后端接口要求调整
       location: landscapeLocation,
       telephone: land_detail.telephone || '',
-      description: land_detail.description || ''
+      description: land_detail.description || '',
+      latitude: latitude,
+      longitude: longitude
     };
 
     // 调用更新景点接口
