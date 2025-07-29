@@ -10,7 +10,6 @@
   <!-- 默认图片 -->
   <image wx:else src="{{picture || 'http://usr/images/default-avatar.png'}}" class="landscape-image-single"></image>
 
-  <!-- 其他内容保持不变 -->
   <view class="content">
     <!-- 景点信息 -->
     <view class="info-section">
@@ -30,7 +29,9 @@
 
       <!-- 操作按钮 -->
       <view class="action-buttons">
-        <button class="action-btn" bindtap="getLocationByName">导航</button>
+        <map wx:if="{{mapReady}}" id="landscapeMap" longitude="{{longitude}}" latitude="{{latitude}}" scale="18" markers="{{[{id: 1, longitude: longitude, latitude: latitude, title: myLandscapeName, width: 30, height: 30}]}}">
+        </map>
+        <button class="action-btn" bindtap="navigateToLocation">导航</button>
         <button class="action-btn" bindtap="makePhoneCall">电话</button>
         <button class="action-btn" bindtap="navigateToComment">评论</button>
       </view>

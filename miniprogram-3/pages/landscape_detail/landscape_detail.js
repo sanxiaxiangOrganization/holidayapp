@@ -22,6 +22,7 @@ Page({
     landscapeLocation: '广东省河源市连平县大湖寨',
     latitude: null,
     longitude: null,
+    mapReady: false // 新增标志位，用于判断地图是否可以渲染
   },
 
   async onLoad(options) {
@@ -71,18 +72,29 @@ Page({
             const imageUrls = res.data.data.images;
             that.setData({
               land_detail: res.data.data,
-              landscapeImages: imageUrls
+              landscapeImages: imageUrls,
+              latitude: res.data.data.latitude,
+              longitude: res.data.data.longitude,
+              mapReady: true // 数据准备好，允许地图渲染
             });
-            if(res.data.data.images.length > 1) that.setData({indicatorDots:true})
+            if (res.data.data.images.length > 1) that.setData({
+              indicatorDots: true
+            })
           } catch (error) {
             console.error('获取景点图片失败:', error);
             that.setData({
-              land_detail: res.data.data
+              land_detail: res.data.data,
+              latitude: res.data.data.latitude,
+              longitude: res.data.data.longitude,
+              mapReady: true // 数据准备好，允许地图渲染
             });
           }
         } else {
           that.setData({
-            land_detail: res.data.data
+            land_detail: res.data.data,
+            latitude: res.data.data.latitude,
+            longitude: res.data.data.longitude,
+            mapReady: true // 数据准备好，允许地图渲染
           });
         }
       },
@@ -214,53 +226,43 @@ Page({
     });
   },
 
-  getLocationByName: function () {
-    var that = this;
-    wx.request({
-      url: 'https://apis.map.qq.com/ws/geocoder/v1/',
-      data: {
-        address: "广东省河源市连平县大湖镇" + that.data.myLandscapeName,
-        key: '', // 需要配置腾讯地图API密钥
-      },
-      success: function (res) {
-        if (res.data.status === 0) {
-          var location = res.data.result.location;
-          that.setData({
-            latitude: location.lat,
-            longitude: location.lng,
-          });
-          that.navigateToLocation();
-        } else {
-          wx.showToast({
-            title: '无法获取位置',
-            icon: 'none',
-          });
-        }
-      },
-      fail: function () {
-        wx.showToast({
-          title: '网络错误',
-          icon: 'none',
-        });
-      },
-    });
-  },
-
   navigateToLocation: function () {
     var that = this;
-    console.log("——————————————————————导航到景区————————————————————————");
-    if (that.data.latitude && that.data.longitude) {
+    wx.getSetting({
+      success(res) {
+        if (!res.authSetting['scope.userLocation']) {
+          wx.authorize({
+            scope: 'scope.userLocation',
+            success() {
+              that._openLocation();
+            },
+            fail() {
+              wx.showToast({
+                title: '需要位置权限才能导航',
+                icon: 'none'
+              });
+            }
+          });
+        } else {
+          that._openLocation();
+        }
+      }
+    });
+  },
+  
+  _openLocation: function() {
+    if (this.data.latitude && this.data.longitude) {
       wx.openLocation({
-        latitude: that.data.latitude,
-        longitude: that.data.longitude,
+        latitude: this.data.latitude,
+        longitude: this.data.longitude,
         scale: 18,
-        name: that.data.myLandscapeName,
-        address: that.data.landscapeLocation
+        name: this.data.myLandscapeName,
+        address: this.data.landscapeLocation
       });
     } else {
       wx.showToast({
-        title: '位置未获取到',
-        icon: 'none',
+        title: '位置信息不完整',
+        icon: 'none'
       });
     }
   },

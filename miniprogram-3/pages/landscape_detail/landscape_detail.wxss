@@ -114,8 +114,14 @@ page {
 /* 底部操作按钮 */
 .action-buttons{
   display: flex;
+  flex-direction: column;
   gap: 20rpx;
   margin-bottom: 40rpx;
+}
+
+.action-buttons map#landscapeMap{
+  height: 300rpx;
+  width: 100%;
 }
 
 .bottom {
