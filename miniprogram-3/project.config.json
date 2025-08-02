@@ -54,7 +54,6 @@
   "libVersion": "3.8.10",
   "appid": "wx56e6d24ee800ceea",
   "projectname": "holidayapp-miniprogram",
-  "isGameTourist": false,
   "condition": {
     "search": {
       "list": []
@@ -76,5 +75,8 @@
     }
   },
   "simulatorPluginLibVersion": {},
-  "editorSetting": {}
+  "editorSetting": {
+    "tabIndent": "insertSpaces",
+    "tabSize": 2
+  }
 }
