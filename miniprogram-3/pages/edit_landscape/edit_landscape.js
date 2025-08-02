@@ -1,5 +1,4 @@
 // 引入配置
-// 引入配置
 const {
   API_CONFIG,
   IMAGE_UTILS
@@ -9,6 +8,8 @@ Page({
   data: {
     myLandscapeName: "",
     myLandscapeId: "",
+    myLandscapeDescription: "",
+    myLandscapeTelephone: "",
     imageList: [], //展示图片路径
     oldImageList: [], //原图片路径
     newNameList: [], //新图片文件名
@@ -82,6 +83,9 @@ Page({
             // 设置景点信息
             that.setData({
               land_detail: res.data.data,
+              myLandscapeDescription: res.data.data.description,
+              myLandscapeTelephone: res.data.data.telephone,
+              landscapeLocation: res.data.data.location,
               imageList: res.data.data.images,
               oldImageList: res.data.data.images,
               latitude: res.data.data.latitude || 13, // 默认值
@@ -166,7 +170,7 @@ Page({
         isEditingLongitude: false
       });
     }
-    
+
     // 切换纬度编辑状态
     this.setData({
       isEditingLatitude: !this.data.isEditingLatitude
@@ -181,7 +185,7 @@ Page({
         isEditingLatitude: false
       });
     }
-    
+
     // 切换经度编辑状态
     this.setData({
       isEditingLongitude: !this.data.isEditingLongitude
@@ -293,15 +297,44 @@ Page({
     });
   },
 
+  // 处理景点名称输入
+  onNameInput(e) {
+    this.setData({
+      myLandscapeName: e.detail.value
+    });
+  },
+
+  // 处理景点简介输入
+  onLocationInput(e) {
+    this.setData({
+      landscapeLocation: e.detail.value
+    });
+  },
+
+  // 处理景点描述输入
+  onDescriptionInput(e) {
+    this.setData({
+      myLandscapeDescription: e.detail.value
+    });
+  },
+
+  // 处理景点电话输入
+  onTelephoneInput(e) {
+    this.setData({
+      myLandscapeTelephone: e.detail.value
+    });
+  },
+
   // 提交对景点作出的修改
   submitChange() {
     const {
       myLandscapeId,
       myLandscapeName,
+      myLandscapeTelephone,
+      myLandscapeDescription,
       oldImageList,
       newNameList,
       landscapeLocation,
-      land_detail,
       latitude,
       longitude
     } = this.data;
@@ -331,8 +364,8 @@ Page({
       name: myLandscapeName,
       images: images, // 这里需要根据后端接口要求调整
       location: landscapeLocation,
-      telephone: land_detail.telephone || '',
-      description: land_detail.description || '',
+      telephone: myLandscapeTelephone || '',
+      description: myLandscapeDescription || '',
       latitude: latitude,
       longitude: longitude
     };
@@ -346,7 +379,7 @@ Page({
         'Content-Type': 'application/json'
       },
       success: function (res) {
-        console.log('更新景点信息成功:', res);
+        console.log('更新景点信息成功:', res, updateData);
 
         if (res.statusCode === 200) {
           // 处理后端统一返回格式

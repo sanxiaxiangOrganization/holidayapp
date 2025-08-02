@@ -6,17 +6,22 @@
   <view class="info-section">
     <view class="form-item">
       <text class="label">景点名称</text>
-      <input class="field" placeholder="请输入景点名称" value="{{land_detail.name}}"></input>
+      <input class="field" placeholder="请输入景点名称" value="{{myLandscapeName}}" bindinput="onNameInput"></input>
+    </view>
+
+    <view class="form-item">
+      <text class="label">景点简介</text>
+      <input class="field" placeholder="请输入景点简介" value="{{landscapeLocation}}" bindinput="onLocationInput"></input>
     </view>
 
     <view class="form-item">
       <text class="label">景点描述</text>
-      <textarea class="describ-field" placeholder="请输入景点描述" value="{{land_detail.description}}"></textarea>
+      <textarea class="describ-field" placeholder="请输入景点描述" value="{{myLandscapeDescription}}" bindinput="onDescriptionInput"></textarea>
     </view>
 
     <view class="form-item">
       <text class="label">景点通话</text>
-      <input class="field" placeholder="请输入景点通话号码" value="{{land_detail.telephone}}"></input>
+      <input class="field" placeholder="请输入景点通话号码" value="{{myLandscapeTelephone}}" bindinput="onTelephoneInput"></input>
     </view>
 
     <!-- 使用地图组件 -->
