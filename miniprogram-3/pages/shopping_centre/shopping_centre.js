@@ -19,7 +19,9 @@ Page({
         price: 39.9,
         sales: 1256,
         imageUrl: "http://usr/images/default-avatar.png", // 替换为你的图片路径
-        tag: "限时特惠"
+        tag: "限时特惠",
+        targetAppId: 'wx91d27dbf599dff74',
+        targetPath: 'pages/detail/index?sku=100193820425'
       },
       {
         id: 2,
@@ -27,7 +29,9 @@ Page({
         price: 58.0,
         sales: 2341,
         imageUrl: "http://usr/images/default-avatar.png",
-        tag: "农家直供"
+        tag: "农家直供",
+        targetAppId: 'wx91d27dbf599dff74',
+        targetPath: 'pages/detail/index?sku=100193820425'
       },
       {
         id: 3,
@@ -35,7 +39,9 @@ Page({
         price: 25.8,
         sales: 892,
         imageUrl: "http://usr/images/default-avatar.png",
-        tag: "新品"
+        tag: "新品",
+        targetAppId: 'wx91d27dbf599dff74',
+        targetPath: 'pages/detail/index?sku=100193820425'
       },
 
       // 住宿类
@@ -45,7 +51,9 @@ Page({
         price: 368.0,
         sales: 456,
         imageUrl: "http://usr/images/default-avatar.png",
-        tag: "热门"
+        tag: "热门",
+        targetAppId: 'wx91d27dbf599dff74',
+        targetPath: 'pages/detail/index?sku=100193820425'
       },
       {
         id: 5,
@@ -53,7 +61,9 @@ Page({
         price: 888.0,
         sales: 129,
         imageUrl: "http://usr/images/default-avatar.png",
-        tag: "推荐"
+        tag: "推荐",
+        targetAppId: 'wx91d27dbf599dff74',
+        targetPath: 'pages/detail/index?sku=100193820425'
       }
     ],
     hasMore: false, // 是否还有更多商品
@@ -195,10 +205,51 @@ Page({
     });
   },
 
-  // 点击商品卡片时添加到购物篮
+  // 点击商品卡片时跳转到其他小程序或添加到购物篮
   navigateToProductDetail: function (e) {
     const productId = e.currentTarget.dataset.id;
     const product = this.data.products.find(item => item.id === productId);
+    
+    if (!product) {
+      console.error('未找到商品信息');
+      wx.showToast({
+        title: '商品信息错误',
+        icon: 'none'
+      });
+      return;
+    }
+    
+    // 检查商品是否配置了跳转到其他小程序的参数
+    if (product.targetAppId && product.targetPath) {
+      // 跳转到其他小程序
+      wx.navigateToMiniProgram({
+        appId: product.targetAppId,
+        path: product.targetPath,
+        extraData: {
+          productId: productId,
+          productTitle: product.title,
+          productPrice: product.price,
+        },
+        success: function(res) {
+          console.log('跳转其他小程序成功', res);
+          wx.showToast({
+            title: '跳转成功',
+            icon: 'success',
+            duration: 1500
+          });
+        },
+        fail: function(err) {
+          console.error('跳转其他小程序失败:', err);
+          wx.showToast({
+            title: '跳转失败，请稍后重试',
+            icon: 'none'
+          });
+        }
+      });
+      return; // 跳转到小程序后直接返回
+    }
+    
+    // 如果没有配置跳转，则执行原来的购物篮逻辑
     // 只有农产品分类才添加到购物篮
     if (this.data.currentCategory === 'agricultural') {
       this.addToCart(product);
