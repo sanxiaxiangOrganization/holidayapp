@@ -1,0 +1,42 @@
+<!--pages/landscape_detail/landscape_detail.wxml-->
+<view class="container">
+  <!-- 景点图片轮播 -->
+  <swiper wx:if="{{landscapeImages.length > 0}}" class="landscape-swiper" indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+    <swiper-item wx:for="{{landscapeImages}}" wx:key="index">
+      <image src="{{item}}" class="landscape-image"></image>
+    </swiper-item>
+  </swiper>
+
+  <!-- 默认图片 -->
+  <image wx:else src="{{picture || 'http://usr/images/default-avatar.png'}}" class="landscape-image-single"></image>
+
+  <view class="content">
+    <!-- 景点信息 -->
+    <view class="info-section">
+      <view class="title">{{myLandscapeName}}</view>
+    </view>
+
+    <!-- 介绍页面 -->
+    <view wx:if="{{currentPage === 'introduction'}}" class="introduction">
+      <text>{{land_detail.description || '暂无介绍'}}</text>
+
+      <!-- 操作按钮 -->
+      <view class="action-buttons">
+        <map wx:if="{{mapReady}}" id="landscapeMap" longitude="{{longitude}}" latitude="{{latitude}}" scale="18" markers="{{[{id: 1, longitude: longitude, latitude: latitude, title: myLandscapeName, width: 30, height: 30}]}}">
+        </map>
+        <button class="action-btn" bindtap="navigateToLocation">导航</button>
+      </view>
+    </view>
+
+    <!-- 评论页面 -->
+    <view wx:if="{{currentPage === 'comments'}}" class="comments">
+      <view wx:for="{{comments}}" wx:key="index" class="comment-item">
+        <view class="comment-header">
+          <text class="comment-user">{{item.tourist_name}}</text>
+          <text class="comment-time">{{item.create_time}}</text>
+        </view>
+        <view class="comment-content">{{item.content}}</view>
+      </view>
+    </view>
+  </view>
+</view>

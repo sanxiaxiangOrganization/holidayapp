@@ -1,0 +1,106 @@
+/* pages/help/help.wxss */
+/* 页面整体容器 */
+.container {
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+/* 输入框样式 */
+textarea {
+  width: 100%;
+  height: 400rpx;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* 图片上传区域 */
+.image-section {
+  height: auto;
+  width: 100%;
+}
+
+.add-image-btn {
+  width: 100%;
+  height: auto;
+  background-color: rgb(228, 228, 228);
+  border-radius: 10rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 35rpx 0;
+}
+
+.add-image-btn.active{
+  width: 190rpx;
+}
+
+/*图标的样式*/
+.camera-icon {
+  width: 80rpx;
+  height: 80rpx;
+}
+
+.add-text {
+  color: #515151;
+}
+
+/* 上传的图片 */
+.image-list {
+  height: 200rpx;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 30rpx;
+  gap: 40rpx;
+}
+
+.image-item {
+  position: relative;
+}
+
+.uploaded-image {
+  width: 190rpx;
+  height: 190rpx;
+  border-radius: 20rpx;
+}
+
+/*图标的样式*/
+.delete-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40rpx;
+  height: 40rpx;
+  background-color: white;
+  border-radius: 50%;
+  cursor: pointer;
+}
+/* 客服按钮和提交按钮 */
+.contact-btn,
+.submit-btn {
+  margin-bottom: 20rpx;
+  width: 50px;               /* 设置按钮宽度为50rpx */
+  height: 40px;                /* 设置按钮高度 */
+  padding: 20rpx 10rpx;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  flex-shrink: 0;              /* 禁止按钮缩小 */
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.container6 {
+  display: flex;               /* 使用 Flexbox 布局 */
+  flex-direction: column;
+  align-items: center;         /* 垂直居中对齐 */
+  padding: 10px;               /* 为了保证按钮不紧贴边缘，可以适当加入内边距 */
+}

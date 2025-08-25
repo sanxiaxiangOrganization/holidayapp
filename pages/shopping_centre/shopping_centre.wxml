@@ -1,0 +1,39 @@
+<!--pages/shopping_centre/shopping_centre.wxml-->
+<view class="container">
+  
+  <!-- 分类框部分 -->
+  <view class="category-container">
+    <view class="category-list">
+      <view class="category-item {{currentCategory === 'agricultural' ? 'active' : ''}}" bindtap="changeCategory" data-category="agricultural">农产品</view>
+      <view class="category-item {{currentCategory === 'accommodation' ? 'active' : ''}}" bindtap="changeCategory" data-category="accommodation">住宿</view>
+    </view>
+  </view>
+
+  <!-- 商品列表部分 -->
+  <view class="product-container">
+    <!-- 商品网格 -->
+    <view class="product-grid">
+      <view class="product-card" wx:for="{{products}}" wx:key="id" bindtap="navigateToProductDetail" data-id="{{item.id}}">
+        <!-- 商品图片 -->
+        <view class="relative">
+          <image src="{{item.imageUrl}}" mode="aspectFill" class="product-image" />
+          <view class="product-tag">{{item.tag || '热卖'}}</view>
+        </view>
+
+        <!-- 商品信息 -->
+        <view class="product-info">
+          <text class="product-title">{{item.title}}</text>
+          <view class="product-marketing">
+            <text class="product-price">¥{{item.price}}</text>
+            <text class="product-sales">月销{{item.sales}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 加载更多提示 -->
+    <view class="loading-more">
+      {{hasMore ? '加载更多...' : '没有更多商品了'}}
+    </view>
+  </view>
+</view>

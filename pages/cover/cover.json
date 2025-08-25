@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "欢迎使用",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "backgroundTextStyle": "light",
+  "navigationStyle": "default",
+  "disableScroll": true
+}

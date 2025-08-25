@@ -1,0 +1,41 @@
+<!--pages/room_reservation/room_reservation.wxml-->
+<view class="container">
+  <!-- 房间轮播图 -->
+  <swiper wx:if="{{roomImages.length > 0}}" class="room-swiper" indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+    <swiper-item wx:for="{{roomImages}}" wx:key="index">
+      <image src="{{item}}" class="room-image" mode="aspectFill"></image>
+    </swiper-item>
+  </swiper>
+
+  <!-- 房间介绍 -->
+  <view class="room-introduction">
+    <view class="room-title">{{roomTitle}}</view>
+    <view class="room-description">{{roomDescription}}</view>
+  </view>
+
+  <!-- 时间预约功能 -->
+  <view class="reservation-section">
+    <view class="reservation-title">选择入住和退房时间</view>
+    <view class="date-picker">
+      <picker mode="date" value="{{checkInDate}}" start="{{minDate}}" end="{{maxDate}}" bindchange="onCheckInDateChange">
+        <view class="picker">入住日期: {{checkInDate}}</view>
+      </picker>
+      <picker mode="date" value="{{checkOutDate}}" start="{{checkInDate}}" end="{{maxDate}}" bindchange="onCheckOutDateChange">
+        <view class="picker">退房日期: {{checkOutDate}}</view>
+      </picker>
+    </view>
+    <button class="reservation-btn" bindtap="submitReservation">提交预约</button>
+  </view>
+
+  <!-- 房间商品的评价列表 -->
+  <view class="comment-list">
+    <view class="comment-title">用户评价</view>
+    <view class="comment-item" wx:for="{{comments}}" wx:key="index">
+      <view class="comment-header">
+        <text class="comment-user">{{item.userName}}</text>
+        <text class="comment-time">{{item.commentTime}}</text>
+      </view>
+      <view class="comment-content">{{item.commentContent}}</view>
+    </view>
+  </view>
+</view>

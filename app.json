@@ -1,0 +1,57 @@
+{
+  "pages": [
+    "pages/landscape/landscape",
+    "pages/community/community",
+    "pages/mine_holiday/mine_holiday",
+    "pages/edit_information/edit_information",
+    "pages/landscape_detail/landscape_detail",
+    "pages/edit_landscape/edit_landscape",
+    "pages/fillComment/fillComment",
+    "pages/help/help",
+    "pages/manage_login/manage_login",
+    "pages/manager/manager",
+    "pages/shopping_centre/shopping_centre",
+    "pages/checkout/checkout",
+    "pages/room_reservation/room_reservation"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "假期应用",
+    "navigationBarTextStyle": "black",
+    "enablePullDownRefresh": true
+  },
+  "requiredPrivateInfos": [
+    "chooseLocation"
+  ],
+  "tabBar": {
+    "color": "#666666",
+    "selectedColor": "#07c160",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/landscape/landscape",
+        "text": "景点",
+        "iconPath": "images/tabBar_icons/landscape.png",
+        "selectedIconPath": "images/tabBar_icons/landscape_active.png"
+      },
+      {
+        "pagePath": "pages/shopping_centre/shopping_centre",
+        "text": "商城",
+        "iconPath": "images/tabBar_icons/community.png",
+        "selectedIconPath": "images/tabBar_icons/community_active.png"
+      }
+    ]
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于导航功能"
+    }
+  },
+  "requiredBackgroundModes": [
+    "audio"
+  ],
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}
