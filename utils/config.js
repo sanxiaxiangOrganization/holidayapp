@@ -4,7 +4,7 @@ const {
 } = require('imageCache');
 
 // 后端API基础URL - 请根据实际部署环境修改
-const API_BASE_URL = 'http://192.168.1.2:8080';
+const API_BASE_URL = 'http://localhost:8080';
 
 // API接口配置
 const API_CONFIG = {
