@@ -1,10 +1,16 @@
+// 全部的图标（可修改）
+const icons=[{"description":"相机图标","id":11,"type":"icon","key":"camera","url":"https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/icons/camera.png"},{"description":"帮助图标","id":12,"type":"icon","key":"help","url":"https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/icons/help.png"},{"description":"订单图标","id":13,"type":"icon","key":"order","url":"https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/icons/order.png"},{"description":"反馈图标","id":14,"type":"icon","key":"feedback","url":"https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/icons/feedback.png"},{"description":"编辑图标","id":15,"type":"icon","key":"pencil","url":"https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/icons/pencil.png"},{"description":"删除图标","id":16,"type":"icon","key":"delete","url":"https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/icons/delete.png"},{"description":"星级普通图标","id":17,"type":"icon","key":"star-normal","url":"https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/icons/star-normal.png"},{"description":"星级激活图标","id":18,"type":"icon","key":"star-active","url":"https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/icons/star_active.png"},{"description":"通知图标","id":19,"type":"icon","key":"notice","url":"https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/icons/notice.png"},{"description":"电话图标","id":20,"type":"icon","key":"call","url":"https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/icons/call.png"},{"description":"编辑图标","id":21,"type":"icon","key":"edit","url":"https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/icons/edit.png"},{"description":"地图图标","id":22,"type":"icon","key":"map","url":"https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/icons/map.png"},{"description":"消息图标","id":23,"type":"icon","key":"message","url":"https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/icons/message.png"},{"description":"评估图标","id":24,"type":"icon","key":"assessment","url":"https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/icons/assessment.png"}];
+// 全部的轮播图（可修改）
+const banners=[{"description":"轮播图1","id":8,"type":"banner","sort_order":1,"key":"banner-01","url":"https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/banners/banner-01.jpg"},{"description":"轮播图2","id":9,"type":"banner","sort_order":2,"key":"banner-02","url":"https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/banners/banner-02.jpg"},{"description":"轮播图3","id":10,"type":"banner","sort_order":3,"key":"banner-03","url":"https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/banners/banner-03.jpg"}];
+// 全部的标签栏图标（可修改）
+const tabbarIcons=[{"description":"景点激活状态图标","id":2,"type":"tabbar","key":"landscape-active","url":"https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/tabbar/landscape-active.png"},{"description":"景点普通状态图标","id":3,"type":"tabbar","key":"landscape-normal","url":"https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/tabbar/landscape-normal.png"},{"description":"社区激活状态图标","id":4,"type":"tabbar","key":"community-active","url":"https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/tabbar/community-active.png"},{"description":"社区普通状态图标","id":5,"type":"tabbar","key":"community-normal","url":"https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/tabbar/community-normal.png"},{"description":"我的激活状态图标","id":6,"type":"tabbar","key":"mine-active","url":"https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/tabbar/mine-active.png"},{"description":"我的普通状态图标","id":7,"type":"tabbar","key":"mine-normal","url":"https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/tabbar/mine-normal.png"}]
 // 引入配置
 const {
   downloadAndCacheImage
 } = require('imageCache');
 
 // 后端API基础URL - 请根据实际部署环境修改
-const API_BASE_URL = 'http://192.168.1.2:8080';
+const API_BASE_URL = 'http://localhost:8080';
 
 // API接口配置
 const API_CONFIG = {
@@ -68,259 +74,6 @@ const API_CONFIG = {
     UPDATE: `${API_BASE_URL}/manager/update`,
     DELETE: `${API_BASE_URL}/manager/delete`,
     LOGIN: `${API_BASE_URL}/manager/login`,
-  }
-};
-
-// 用户认证工具类
-const AUTH_UTILS = {
-  // 微信登录
-  async wechatLogin() {
-    try {
-      // 1. 获取微信登录code
-      const loginResult = await this._wxLogin();
-      console.log('微信登录code:', loginResult.code);
-
-      // 2. 获取微信用户信息
-      const wxInfo = await this._getWxInfo(loginResult.code);
-      console.log('微信用户信息:', wxInfo);
-
-      // 3. 调用统一登录接口（使用默认头像昵称）
-      const loginData = {
-        wx_openid: wxInfo.openid,
-        wx_unionid: wxInfo.unionid,
-        nickname: '微信用户', // 使用默认昵称
-        avatar_url: 'https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/avatars/default-avatar.png', // 使用默认头像
-        login_type: 'wechat'
-      };
-
-      const loginResponse = await this._loginOrRegister(loginData);
-      console.log('登录响应:', loginResponse);
-
-      // 4. 保存用户信息
-      this._saveUserInfo(loginResponse);
-
-      return {
-        success: true,
-        data: loginResponse,
-        message: loginResponse.is_new_user ? '注册成功' : '登录成功'
-      };
-
-    } catch (error) {
-      console.error('微信登录失败:', error);
-      return {
-        success: false,
-        message: error.message || '登录失败'
-      };
-    }
-  },
-
-  // 获取微信登录code
-  _wxLogin() {
-    return new Promise((resolve, reject) => {
-      wx.login({
-        success: (res) => {
-          if (res.code) {
-            resolve(res);
-          } else {
-            reject(new Error('获取微信登录code失败'));
-          }
-        },
-        fail: (error) => {
-          reject(new Error('微信登录失败: ' + error.errMsg));
-        }
-      });
-    });
-  },
-
-  // 获取微信用户信息
-  _getWxInfo(code) {
-    return new Promise((resolve, reject) => {
-      wx.request({
-        url: API_CONFIG.WECHAT.GET_WX_INFO,
-        method: 'POST',
-        header: {
-          'content-type': 'application/x-www-form-urlencoded'
-        },
-        data: {
-          code
-        },
-        success: (res) => {
-          if (res.statusCode === 200 && res.data.code === 1) {
-            resolve(res.data.data);
-          } else {
-            reject(new Error(res.data.msg || '获取微信用户信息失败'));
-          }
-        },
-        fail: (error) => {
-          reject(new Error('网络请求失败: ' + error.errMsg));
-        }
-      });
-    });
-  },
-
-  //获取用户头像
-  getAvatarUrl(e) {
-    const {
-      avatarUrl
-    } = e.detail;
-    return avatarUrl;
-  },
-
-  // 更新用户头像昵称的方法
-  async updateUserProfile(nickname, avatarUrl) {
-    try {
-      const touristId = wx.getStorageSync('tourist_id');
-      if (!touristId) {
-        throw new Error('用户未登录');
-      }
-
-      const updateData = {};
-      if (nickname) updateData.tourist_name = nickname;
-      if (avatarUrl) updateData.user_pic = avatarUrl;
-
-      const result = await USER_UTILS.updateUserInfo(updateData);
-
-      if (result.success) {
-        // 更新本地存储
-        if (nickname) wx.setStorageSync('nickName', nickname);
-        if (avatarUrl) wx.setStorageSync('userPic', downloadAndCacheImage(avatarUrl));
-      }
-
-      return result;
-    } catch (error) {
-      console.error('更新用户资料失败:', error);
-      return {
-        success: false,
-        message: error.message
-      };
-    }
-  },
-
-  // 调用统一登录接口
-  _loginOrRegister(data) {
-    return new Promise((resolve, reject) => {
-      wx.request({
-        url: API_CONFIG.WECHAT.LOGIN_OR_REGISTER,
-        method: 'POST',
-        header: {
-          'content-type': 'application/json'
-        },
-        data,
-        success: (res) => {
-          if (res.statusCode === 200 && res.data.code === 1) {
-            resolve(res.data.data);
-          } else {
-            reject(new Error(res.data.msg || '登录失败'));
-          }
-        },
-        fail: (error) => {
-          reject(new Error('网络请求失败: ' + error.errMsg));
-        }
-      });
-    });
-  },
-
-  // 保存用户信息到本地
-  _saveUserInfo(userInfo) {
-    wx.setStorageSync('userInfo', userInfo);
-    wx.setStorageSync('tourist_id', userInfo.tourist_id);
-    wx.setStorageSync('nickName', userInfo.tourist_name);
-    wx.setStorageSync('wx_openid', userInfo.wx_openid);
-    wx.setStorageSync('wx_unionid', userInfo.wx_unionid);
-    wx.setStorageSync('isLoggedIn', true);
-    this._saveUserPic(userInfo.user_pic);
-  },
-
-  async _saveUserPic(userPicUrl) {
-    try {
-      if (!userPicUrl) {
-        console.warn('用户头像URL为空');
-        wx.setStorageSync('userPic', ''); // 显式设置为空
-        return;
-      }
-
-      const cachedPath = await downloadAndCacheImage(userPicUrl, null);
-      wx.setStorageSync('userPic', cachedPath);
-      console.log('用户头像已缓存:', cachedPath);
-    } catch (error) {
-      console.error('保存用户头像失败:', error);
-      // 出错时使用原始URL作为备选
-      wx.setStorageSync('userPic', userPicUrl);
-    }
-  },
-
-  // 检查登录状态
-  checkLoginStatus() {
-    const userInfo = wx.getStorageSync('userInfo');
-    const isLoggedIn = wx.getStorageSync('isLoggedIn');
-    return !!(userInfo && isLoggedIn);
-  },
-
-  // 获取当前用户信息
-  getCurrentUser() {
-    return wx.getStorageSync('userInfo');
-  },
-
-  // 微信手机号解密
-  async decryptPhoneNumber(encryptedData, iv) {
-    try {
-      const touristId = wx.getStorageSync('tourist_id');
-      if (!touristId) {
-        throw new Error('用户未登录');
-      }
-
-      const response = await new Promise((resolve, reject) => {
-        wx.request({
-          url: API_CONFIG.WECHAT.DECRYPT_PHONE,
-          method: 'POST',
-          header: {
-            'content-type': 'application/json'
-          },
-          data: {
-            encryptedData: encryptedData,
-            iv: iv,
-            touristId: touristId
-          },
-          success: (res) => {
-            if (res.statusCode === 200 && res.data.code === 1) {
-              resolve(res.data.data);
-            } else {
-              reject(new Error(res.data.msg || '解密手机号失败'));
-            }
-          },
-          fail: (error) => {
-            reject(new Error('网络请求失败: ' + error.errMsg));
-          }
-        });
-      });
-
-      return {
-        success: true,
-        phoneNumber: response.phoneNumber,
-        purePhoneNumber: response.purePhoneNumber,
-        countryCode: response.countryCode
-      };
-    } catch (error) {
-      console.error('解密手机号失败:', error);
-      return {
-        success: false,
-        message: error.message || '解密手机号失败'
-      };
-    }
-  },
-
-  // 退出登录
-  logout() {
-    wx.removeStorageSync('userInfo');
-    wx.removeStorageSync('tourist_id');
-    wx.removeStorageSync('nickName');
-    wx.removeStorageSync('userPic');
-    wx.removeStorageSync('wx_openid');
-    wx.removeStorageSync('wx_unionid');
-    wx.removeStorageSync('isLoggedIn');
-    wx.removeStorageSync('phoneNumber');
-    wx.removeStorageSync('cartItems');
-    wx.removeStorageSync('orders');
   }
 };
 
@@ -418,7 +171,7 @@ const USER_UTILS = {
   },
 
   // 用户评分
-  async scoreToLandscape(landscapeId, score) {
+  async scoreToLandscape(score) {
     try {
       const touristId = wx.getStorageSync('tourist_id');
       if (!touristId) {
@@ -431,7 +184,6 @@ const USER_UTILS = {
           method: 'POST',
           data: {
             tourist_id: touristId,
-            landscape_id: landscapeId,
             score: score
           },
           success: (res) => {
@@ -467,7 +219,7 @@ const IMAGE_UTILS = {
   _cache: {},
 
   // 通用资源获取函数
-  async _getResource(resourceType, apiUrl, storageKey, defaultData = {}) {
+  async _getResource(resourceType, resourceName, storageKey, defaultData = {}) {
     try {
       // 先检查内存缓存
       if (this._cache[resourceType]) {
@@ -486,7 +238,7 @@ const IMAGE_UTILS = {
       }
 
       console.log(`从服务器获取${resourceType}数据`);
-      const resourceArray = await this._request(apiUrl);
+      const resourceArray = resourceName;
 
       // 将数组转换为对象格式，便于使用
       const resourceMap = {};
@@ -528,7 +280,7 @@ const IMAGE_UTILS = {
   async getIcons() {
     return this._getResource(
       'icons',
-      API_CONFIG.IMAGES.ICONS,
+      icons,
       'cached_icons'
     );
   },
@@ -537,7 +289,7 @@ const IMAGE_UTILS = {
   async getBanners() {
     return this._getResource(
       'banners',
-      API_CONFIG.IMAGES.BANNERS,
+      banners,
       'cached_banners',
       [] // 轮播图默认返回空数组
     );
@@ -547,17 +299,8 @@ const IMAGE_UTILS = {
   async getTabbarIcons() {
     return this._getResource(
       'tabbarIcons',
-      API_CONFIG.IMAGES.TABBAR,
+      tabbarIcons,
       'cached_tabbarIcons'
-    );
-  },
-
-  // 获取封面图片
-  async getCovers() {
-    return this._getResource(
-      'covers',
-      API_CONFIG.IMAGES.COVERS,
-      'cached_covers'
     );
   },
 
@@ -573,8 +316,8 @@ const IMAGE_UTILS = {
         },
         success: (res) => {
           if (res.statusCode === 200 && res.data.code === 1) {
-            resolve(res.data.data);
             console.log(res.data.data);
+            resolve(res.data.data);
           } else {
             reject(new Error(res.data.msg || '请求失败'));
           }
@@ -635,60 +378,9 @@ const PHONE_UTILS = {
   }
 };
 
-// 用户信息工具函数
-const USER_INFO_UTILS = {
-  // 获取格式化的用户信息
-  getFormattedUserInfo() {
-    const userInfo = AUTH_UTILS.getCurrentUser();
-    const localUserName = wx.getStorageSync('nickName');
-    const localPhoneNumber = wx.getStorageSync('phoneNumber');
-
-    return {
-      userName: localUserName || userInfo?.tourist_name || '未设置',
-      phoneNumber: PHONE_UTILS.formatPhoneDisplay(localPhoneNumber),
-      rawPhoneNumber: localPhoneNumber || '未设置', // 原始手机号，用于编辑
-      userPic: wx.getStorageSync('userPic') || userInfo?.user_pic || ''
-    };
-  },
-
-  // 更新用户信息显示
-  async refreshUserInfo(page) {
-    try {
-      const userInfo = AUTH_UTILS.getCurrentUser();
-      if (userInfo?.tourist_id) {
-        const result = await USER_UTILS.getUserById(userInfo.tourist_id);
-        if (result.success) {
-          const freshUserInfo = result.data;
-
-          // 更新页面数据
-          page.setData({
-            userName: freshUserInfo.tourist_name || '未设置',
-            phoneNumber: PHONE_UTILS.formatPhoneDisplay(freshUserInfo.phone_number),
-            rawPhoneNumber: freshUserInfo.phone_number || '未设置',
-            userPic: freshUserInfo.user_pic || ''
-          });
-
-          // 更新本地存储
-          wx.setStorageSync('nickName', freshUserInfo.tourist_name);
-          if (freshUserInfo.phone_number) {
-            wx.setStorageSync('phoneNumber', freshUserInfo.phone_number);
-          }
-          if (freshUserInfo.user_pic) {
-            wx.setStorageSync('userPic', downloadAndCacheImage(freshUserInfo.user_pic));
-          }
-        }
-      }
-    } catch (error) {
-      console.error('刷新用户信息失败:', error);
-    }
-  }
-};
-
 module.exports = {
   API_CONFIG,
-  AUTH_UTILS,
   USER_UTILS,
   IMAGE_UTILS,
   PHONE_UTILS,
-  USER_INFO_UTILS,
 };

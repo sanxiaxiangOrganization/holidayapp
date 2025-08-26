@@ -1,3 +1,58 @@
+const productsagricultural = [ // 农产品类
+  {
+    id: 1,
+    title: "有机生态种植草莓 2斤装",
+    price: 39.9,
+    sales: 1256,
+    imageUrl: "https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/goods/huasheng.jpg", // 替换为你的图片路径
+    tag: "限时特惠",
+    targetAppId: 'wx91d27dbf599dff74',
+    targetPath: 'pages/detail/index?sku=100193820425'
+  },
+  {
+    id: 2,
+    title: "农家散养土鸡蛋 30枚",
+    price: 58.0,
+    sales: 2341,
+    imageUrl: "https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/goods/huasheng.jpg",
+    tag: "农家直供",
+    targetAppId: 'wx91d27dbf599dff74',
+    targetPath: 'pages/detail/index?sku=100193820425'
+  },
+  {
+    id: 3,
+    title: "现摘新鲜圣女果 5斤装",
+    price: 25.8,
+    sales: 892,
+    imageUrl: "https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/goods/huasheng.jpg",
+    tag: "新品",
+    targetAppId: 'wx91d27dbf599dff74',
+    targetPath: 'pages/detail/index?sku=100193820425'
+  }
+];
+const productsaccommodation = [
+  // 住宿类
+  {
+    id: 4,
+    title: "山间民宿 双人套房 含早餐",
+    price: 368.0,
+    sales: 456,
+    imageUrl: "https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/hotels/hotel.jpg",
+    tag: "热门",
+    targetAppId: 'wx91d27dbf599dff74',
+    targetPath: 'pages/detail/index?sku=100193820425'
+  },
+  {
+    id: 5,
+    title: "田园别墅 整栋出租 可住6人",
+    price: 888.0,
+    sales: 129,
+    imageUrl: "https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/hotels/hotel.jpg",
+    tag: "推荐",
+    targetAppId: 'wx91d27dbf599dff74',
+    targetPath: 'pages/detail/index?sku=100193820425'
+  }
+];
 // pages/shopping_centre.js
 Page({
 
@@ -5,67 +60,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    deleteIcon: '',
-    hasInput: false, // 控制删除按钮是否显示
-    searchValue: '', // 搜索框的内容
-    isFocused: false, // 输入框是否获得焦点
     currentCategory: 'agricultural', // 默认选中“农产品”分类
-    sortType: 'default', // 排序类型：price, sales, rating, default
-    sortDirectionIsUp: true, // 价格排序方向：true（升序）, false（降序）
-    products: [ // 农产品类
-      {
-        id: 1,
-        title: "有机生态种植草莓 2斤装",
-        price: 39.9,
-        sales: 1256,
-        imageUrl: "http://usr/images/default-avatar.png", // 替换为你的图片路径
-        tag: "限时特惠",
-        targetAppId: 'wx91d27dbf599dff74',
-        targetPath: 'pages/detail/index?sku=100193820425'
-      },
-      {
-        id: 2,
-        title: "农家散养土鸡蛋 30枚",
-        price: 58.0,
-        sales: 2341,
-        imageUrl: "http://usr/images/default-avatar.png",
-        tag: "农家直供",
-        targetAppId: 'wx91d27dbf599dff74',
-        targetPath: 'pages/detail/index?sku=100193820425'
-      },
-      {
-        id: 3,
-        title: "现摘新鲜圣女果 5斤装",
-        price: 25.8,
-        sales: 892,
-        imageUrl: "http://usr/images/default-avatar.png",
-        tag: "新品",
-        targetAppId: 'wx91d27dbf599dff74',
-        targetPath: 'pages/detail/index?sku=100193820425'
-      },
-
-      // 住宿类
-      {
-        id: 4,
-        title: "山间民宿 双人套房 含早餐",
-        price: 368.0,
-        sales: 456,
-        imageUrl: "http://usr/images/default-avatar.png",
-        tag: "热门",
-        targetAppId: 'wx91d27dbf599dff74',
-        targetPath: 'pages/detail/index?sku=100193820425'
-      },
-      {
-        id: 5,
-        title: "田园别墅 整栋出租 可住6人",
-        price: 888.0,
-        sales: 129,
-        imageUrl: "http://usr/images/default-avatar.png",
-        tag: "推荐",
-        targetAppId: 'wx91d27dbf599dff74',
-        targetPath: 'pages/detail/index?sku=100193820425'
-      }
-    ],
+    products: productsagricultural,
     hasMore: false, // 是否还有更多商品
     cartIsShow: false, // 是否显示商品列表
     cartItems: [], // 购物篮商品列表
@@ -73,141 +69,27 @@ Page({
     cartTotalPrice: 0 // 购物篮商品总价
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad() {
-    try {
-      const cartItems = wx.getStorageSync('cartItems') || [];
-      this.setData({
-        cartItems
-      });
-      this.updateCart();
-
-      const icons = wx.getStorageSync('cached_icons') || [];
-      this.setData({
-        deleteIcon: icons.DELETE
-      });
-    } catch (e) {
-      console.error('读取购物车数据失败:', e);
-      this.setData({
-        cartItems: [],
-        deleteIcon: 'https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/icons/delete.png'
-      });
-    }
-  },
-
-  // 输入框获得焦点时触发
-  onInputFocus: function () {
-    this.setData({
-      isFocused: true
-    });
-  },
-
-  // 输入框失去焦点时触发
-  onInputBlur: function () {
-    this.setData({
-      isFocused: false
-    });
-  },
-
-  // 监听输入事件
-  onSearchInput: function (e) {
-    const value = e.detail.value;
-    this.setData({
-      searchValue: value,
-      hasInput: value.length > 0 // 有内容时显示删除按钮
-    });
-  },
-
-  // 点击搜索按钮触发
-  startSearch: function () {
-    if (this.data.searchValue.trim()) {
-      // 执行搜索逻辑
-      console.log('搜索:', this.data.searchValue);
-      // 可以添加搜索请求代码
-    }
-  },
-
-  // 确认搜索（按回车键）
-  onSearchConfirm: function () {
-    this.startSearch();
-  },
-
-  // 清空搜索框
-  deleteSearch: function () {
-    this.setData({
-      searchValue: '',
-      hasInput: false
-    });
-  },
-
   // 切换分类
   changeCategory: function (e) {
     const category = e.currentTarget.dataset.category;
     if (this.data.currentCategory === category) return;
-    this.setData({
-      currentCategory: category
-    });
-
-    // 这里可以添加分类切换后的逻辑（如加载对应分类的商品）
-    console.log('切换到分类：', category);
-    // 示例：this.loadGoodsByCategory(category);
-  },
-
-  loadGoodsByCategory: function (category) {
-    
-  },
-
-  // 切换排序
-  sortByFilter: function (e) {
-    const filter = e.currentTarget.dataset.filter;
-    const sortDirection = this.data.sortDirectionIsUp;
-    // 如果点击的是当前已选中的筛选条件，则切换排序方向（仅针对价格）
-    if (filter === this.data.sortType) {
-      if (filter === 'price') {
-        // 价格排序需要切换升序/降序
-        this.setData({
-          sortDirectionIsUp: !sortDirection
-        });
-      } else {
-        // 其他筛选条件重置为默认
-        this.setData({
-          sortType: 'default'
-        });
-      }
-    } else {
-      // 切换到新的筛选条件
-      this.setData({
-        sortType: filter,
-        // 重置排序方向
-        sortDirectionIsUp: true
-      });
-    }
-
-    // 触发商品列表重新加载
-    this.loadProducts();
-  },
-
-  // 加载商品列表
-  loadProducts: function () {
-    // 构建筛选参数
-    const params = {
-      sortType: this.data.sortType,
-      sortDirection: this.data.sortDirectionIsUp ? 'asc' : 'desc'
+    // 定义分类与商品数据的映射关系
+    const productMap = {
+      agricultural: productsagricultural,
+      accommodation: productsaccommodation
     };
 
-    // 调用API加载商品数据
-    // wx.request({...})
-    console.log('加载商品，筛选参数:', params);
-  },
-
-  // 控制商品列表显示
-  cartShow: function () {
-    const cartIsShow = this.data.cartIsShow;
+    // 检查分类是否存在，避免访问不存在的属性
+    if (!productMap.hasOwnProperty(category)) {
+      console.error(`未找到${category}对应的商品数据`);
+      return;
+    }
     this.setData({
-      cartIsShow: !cartIsShow
+      currentCategory: category,
+      products: productMap[category]
     });
+
+    console.log('切换到分类：', category);
   },
 
   // 点击商品卡片时添加到购物篮

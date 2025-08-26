@@ -11,7 +11,7 @@
   <view wx:if="{{isLoading}}" class="loading-container">
     <view class="loading-content">
       <view class="loading-spinner"></view>
-      <text class="loading-text">正在加载景点信息...</text>
+      <text class="loading-text">景点信息正在赶来...</text>
     </view>
   </view>
 
@@ -60,7 +60,7 @@
         </view>
         <view class="profileBlock">
           <view class="name">{{item.name}}</view>
-          <view class="checkDetail" bind:tap="navigateToDetail" data-name="{{item.name}}" data-id="{{item.landscape_id}}" data-index="{{index}}" data-picture="{{item.pic_url}}">查看详情</view>
+          <view class="checkDetail" bind:tap="navigateToDetail" data-name="{{item.name}}" data-images="{{item.images}}" data-latitude="{{item.latitude}}" data-longitude="{{item.longitude}}" data-description="{{item.description}}" data-picture="{{item.pic_url}}">查看详情</view>
         </view>
       </view>
     </scroll-view>

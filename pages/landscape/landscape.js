@@ -1,3 +1,5 @@
+// 全部的景点信息（可修改）
+const landScapes=[{"images":["https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/attractions/yggyd/yggyd-01.jpg","https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/attractions/yggyd/yggyd-02.jpg","https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/attractions/yggyd/yggyd-03.jpg"],"latitude":13.000368419056192,"name":"粤赣古驿道","description":"粤赣古驿道是连接广东与江西的重要古代交通要道，承载着深厚的历史文化底蕴，见证了古代商贸往来的繁荣景象。","location":"广东省河源市连平县大湖寨","landscape_id":1,"pic_url":"https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/attractions/yggyd/yggyd-01.jpg","longitude":114.83922784070933},{"images":["https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/attractions/dhz/dhz-01.jpg","https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/attractions/dhz/dhz-02.jpg","https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/attractions/dhz/dhz-03.jpg","https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/attractions/dhz/dhz-04.jpg"],"latitude":24.246512,"name":"大湖寨","description":"大湖寨是大湖镇的标志性古建筑群，保存完好的客家围屋建筑风格，展现了客家人的智慧和文化传统。","location":"广东省河源市连平县大湖寨","landscape_id":2,"pic_url":"https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/attractions/dhz/dhz-01.jpg","longitude":114.8362281442},{"images":["https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/attractions/byl/byl-01.jpg","https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/attractions/byl/byl-02.jpg","https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/attractions/byl/byl-03.jpg"],"latitude":12.0,"name":"白云楼","description":"白云楼是当地著名的历史建筑，因其独特的建筑风格和优美的周边环境而闻名，是感受传统文化的绝佳场所。","location":"广东省河源市大湖镇","landscape_id":3,"pic_url":"https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/attractions/byl/byl-01.jpg","longitude":12.0},{"images":["https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/attractions/xgwjz/xgwjz-01.JPG"],"latitude":13.0,"name":"县工委旧址","description":"县工委旧址是重要的红色革命遗址，见证了当地革命斗争的光辉历程，具有重要的历史纪念意义。","location":"广东省河源市大湖镇","landscape_id":4,"pic_url":"https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/attractions/xgwjz/xgwjz-01.JPG","longitude":31.0},{"images":["https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/attractions/hxw/hxw-01.jpg"],"latitude":13.0,"name":"何兴屋","description":"何兴屋是典型的客家民居建筑，保持着原有的建筑特色和历史风貌，展现了客家人的居住文化和建筑智慧。","location":"广东省河源市大湖镇","landscape_id":5,"pic_url":"https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/attractions/hxw/hxw-01.jpg","longitude":41.0},{"images":[],"latitude":0.0,"name":"蝴蝶谷","description":"...","location":"五山","landscape_id":6,"pic_url":"","longitude":0.0},{"images":[],"latitude":0.0,"name":"党支部旧址","description":"...","location":"五山","landscape_id":7,"pic_url":"","longitude":0.0}]
 // 引入配置
 const {
   API_CONFIG,
@@ -33,9 +35,6 @@ Page({
       // 先加载景点数据（最重要的）
       await this.loadLandscapes();
 
-      // 加载评分
-      await this.getAllScore();
-
       // 等待轮播图和图标加载完成
       await Promise.allSettled([
         this.loadBanners(),
@@ -65,14 +64,11 @@ Page({
     try {
       console.log('开始加载轮播图...');
       const banners = await IMAGE_UTILS.getBanners();
+      console.log(banners);
 
       // 检查 banners 是否为有效对象
       if (typeof banners === 'object' && banners !== null && Object.keys(banners).length > 0) {
-        // 将键值对转换为数组 [{ key: 'BANNER-01', value: { url: '...', sort_order: 1 } }, ...]
-        const bannerEntries = Object.entries(banners).map(([key, value]) => ({
-          key,
-          value
-        }));
+        const bannerEntries = Object.entries(banners).map(([key, value]) => ({key,value}));
 
         // 按 sort_order 排序（数字越小越靠前）
         const sortedBanners = bannerEntries.sort((a, b) => {
@@ -126,69 +122,16 @@ Page({
 
   // 加载图标
   async loadIcons() {
-    try {
-      console.log('开始加载图标...');
-
-      const response = await new Promise((resolve, reject) => {
-        wx.request({
-          url: API_CONFIG.IMAGES.ICONS,
-          method: 'GET',
-          header: {
-            'Accept': 'application/json'
-          },
-          success: resolve,
-          fail: reject
-        });
-      });
-
-      if (response.statusCode === 200) {
-        // 适配多种可能的响应格式
-        let iconData = null;
-        if (response.data && response.data.code === 200 && response.data.data) {
-          iconData = response.data.data;
-        } else if (response.data && response.data.code === 1 && response.data.data) {
-          iconData = response.data.data;
-        }
-
-        if (iconData && Array.isArray(iconData) && iconData.length > 0) {
-          // 查找通知图标
-          const noticeIcon = iconData.find(icon =>
-            icon.key && (
-              icon.key.toLowerCase().includes('notice') ||
-              icon.key.toLowerCase().includes('message') ||
-              icon.key.toLowerCase().includes('bell') ||
-              icon.key.toLowerCase().includes('notification')
-            )
-          );
-
-          if (noticeIcon && noticeIcon.url) {
-            this.setData({
-              noticeIcon: noticeIcon.url
-            });
-            console.log('✅ 通知图标加载成功:', noticeIcon.url);
-          } else {
-            console.log('⚠️ 未找到通知图标，使用默认图标');
-            this.setData({
-              noticeIcon: 'https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/icons/notice.png'
-            });
-          }
-        } else {
-          console.log('⚠️ 图标数据为空，使用默认图标');
-          this.setData({
-            noticeIcon: 'https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/icons/notice.png'
-          });
-        }
-      } else {
-        console.error('❌ 图标API请求失败，状态码:', response.statusCode);
-        this.setData({
-          noticeIcon: 'https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/icons/notice.png'
-        });
-      }
-    } catch (error) {
-      console.error('❌ 图标加载失败:', error);
+    const Icons = wx.getStorageSync('cached_icons')
+    if(Icons.NOTICE){
       this.setData({
-        noticeIcon: 'https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/icons/notice.png'
-      });
+        noticeIcon:Icons.NOTICE
+      })
+    }else {
+      // 可选：如果没有获取到，设置默认图标
+      this.setData({
+        noticeIcon: 'https://dhz-tourism-1329017069.cos.ap-guangzhou.myqcloud.com/icons/notice.png' // 使用默认路径作为 fallback
+      })
     }
   },
 
@@ -196,10 +139,9 @@ Page({
   async loadLandscapes() {
     try {
       console.log('开始加载景点数据...');
-      const landscapes = await this.getAllLandFromAPI();
 
       // 处理景点数据
-      landscapes.forEach(landscape => {
+      landScapes.forEach(landscape => {
         if (landscape.images && Array.isArray(landscape.images) && landscape.images.length > 0) {
           landscape.pic_url = landscape.images[0];
           landscape.allImages = landscape.images;
@@ -210,7 +152,7 @@ Page({
       });
 
       this.setData({
-        landscapeList: landscapes
+        landscapeList: landScapes
       });
 
       console.log('✅ 景点数据加载完成');
@@ -218,127 +160,6 @@ Page({
       console.error('❌ 景点数据加载失败:', error);
       throw error;
     }
-  },
-
-  // 从API获取景点数据
-  getAllLandFromAPI() {
-    return new Promise((resolve, reject) => {
-      wx.request({
-        url: API_CONFIG.LANDSCAPE.ALL,
-        method: 'GET',
-        header: {
-          'Accept': 'application/json'
-        },
-        success: (res) => {
-          if (res.statusCode !== 200) {
-            reject(new Error(`服务器错误: HTTP ${res.statusCode}`));
-            return;
-          }
-
-          let landscapes = [];
-          if (res.data && res.data.code === 1 && res.data.data && Array.isArray(res.data.data)) {
-            landscapes = res.data.data;
-          } else {
-            reject(new Error('服务器返回数据格式错误'));
-            return;
-          }
-
-          if (landscapes.length === 0) {
-            reject(new Error('没有找到景点数据'));
-            return;
-          }
-
-          resolve(landscapes);
-        },
-        fail: (error) => {
-          reject(new Error('网络请求失败，请检查网络连接'));
-        }
-      });
-    });
-  },
-
-  // 获取每个景点的得分
-  async getAllScore() {
-    const app = getApp();
-
-    if (!this.data.landscapeList || this.data.landscapeList.length === 0) {
-      return;
-    }
-
-    try {
-      const scorePromises = this.data.landscapeList.map(async (landscape, index) => {
-        try {
-          const score = await app.getScore(landscape.landscape_id);
-          return {
-            index,
-            score
-          };
-        } catch (error) {
-          return {
-            index,
-            score: 0
-          };
-        }
-      });
-
-      const scores = await Promise.all(scorePromises);
-      const landscapes = [...this.data.landscapeList];
-
-      scores.forEach(({
-        index,
-        score
-      }) => {
-        landscapes[index].score = score;
-      });
-
-      this.setData({
-        landscapeList: landscapes
-      });
-
-      console.log('✅ 景点评分加载完成');
-    } catch (error) {
-      console.error('❌ 获取景点评分失败:', error);
-    }
-  },
-
-  // 测试轮播图API（调试用）
-  async testBannerAPI() {
-    console.log('========== 测试轮播图API ==========');
-
-    try {
-      const response = await new Promise((resolve, reject) => {
-        wx.request({
-          url: API_CONFIG.IMAGES.BANNERS,
-          method: 'GET',
-          header: {
-            'Accept': 'application/json'
-          },
-          success: resolve,
-          fail: reject
-        });
-      });
-
-      console.log('轮播图API测试响应:', response);
-      console.log('状态码:', response.statusCode);
-      console.log('响应数据:', response.data);
-
-      if (response.data && response.data.data) {
-        console.log('轮播图数据:', response.data.data);
-        response.data.data.forEach((banner, index) => {
-          console.log(`轮播图 ${index + 1}:`, {
-            id: banner.id,
-            key: banner.key,
-            url: banner.url,
-            description: banner.description,
-            sort_order: banner.sort_order
-          });
-        });
-      }
-    } catch (error) {
-      console.error('轮播图API测试失败:', error);
-    }
-
-    console.log('========== 轮播图API测试结束 ==========');
   },
 
   // 图片加载事件
@@ -365,14 +186,16 @@ Page({
   // 导航到详情页
   navigateToDetail(e) {
     const dataset = e.currentTarget.dataset;
-    const landscapeId = dataset.id;
     const landscapeName = dataset.name;
-    const landscapeScore = dataset.score;
     const landscapePicture = dataset.picture;
+    const landscapeImages = dataset.images;
+    const landscapeLatitude = dataset.latitude;
+    const landscapeLongitude = dataset.longitude;
+    const landscapeDescription = dataset.description;
 
-    if (landscapeId && landscapeName) {
+    if (landscapeName) {
       wx.navigateTo({
-        url: `/pages/landscape_detail/landscape_detail?id=${landscapeId}&name=${encodeURIComponent(landscapeName)}&score=${landscapeScore}&picture=${landscapePicture}`
+        url: `/pages/landscape_detail/landscape_detail?&name=${encodeURIComponent(landscapeName)}&picture=${landscapePicture}&images=${landscapeImages}&latitude=${landscapeLatitude}&longitude=${landscapeLongitude}&description=${landscapeDescription}`
       });
     }
   },
